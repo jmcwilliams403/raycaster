@@ -4,28 +4,29 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
 public class Controls {
-    protected boolean left;
-    protected boolean right;
-    protected boolean forward;
-    protected boolean backward;
+    protected boolean left, right, strafeLeft, strafeRight, forward, backward;
+    private int oldX;
 
     public Controls() {
-        left = right = forward = backward = false;
+        left = right = strafeLeft = strafeRight = forward = backward = false;
+        oldX = Gdx.input.getX();
+
+        Gdx.input.setCursorCatched(true);
     }
 
     public void update() {
-        left = right = forward = backward = false;
+        left = right = strafeLeft = strafeRight = forward = backward = false;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            left = true;
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            strafeLeft= true;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            right = true;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            strafeRight = true;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             forward = true;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             backward = true;
         }
 
@@ -38,5 +39,15 @@ public class Controls {
                 right = true;
             }
         }
+
+
+        // Agrego moviemiento por mouse
+        if (oldX > Gdx.input.getX()){
+            left = true;
+        }
+        else if(oldX < Gdx.input.getX()){
+            right = true;
+        }
+        oldX = Gdx.input.getX();
     }
 }
