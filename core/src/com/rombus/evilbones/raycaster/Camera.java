@@ -93,11 +93,6 @@ public class Camera {
 
         for (int s = ray.steps.size() - 1; s >= 0; s--) {
             Step step = ray.steps.get(s);
-            double rainDrops = Math.pow(Math.random(), 3) * s;
-            Projection rain = null;
-            if (rainDrops > 0) {
-                rain = this.project(0.1, angle, step.distance);
-            }
 
             if (s == hit) {
                 double textureX = Math.floor(texture.getWidth() * step.offset);
@@ -114,17 +109,6 @@ public class Camera {
                 shapeRenderer.rect((float) left, (float) wall.top, (float) width, (float) wall.height);
                 shapeRenderer.end();
                 Gdx.gl.glDisable(GL20.GL_BLEND);
-            }
-
-            if (rain != null) {
-                Gdx.gl.glEnable(GL20.GL_BLEND);
-                Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                shapeRenderer.setColor(1, 1, 1, 0.15f);
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                while (--rainDrops > 0) {
-                    shapeRenderer.rect((float) left, (float) (Math.random() * rain.top), 1, (float) rain.height);
-                }
-                shapeRenderer.end();
             }
         }
     }
