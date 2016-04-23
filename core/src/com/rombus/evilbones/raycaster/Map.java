@@ -34,9 +34,4 @@ public class Map {
     public Ray cast(Point point, double angle, double range) {
         return new Ray(this, new Step(point.x, point.y, 0, 0, 0, 0, 0), Math.sin(angle), Math.cos(angle), range);
     }
-
-    public void update(double seconds) {
-        if (this.light > 0) this.light = Math.max(this.light - 10 * seconds, 0);
-        else if (Math.random() * 5 < seconds) this.light = 2;
-    }
 }

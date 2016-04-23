@@ -72,8 +72,6 @@ public class Raycaster extends ApplicationAdapter {
         Gdx.gl.glViewport((int) viewport.x, (int) viewport.y, (int) viewport.width, (int) viewport.height);
 
         seconds = Gdx.graphics.getDeltaTime();
-
-        map.update(seconds);
         controls.update();
         player.update(controls, map, seconds);
         camera.render(player, map);
