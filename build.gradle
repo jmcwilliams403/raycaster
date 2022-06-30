@@ -1,8 +1,10 @@
 buildscript {
     repositories {
+    	mavenLocal()
         mavenCentral()
+        gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        jcenter()
+        google()
     }
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
@@ -24,7 +26,10 @@ allprojects {
     }
 
     repositories {
+    	mavenLocal()
         mavenCentral()
+        google()
+        gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
