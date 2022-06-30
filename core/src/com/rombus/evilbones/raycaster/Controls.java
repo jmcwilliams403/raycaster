@@ -41,7 +41,7 @@ public class Controls {
         }
 
 
-        // Agrego moviemiento por mouse
+        // Add mouse movement
         if (oldX > Gdx.input.getX()){
             left = true;
         }
