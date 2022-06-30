@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 
 public class Camera {
     protected double width;
@@ -21,6 +23,12 @@ public class Camera {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
 
+    private static final Interpolation screen = new Interpolation() {
+		public float apply (float a) {
+			return MathUtils.isZero(a)? 0 : 1f-(float)(Math.atan2(1-a,a)*(2/Math.PI));
+		}
+	};
+    
     public Camera(OrthographicCamera camera, double resolution, double fov) {
         this.camera = camera;
         this.batch = new SpriteBatch();
@@ -31,7 +39,7 @@ public class Camera {
         this.height = this.camera.viewportHeight;
         this.resolution = resolution;
         this.spacing = this.width / resolution;
-        this.fov = fov;
+        this.fov = (MathUtils.degreesToRadians * fov);
         this.range = 14;
         this.lightRange = 5;
         this.scale = (this.width + this.height) / 1200;
@@ -67,7 +75,7 @@ public class Camera {
 
     private void drawColumns(Player player, Map map) {
         for (int column = 0; column < this.resolution; column++) {
-            double angle = this.fov * (column / this.resolution - 0.5);
+            double angle = this.fov * (screen.apply((float)(column / this.resolution)) - 0.5);
             Ray ray = map.cast(player.toPoint(), player.direction + angle, this.range);
             this.drawColumn(column, ray, angle, map);
         }
