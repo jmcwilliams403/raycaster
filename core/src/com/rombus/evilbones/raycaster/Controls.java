@@ -30,16 +30,6 @@ public class Controls {
             backward = true;
         }
 
-        if (Gdx.input.isTouched()) {
-            if (Gdx.input.getY() < Gdx.graphics.getHeight() * 0.5) {
-                forward = true;
-            } else if (Gdx.input.getX() < Gdx.graphics.getWidth() * 0.5) {
-                left = true;
-            } else if (Gdx.input.getX() > Gdx.graphics.getWidth() * 0.5) {
-                right = true;
-            }
-        }
-
 
         // Add mouse movement
         if (oldX > Gdx.input.getX()){
