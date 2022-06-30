@@ -40,11 +40,11 @@ public class Player {
         if (controls.strafeRight) this.walk(-speed * seconds, map, this.direction - Math.PI/2);
         if (controls.forward){
             this.walk(speed * seconds, map, this.direction);
-            System.out.println(x+", "+y);
+            //System.out.println(x+", "+y);
         }
         if (controls.backward){
             this.walk(-speed * seconds, map, this.direction);
-            System.out.println(x+", "+y);
+            //System.out.println(x+", "+y);
         }
     }
 
