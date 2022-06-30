@@ -10,8 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Raycaster extends ApplicationAdapter {
     protected static final double CIRCLE = Math.PI * 2;
-    private static final int VIRTUAL_WIDTH = 1024;
-    private static final int VIRTUAL_HEIGHT = 640;
+    private static final int VIRTUAL_WIDTH = 1920;
+    private static final int VIRTUAL_HEIGHT = 1080;
     private static final float ASPECT_RATIO = (float) VIRTUAL_WIDTH / (float) VIRTUAL_HEIGHT;
     private Player player;
     private Map map;
