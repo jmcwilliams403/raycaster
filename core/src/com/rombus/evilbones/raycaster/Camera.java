@@ -40,8 +40,8 @@ public class Camera {
         this.resolution = resolution;
         this.spacing = this.width / resolution;
         this.fov = (MathUtils.degreesToRadians * fov);
-        this.range = 14;
-        this.lightRange = 5;
+        this.range = 32;
+        this.lightRange = 8;
         this.scale = (this.width + this.height) / 1200;
     }
 
