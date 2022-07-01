@@ -52,8 +52,8 @@ public class Camera {
     }
 
     private void drawSky(double direction, Texture sky, double ambient) {
-        double width = this.width * (Raycaster.CIRCLE / this.fov);
-        double left = -width * direction / Raycaster.CIRCLE;
+        double width = this.width * (Raycaster.TAU / this.fov);
+        double left = -width * direction / Raycaster.TAU;
 
         batch.begin();
         batch.draw(sky, (float) left, (float) 0, (float) width, (float) this.height, 0, 0, sky.getWidth(), sky.getHeight(), false, true);

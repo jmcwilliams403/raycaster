@@ -22,7 +22,7 @@ public class Player {
     }
 
     public void rotate(double angle) {
-        this.direction = (this.direction + angle + Raycaster.CIRCLE) % (Raycaster.CIRCLE);
+        this.direction = (this.direction + angle + Raycaster.TAU) % (Raycaster.TAU);
     }
 
     public void walk(double distance, Map map, double direction) {
@@ -30,22 +30,17 @@ public class Player {
         double dy = Math.sin(direction) * distance;
         if (map.get(this.x + dx, this.y) <= 0) this.x += dx;
         if (map.get(this.x, this.y + dy) <= 0) this.y += dy;
-        this.paces += distance;
     }
 
     public void update(Controls controls, Map map, double seconds) {
-        if (controls.left) this.rotate(-Math.PI * seconds);
-        if (controls.right) this.rotate(Math.PI * seconds);
-        if (controls.strafeLeft)  this.walk(speed * seconds, map, this.direction - Math.PI/2);
-        if (controls.strafeRight) this.walk(-speed * seconds, map, this.direction - Math.PI/2);
-        if (controls.forward){
-            this.walk(speed * seconds, map, this.direction);
-            //System.out.println(x+", "+y);
-        }
-        if (controls.backward){
-            this.walk(-speed * seconds, map, this.direction);
-            //System.out.println(x+", "+y);
-        }
+        if (controls.turnLeft) this.rotate(-Math.PI * seconds);
+        if (controls.turnRight) this.rotate(Math.PI * seconds);
+        double distance = speed * seconds;
+        if (controls.left)  this.walk(distance, map, this.direction - Math.PI/2);
+        if (controls.right) this.walk(distance, map, this.direction + Math.PI/2);
+        if (controls.forward) this.walk(distance, map, this.direction);
+        if (controls.backward) this.walk(distance, map, this.direction + Math.PI);
+        if (controls.move) this.paces += distance;
     }
 
     public Point toPoint() {
