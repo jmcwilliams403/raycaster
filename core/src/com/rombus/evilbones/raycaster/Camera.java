@@ -95,14 +95,14 @@ public class Camera {
         Texture texture = map.wallTexture;
         double left = Math.floor(column * this.spacing);
         double width = Math.ceil(this.spacing);
-        int hit = -1;
+        int hit = 0;
 
-        while (++hit < ray.steps.size() && ray.steps.get(hit).height <= 0) ;
+        while (hit < ray.steps.size() && ray.steps.get(hit).height <= 0)
+            hit++;
 
-        for (int s = ray.steps.size() - 1; s >= 0; s--) {
-            Step step = ray.steps.get(s);
-
+        for (int s = 0; s < ray.steps.size(); s++) {
             if (s == hit) {
+                Step step = ray.steps.get(s);
                 double textureX = Math.floor(texture.getWidth() * step.offset);
                 Projection wall = this.project(step.height, angle, step.distance);
 
