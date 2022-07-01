@@ -35,12 +35,18 @@ public class Player {
     public void update(Controls controls, Map map, double seconds) {
         if (controls.turnLeft) this.rotate(-Math.PI * seconds);
         if (controls.turnRight) this.rotate(Math.PI * seconds);
-        double distance = speed * seconds;
-        if (controls.left)  this.walk(distance, map, this.direction - Math.PI/2);
-        if (controls.right) this.walk(distance, map, this.direction + Math.PI/2);
-        if (controls.forward) this.walk(distance, map, this.direction);
-        if (controls.backward) this.walk(distance, map, this.direction + Math.PI);
-        if (controls.move) this.paces += distance;
+        
+        if (controls.move) {
+	        double distance = this.speed * seconds;
+	        if (controls.left) this.walk(distance, map, this.direction - Math.PI/2);
+	        if (controls.right) this.walk(distance, map, this.direction + Math.PI/2);
+	        if (controls.forward) this.walk(distance, map, this.direction);
+	        if (controls.backward) this.walk(distance, map, this.direction + Math.PI);
+	        this.paces = (this.paces + distance) % Math.PI;
+        }
+        else {
+        	this.paces = 0;
+        }
     }
 
     public Point toPoint() {
