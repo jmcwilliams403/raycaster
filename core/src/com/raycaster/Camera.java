@@ -68,7 +68,7 @@ public class Camera {
     private void drawColumns(Player player, Map map) {
         for (int column = 0; column < this.resolution; column++) {
             double angle = column / this.resolution;
-            angle = this.fov * (0.5-Math.atan2(1-angle,angle)*(2/Math.PI));
+            angle = this.fov * (0.5 - (2 * Math.atan2(1-angle,angle) / Math.PI));
             Ray ray = map.cast(player.toPoint(), player.direction + angle, this.range);
             this.drawColumn(column, ray, angle, map);
         }
