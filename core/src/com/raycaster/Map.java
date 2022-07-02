@@ -29,9 +29,9 @@ public class Map {
 
     public void randomize() {
         for (int x = 0; x < this.size; x++) {
-        	for (int y = 0; y < this.size; y++) {
-        		this.wallGrid[x][y] = MathUtils.randomBoolean(0.3f)? 1 : 0;
-        	}
+            for (int y = 0; y < this.size; y++) {
+        	    this.wallGrid[x][y] = MathUtils.randomBoolean(0.3f)? 1 : 0;
+            }
         }
     }
 
