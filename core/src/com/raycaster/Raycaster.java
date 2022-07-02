@@ -1,4 +1,4 @@
-package com.rombus.evilbones.raycaster;
+package com.raycaster;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

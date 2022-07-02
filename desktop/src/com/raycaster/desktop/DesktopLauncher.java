@@ -1,8 +1,8 @@
-package com.rombus.evilbones.raycaster.desktop;
+package com.raycaster.desktop;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.rombus.evilbones.raycaster.Raycaster;
+import com.raycaster.Raycaster;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

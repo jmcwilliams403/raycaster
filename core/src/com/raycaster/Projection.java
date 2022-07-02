@@ -1,4 +1,4 @@
-package com.rombus.evilbones.raycaster;
+package com.raycaster;
 
 public class Projection {
     protected double top;
