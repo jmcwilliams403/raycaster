@@ -4,18 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
 public class Controls {
-    protected boolean turnLeft, turnRight, left, right, forward, backward, move;
-    private int oldX;
+    protected boolean turnLeft, turnRight, left, right, forward, backward, move, turn;
+    protected int x;
 
     public Controls() {
-        turnLeft = turnRight = left = right = forward = backward = false;
-        oldX = Gdx.input.getX();
-
+        turnLeft = turnRight = left = right = forward = backward = move = turn = false;
+        x = 0;
         Gdx.input.setCursorCatched(true);
+        Gdx.input.setCursorPosition(x,0);
     }
 
     public void update() {
-        turnLeft = turnRight = left = right = forward = backward = move = false;
+        turnLeft = turnRight = left = right = forward = backward = move = turn = false;
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             left = true;
@@ -33,12 +33,14 @@ public class Controls {
         move = (left || right || forward || backward);
 
         // Add mouse movement
-        if (oldX > Gdx.input.getX()){
+        x = Gdx.input.getDeltaX();
+        if (x < 0){
             turnLeft = true;
         }
-        else if(oldX < Gdx.input.getX()){
+        else if(x > 0){
             turnRight = true;
         }
-        oldX = Gdx.input.getX();
+        
+        turn = (turnLeft || turnRight);
     }
 }

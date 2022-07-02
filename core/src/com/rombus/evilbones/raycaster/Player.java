@@ -33,9 +33,8 @@ public class Player {
     }
 
     public void update(Controls controls, Map map, double seconds) {
-        if (controls.turnLeft) this.rotate(-Math.PI * seconds);
-        if (controls.turnRight) this.rotate(Math.PI * seconds);
-        
+    	if (controls.turn) this.rotate((controls.x / Math.PI) * seconds);
+
         if (controls.move) {
 	        double distance = this.speed * seconds;
 	        if (controls.left) this.walk(distance, map, this.direction - Math.PI/2);
