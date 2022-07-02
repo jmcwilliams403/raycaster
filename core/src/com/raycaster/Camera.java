@@ -75,8 +75,8 @@ public class Camera {
     }
 
     private void drawWeapon(Texture weapon, double paces) {
-        double bobX = Math.cos(paces * 2) * this.scale * 6;
-        double bobY = Math.sin(paces * 4) * this.scale * 6;
+        double bobX = Math.cos(paces) * this.scale * 6;
+        double bobY = Math.sin(paces * 2) * this.scale * 6;
         double left = this.width * 0.66 + bobX;
         double top = this.height * 0.6 + bobY;
         batch.begin();
