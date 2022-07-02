@@ -6,7 +6,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 
 public class Raycaster extends ApplicationAdapter {
     protected static final double TAU = Math.PI * 2;
@@ -43,20 +42,20 @@ public class Raycaster extends ApplicationAdapter {
         // calculate new viewport
         float aspectRatio = (float) width / (float) height;
 
-        Vector2 crop = new Vector2(0f, 0f);
+        float x = 0f, y = 0f;
         if (aspectRatio > ASPECT_RATIO) {
             scale = (float) height / (float) VIRTUAL_HEIGHT;
-            crop.x = (width - VIRTUAL_WIDTH * scale) / 2f;
+            x = (width - VIRTUAL_WIDTH * scale) / 2f;
         } else if (aspectRatio < ASPECT_RATIO) {
             scale = (float) width / (float) VIRTUAL_WIDTH;
-            crop.y = (height - VIRTUAL_HEIGHT * scale) / 2f;
+            y = (height - VIRTUAL_HEIGHT * scale) / 2f;
         } else {
             scale = (float) width / (float) VIRTUAL_WIDTH;
         }
 
         float w = (float) VIRTUAL_WIDTH * scale;
         float h = (float) VIRTUAL_HEIGHT * scale;
-        viewport = new Rectangle(crop.x, crop.y, w, h);
+        viewport = new Rectangle(x, y, w, h);
     }
 
     @Override
