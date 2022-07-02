@@ -26,17 +26,17 @@ public class Player {
     }
 
     public void walk(double distance, Map map, double direction) {
-        double dx = Math.cos(direction) * distance;
-        double dy = Math.sin(direction) * distance;
-        if (map.get(this.x + dx, this.y) <= 0) this.x += dx;
-        if (map.get(this.x, this.y + dy) <= 0) this.y += dy;
+        final double x = this.x, y = this.y;
+        final double dx = Math.cos(direction) * distance, dy = Math.sin(direction) * distance;
+        if (map.get(x + dx, y) <= 0) this.x += dx;
+        if (map.get(x, y + dy) <= 0) this.y += dy;
     }
 
     public void update(Controls controls, Map map, double seconds) {
     	if (controls.turn) this.rotate((controls.x / Math.PI) * seconds);
 
         if (controls.move) {
-	        double distance = this.speed * seconds;
+	        final double distance = this.speed * seconds;
 	        if (controls.left) this.walk(distance, map, this.direction - Math.PI/2);
 	        if (controls.right) this.walk(distance, map, this.direction + Math.PI/2);
 	        if (controls.forward) this.walk(distance, map, this.direction);
