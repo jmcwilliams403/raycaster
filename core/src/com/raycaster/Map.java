@@ -19,7 +19,7 @@ public class Map {
         this.wallTexture = new Texture(Gdx.files.internal("wall_texture.jpg"));
     }
     public Integer get(double x, double y) {
-    	return this.get((int)x, (int)y);
+    	return this.get((int)Math.floor(x), (int)Math.floor(y));
     }
     public Integer get(int x, int y) {
         return (x < 0 || x > this.size - 1 || y < 0 || y > this.size - 1)? -1 : this.wallGrid[x][y];
