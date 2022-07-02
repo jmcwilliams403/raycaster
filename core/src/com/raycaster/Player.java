@@ -41,7 +41,7 @@ public class Player {
 	        if (controls.right) this.walk(distance, map, this.direction + Math.PI/2);
 	        if (controls.forward) this.walk(distance, map, this.direction);
 	        if (controls.backward) this.walk(distance, map, this.direction + Math.PI);
-	        this.paces = (this.paces + distance) % Math.PI;
+	        this.paces = (this.paces + distance) % Raycaster.TAU;
         }
         else {
         	this.paces = 0;
