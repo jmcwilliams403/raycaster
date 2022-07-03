@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Color;
 
 public class Camera {
     protected double width;
@@ -39,18 +40,20 @@ public class Camera {
 
     public void render(Player player, Map map) {
         this.drawSky(player.direction, map.skybox, map.light);
+        this.drawGround(map.groundColor);
         this.drawColumns(player, map);
         this.drawWeapon(player.weapon, player.paces);
     }
 
     private void drawSky(double direction, Texture sky, double ambient) {
         double width = this.width * (Math.PI / this.fov);
+        double height = this.height / 2;
         double left = -width * direction / Raycaster.TAU;
 
         batch.begin();
-        batch.draw(sky, (float) left, (float) 0, (float) width, (float) this.height, 0, 0, sky.getWidth(), sky.getHeight(), false, true);
+        batch.draw(sky, (float) left, (float) 0, (float) width, (float) height, 0, 0, sky.getWidth(), sky.getHeight(), false, true);
         if (left < width - this.width) {
-            batch.draw(sky, (float) (left + width), (float) 0, (float) width, (float) this.height, 0, 0, sky.getWidth(), sky.getHeight(), false, true);
+            batch.draw(sky, (float) (left + width), (float) 0, (float) width, (float) height, 0, 0, sky.getWidth(), sky.getHeight(), false, true);
         }
         batch.end();
 
@@ -59,10 +62,17 @@ public class Camera {
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.setColor(1, 1, 1, (float) (ambient * 0.1));
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.rect(0, 0, (float) this.width, (float) (this.height * 0.5));
+            shapeRenderer.rect(0, 0, (float) this.width, (float) height);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
+    }
+
+    private void drawGround(Color ground)
+    {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.rectLine((float)this.width/2, (float)this.height/2, (float)this.width/2, (float)this.height, (float)this.width, Color.BLACK, ground);
+        shapeRenderer.end();
     }
 
     private void drawColumns(Player player, Map map) {
