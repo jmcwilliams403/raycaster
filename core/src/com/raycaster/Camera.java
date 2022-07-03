@@ -40,7 +40,7 @@ public class Camera {
 
     public void render(Player player, Map map) {
         this.drawSky(player.direction, map.skybox, map.light);
-        this.drawGround(map.groundColor);
+        this.drawGround(map.groundColor, map.light);
         this.drawColumns(player, map);
         this.drawWeapon(player.weapon, player.paces);
     }
@@ -68,12 +68,13 @@ public class Camera {
         }
     }
 
-    private void drawGround(Color ground)
+    private void drawGround(Color ground, int ambient)
     {
+    	float gamma = (float)ambient / 256f;
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.rectLine((float)this.width/2, (float)this.height/2, (float)this.width/2, (float)this.height, (float)this.width, Color.BLACK, ground);
+        shapeRenderer.rectLine((float)this.width/2, (float)this.height/2, (float)this.width/2, (float)this.height, (float)this.width, new Color(gamma,gamma,gamma,1f), ground);
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
     }

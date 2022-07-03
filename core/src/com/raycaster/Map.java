@@ -16,7 +16,7 @@ public class Map {
     public Map(int size) {
         this.size = size;
         this.wallGrid = new int[this.size][this.size];
-        this.light = 16;
+        this.light = 32;
         this.skybox = new Texture(Gdx.files.internal("deathvalley_panorama.jpg"));
         this.wallTexture = new Texture(Gdx.files.internal("wall_texture.jpg"));
         this.groundColor = new Color(0x1f0e07FF);
