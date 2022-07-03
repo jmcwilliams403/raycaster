@@ -34,7 +34,7 @@ public class Camera {
         this.spacing = this.width / resolution;
         this.fov = Math.toRadians(fov);
         this.range = 32;
-        this.lightRange = 8;
+        this.lightRange = 16;
         this.scale = (this.width + this.height) / 1200;
     }
 
@@ -45,7 +45,7 @@ public class Camera {
         this.drawWeapon(player.weapon, player.paces);
     }
 
-    private void drawSky(double direction, Texture sky, double ambient) {
+    private void drawSky(double direction, Texture sky, int ambient) {
         double width = this.width * (Math.PI / this.fov);
         double height = this.height / 2;
         double left = -width * direction / Raycaster.TAU;
@@ -60,7 +60,7 @@ public class Camera {
         if (ambient > 0) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            shapeRenderer.setColor(1, 1, 1, (float) (ambient * 0.1));
+            shapeRenderer.setColor(new Color(0xFFFFFF00 | ambient));
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.rect(0, 0, (float) this.width, (float) height);
             shapeRenderer.end();
@@ -118,7 +118,7 @@ public class Camera {
 
                 Gdx.gl.glEnable(GL20.GL_BLEND);
                 Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                shapeRenderer.setColor(0, 0, 0, (float) Math.max((step.distance + step.shading) / this.lightRange - map.light, 0));
+                shapeRenderer.setColor(0, 0, 0, (float) Math.max((step.distance + step.shading) / this.lightRange - (map.light/256), 0));
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.rect((float) left, (float) wall.top, (float) width, (float) wall.height);
                 shapeRenderer.end();
