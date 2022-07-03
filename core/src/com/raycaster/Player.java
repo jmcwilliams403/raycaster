@@ -26,10 +26,9 @@ public class Player {
     }
 
     public void walk(double distance, Map map, double direction) {
-        final double x = this.x, y = this.y;
         final double dx = Math.cos(direction) * distance, dy = Math.sin(direction) * distance;
-        if (map.get(x + dx, y) <= 0) this.x += dx;
-        if (map.get(x, y + dy) <= 0) this.y += dy;
+        if (map.get(this.x + dx, this.y) <= 0) this.x += dx;
+        if (map.get(this.x, this.y + dy) <= 0) this.y += dy;
     }
 
     public void update(Controls controls, Map map, double seconds) {
