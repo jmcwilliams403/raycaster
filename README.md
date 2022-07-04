@@ -5,7 +5,7 @@ This is a quick port of "A first-person engine in 265 lines" from JavaScript to 
 * http://www.playfuljs.com/a-first-person-engine-in-265-lines/
 * http://libgdx.badlogicgames.com/
 
-![Screenshot](https://pbs.twimg.com/media/FWx8htEXoAAzElU.jpg:large)
+![Screenshot](https://pbs.twimg.com/media/FW2Ph_6WQAAPX72.jpg:large)
 
 ## Porting details
 
@@ -40,6 +40,4 @@ The easiest way to test the project is on desktop, just run
 
 ## License
 
-The code is under GNU General Public License, ported from JavaScript.
-
-The images used are from the article http://www.playfuljs.com/a-first-person-engine-in-265-lines/.
+The code is under GNU General Public License Version 3

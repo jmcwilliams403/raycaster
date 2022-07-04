@@ -18,7 +18,7 @@ public class Player {
         this.direction = Math.toRadians(direction);
         this.paces = 0;
         this.speed = 3;
-        this.weapon = new Texture(Gdx.files.internal("knife_hand.png"));
+        this.weapon = new Texture(Gdx.files.internal("hand.png"));
     }
 
     public void rotate(double angle) {

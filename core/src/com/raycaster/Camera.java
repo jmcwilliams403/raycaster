@@ -35,7 +35,7 @@ public class Camera {
         this.fov = Math.toRadians(fov);
         this.range = 32;
         this.lightRange = 16;
-        this.scale = (this.width + this.height) / 1200;
+        this.scale = (this.width + this.height) / 640;
     }
 
     public void render(Player player, Map map) {
@@ -51,9 +51,9 @@ public class Camera {
         double left = -width * direction / Raycaster.TAU;
 
         batch.begin();
-        batch.draw(sky, (float) left, (float) 0, (float) width, (float) height, 0, 0, sky.getWidth(), sky.getHeight(), false, true);
+        batch.draw(sky, (float) left, (float) 0, (float) width, (float) this.height, 0, 0, sky.getWidth(), sky.getHeight(), false, true);
         if (left < width - this.width) {
-            batch.draw(sky, (float) (left + width), (float) 0, (float) width, (float) height, 0, 0, sky.getWidth(), sky.getHeight(), false, true);
+            batch.draw(sky, (float) (left + width), (float) 0, (float) width, (float) this.height, 0, 0, sky.getWidth(), sky.getHeight(), false, true);
         }
         batch.end();
 
@@ -62,7 +62,7 @@ public class Camera {
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.setColor(new Color(0xFFFFFF00 | ambient));
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.rect(0, 0, (float) this.width, (float) height);
+            shapeRenderer.rect(0, 0, (float) this.width, (float) this.height/2);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
