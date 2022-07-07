@@ -5,7 +5,7 @@ This is a quick port of "A first-person engine in 265 lines" from JavaScript to 
 * http://www.playfuljs.com/a-first-person-engine-in-265-lines/
 * http://libgdx.badlogicgames.com/
 
-![Screenshot](https://pbs.twimg.com/media/FW2Ph_6WQAAPX72.jpg:large)
+![Screenshot](https://pbs.twimg.com/media/FXGEZCXWYAAGXkn.jpg:large)
 
 ## Porting details
 
