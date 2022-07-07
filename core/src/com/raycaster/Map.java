@@ -3,7 +3,7 @@ package com.raycaster;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 
 public class Map {
     protected int size;
@@ -11,7 +11,7 @@ public class Map {
     protected int light;
     protected Texture skybox;
     protected Texture wallTexture;
-    protected Color groundColor;
+    protected Pixmap groundTexture;
 
     public Map(int size) {
         this.size = size;
@@ -19,7 +19,7 @@ public class Map {
         this.light = 32;
         this.skybox = new Texture(Gdx.files.internal("panorama.png"));
         this.wallTexture = new Texture(Gdx.files.internal("wall.png"));
-        this.groundColor = new Color(0x6d5844FF);
+        this.groundTexture = new Pixmap(Gdx.files.internal("floor.png"));
     }
     
     public Integer get(double x, double y) {

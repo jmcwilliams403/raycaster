@@ -3,6 +3,9 @@ package com.raycaster;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Pixmap.Filter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -40,7 +43,7 @@ public class Camera {
 
     public void render(Player player, Map map) {
         this.drawSky(player.direction, map.skybox, map.light);
-        this.drawGround(map.groundColor, map.light);
+        this.drawGround(player, map);
         this.drawColumns(player, map);
         this.drawWeapon(player.weapon, player.paces);
     }
@@ -67,13 +70,36 @@ public class Camera {
         }
     }
 
-    private void drawGround(Color ground, int ambient)
+    private void drawGround(Player player, Map map)
     {
-    	float gamma = (float)ambient / 256f;
+        Pixmap buffer = new Pixmap((int)this.resolution, (int)this.resolution, Format.RGB888);
+        buffer.setFilter(Filter.NearestNeighbour);
+
+        final double scale = Math.max(map.groundTexture.getWidth(), map.groundTexture.getHeight());
+        final double tx = player.x * scale;
+        final double ty = player.y * scale;
+        final double scaleX = Math.sin(player.direction) * scale;
+        final double scaleY = Math.cos(player.direction) * scale;
+        for (int y = 0; y < this.resolution; y++) {
+            final double dx = scaleX / (1 + y);
+            final double dy = scaleY / (1 + y);
+
+            double sx = tx + (this.resolution / 2) * (dx + dy);
+            double sy = ty + (this.resolution / 2) * (dx - dy);
+
+            for (int x = 0; x < this.resolution; x++, sx -= dx, sy += dy)
+                buffer.drawPixel(x, y, map.groundTexture.getPixel((int) Math.abs(sx % map.groundTexture.getWidth()), (int) Math.abs(sy % map.groundTexture.getHeight())));
+        }
+
+        batch.begin();
+        batch.draw(new Texture(buffer, Format.RGB888, true),0,(float)this.height/2,(float)this.width,(float)this.height,0,0,(int)this.resolution,(int)this.resolution,false, true);
+        batch.end();
+        buffer.dispose();
+    	
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.rectLine((float)this.width/2, (float)this.height/2, (float)this.width/2, (float)this.height, (float)this.width, new Color(gamma,gamma,gamma,1f), ground);
+        shapeRenderer.rectLine((float)this.width/2, (float)this.height/2, (float)this.width/2, (float)this.height, (float)this.width, Color.BLACK, new Color(0,0,0,(float)map.light / 256f));
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
     }
