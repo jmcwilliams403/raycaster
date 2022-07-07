@@ -1,6 +1,6 @@
 # Raycaster
 
-This is a quick port of "A first-person engine in 265 lines" from JavaScript to Java using the libGDX framework. 
+Based on Fredrik Wallgren's port of "A first-person engine in 265 lines" from JavaScript to Java using the libGDX framework. 
 
 * http://www.playfuljs.com/a-first-person-engine-in-265-lines/
 * http://libgdx.badlogicgames.com/
