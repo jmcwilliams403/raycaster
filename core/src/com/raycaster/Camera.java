@@ -109,7 +109,33 @@ public class Camera {
             double angle = column / this.resolution;
             angle = this.fov * (0.5 - (2 * Math.atan2(1-angle,angle) / Math.PI));
             Ray ray = this.cast(map, player.x, player.y, player.direction + angle, this.range);
-            this.drawColumn(column, ray, angle, map);
+            Texture texture = map.wallTexture;
+            double left = Math.floor(column * this.spacing);
+            double width = Math.ceil(this.spacing);
+            int hit = 0;
+
+            while (hit < ray.steps.size() && ray.steps.get(hit).height <= 0)
+                hit++;
+
+            for (int s = 0; s < ray.steps.size(); s++) {
+                if (s == hit) {
+                    Step step = ray.steps.get(s);
+                    double textureX = Math.floor(texture.getWidth() * step.offset);
+                    Projection wall = this.project(step.height, angle, step.distance, (int)width);
+
+                    batch.begin();
+                    batch.draw(texture, (float) left, (float) wall.top, (float) width, (float) wall.height, (int) textureX, 0, 1, texture.getHeight(), false, true);
+                    batch.end();
+
+                    Gdx.gl.glEnable(GL20.GL_BLEND);
+                    Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+                    shapeRenderer.setColor(0, 0, 0, (float) Math.max((step.distance + step.shading) / this.lightRange - (map.light/256), 0));
+                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                    shapeRenderer.rect((float) left, (float) wall.top, (float) width, (float) wall.height);
+                    shapeRenderer.end();
+                    Gdx.gl.glDisable(GL20.GL_BLEND);
+                }
+            }
         }
     }
 
@@ -123,36 +149,6 @@ public class Camera {
         batch.end();
     }
 
-    private void drawColumn(double column, Ray ray, double angle, Map map) {
-        Texture texture = map.wallTexture;
-        double left = Math.floor(column * this.spacing);
-        double width = Math.ceil(this.spacing);
-        int hit = 0;
-
-        while (hit < ray.steps.size() && ray.steps.get(hit).height <= 0)
-            hit++;
-
-        for (int s = 0; s < ray.steps.size(); s++) {
-            if (s == hit) {
-                Step step = ray.steps.get(s);
-                double textureX = Math.floor(texture.getWidth() * step.offset);
-                Projection wall = this.project(step.height, angle, step.distance, (int)width);
-
-                batch.begin();
-                batch.draw(texture, (float) left, (float) wall.top, (float) width, (float) wall.height, (int) textureX, 0, 1, texture.getHeight(), false, true);
-                batch.end();
-
-                Gdx.gl.glEnable(GL20.GL_BLEND);
-                Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                shapeRenderer.setColor(0, 0, 0, (float) Math.max((step.distance + step.shading) / this.lightRange - (map.light/256), 0));
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.rect((float) left, (float) wall.top, (float) width, (float) wall.height);
-                shapeRenderer.end();
-                Gdx.gl.glDisable(GL20.GL_BLEND);
-            }
-        }
-    }
-    
     private double alias(double i, int v) {
         return (v == 0)? i : (int)(i/v)*v;
     }
