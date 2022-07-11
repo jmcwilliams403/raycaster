@@ -136,7 +136,7 @@ public class Camera {
             if (s == hit) {
                 Step step = ray.steps.get(s);
                 double textureX = Math.floor(texture.getWidth() * step.offset);
-                Projection wall = this.project(step.height, angle, step.distance);
+                Projection wall = this.project(step.height, angle, step.distance, (int)width);
 
                 batch.begin();
                 batch.draw(texture, (float) left, (float) wall.top, (float) width, (float) wall.height, (int) textureX, 0, 1, texture.getHeight(), false, true);
@@ -152,11 +152,15 @@ public class Camera {
             }
         }
     }
+    
+    private double alias(double i, int v) {
+        return (v == 0)? i : (int)(i/v)*v;
+    }
 
-    private Projection project(double height, double angle, double distance) {
+    private Projection project(double height, double angle, double distance, int spacing) {
         double z = distance * Math.cos(angle);
-        double wallHeight = this.height * height / z;
-        double bottom = this.height / 2 * (1 + 1 / z);
+        double wallHeight = this.alias(this.height * height / z, spacing);
+        double bottom = this.alias(this.height / 2 * (1 + 1 / z), spacing);
         return new Projection(bottom - wallHeight, wallHeight);
     }
 }
