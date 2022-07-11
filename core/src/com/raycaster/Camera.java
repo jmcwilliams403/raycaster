@@ -108,7 +108,7 @@ public class Camera {
         for (int column = 0; column < this.resolution; column++) {
             double angle = column / this.resolution;
             angle = this.fov * (0.5 - (2 * Math.atan2(1-angle,angle) / Math.PI));
-            Ray ray = map.cast(player.x, player.y, player.direction + angle, this.range);
+            Ray ray = this.cast(map, player.x, player.y, player.direction + angle, this.range);
             this.drawColumn(column, ray, angle, map);
         }
     }
@@ -162,5 +162,9 @@ public class Camera {
         double wallHeight = this.alias(this.height * height / z, spacing);
         double bottom = this.alias(this.height / 2 * (1 + 1 / z), spacing);
         return new Projection(bottom - wallHeight, wallHeight);
+    }
+    
+    public Ray cast(Map map, double x, double y, double angle, double range) {
+        return new Ray(map, new Step(x, y, 0, 0, 0, 0, 0), Math.sin(angle), Math.cos(angle), range);
     }
 }
