@@ -43,7 +43,7 @@ public class Camera {
 
     public void render(Player player, Map map) {
         this.drawSky(player.direction, map.skybox, map.light);
-        this.drawGround(player, map);
+        this.drawFloor(player, map);
         this.drawColumns(player, map);
         this.drawWeapon(player.weapon, player.paces);
     }
@@ -70,7 +70,7 @@ public class Camera {
         }
     }
 
-    private void drawGround(Player player, Map map)
+    private void drawFloor(Player player, Map map)
     {
         Pixmap buffer = new Pixmap((int)this.resolution, (int)this.resolution, Format.RGB888);
         buffer.setFilter(Filter.NearestNeighbour);
