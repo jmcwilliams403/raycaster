@@ -38,7 +38,7 @@ public class Map {
         }
     }
 
-    public Ray cast(Point point, double angle, double range) {
-        return new Ray(this, new Step(point.x, point.y, 0, 0, 0, 0, 0), Math.sin(angle), Math.cos(angle), range);
+    public Ray cast(double x, double y, double angle, double range) {
+        return new Ray(this, new Step(x, y, 0, 0, 0, 0, 0), Math.sin(angle), Math.cos(angle), range);
     }
 }

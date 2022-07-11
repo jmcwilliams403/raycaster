@@ -46,8 +46,4 @@ public class Player {
         	this.paces = 0;
         }
     }
-
-    public Point toPoint() {
-        return new Point(this.x, this.y);
-    }
 }
