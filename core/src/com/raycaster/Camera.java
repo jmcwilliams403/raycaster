@@ -162,6 +162,6 @@ public class Camera {
     }
     
     public Ray cast(Map map, double x, double y, double angle, double range) {
-        return new Ray(map, new Step(x, y, 0, 0, 0, 0, 0), Math.sin(angle), Math.cos(angle), range);
+        return new Ray(map, new Step(x, y), Math.sin(angle), Math.cos(angle), range);
     }
 }

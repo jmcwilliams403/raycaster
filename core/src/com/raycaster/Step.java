@@ -9,6 +9,10 @@ public class Step {
     protected double shading;
     protected double offset;
 
+    public Step(double x, double y) {
+        this(x,y,0,0,0,0,0);
+    }
+    
     public Step(double x, double y, double height, double distance, double length2, double shading, double offset) {
         this.x = x;
         this.y = y;
