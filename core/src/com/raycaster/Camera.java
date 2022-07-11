@@ -74,8 +74,9 @@ public class Camera {
     {
         Pixmap buffer = new Pixmap((int)this.resolution, (int)this.resolution, Format.RGB888);
         buffer.setFilter(Filter.NearestNeighbour);
+        Pixmap floor = map.floorTexture;
 
-        final double scale = Math.max(map.groundTexture.getWidth(), map.groundTexture.getHeight());
+        final double scale = Math.max(floor.getWidth(), floor.getHeight());
         final double tx = player.x * scale;
         final double ty = player.y * scale;
         final double scaleX = Math.sin(player.direction) * scale;
@@ -88,7 +89,7 @@ public class Camera {
             double sy = ty + (this.resolution / 2) * (dx - dy);
 
             for (int x = 0; x < this.resolution; x++, sx -= dx, sy += dy)
-                buffer.drawPixel(x, y, map.groundTexture.getPixel((int) Math.abs(sx % map.groundTexture.getWidth()), (int) Math.abs(sy % map.groundTexture.getHeight())));
+                buffer.drawPixel(x, y, floor.getPixel((int) Math.abs(sx % floor.getWidth()), (int) Math.abs(sy % floor.getHeight())));
         }
 
         batch.begin();
