@@ -11,7 +11,6 @@ Based on Fredrik Wallgren's port of "A first-person engine in 265 lines" from Ja
 
 Besides the obvious changes in rendering and input code there is four new types introduced that in the original code are represented either as an `Array` or `Object`.
 
-* Point
 * Projection
 * Ray
 * Step
