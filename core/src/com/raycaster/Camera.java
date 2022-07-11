@@ -135,6 +135,8 @@ public class Camera {
                     shapeRenderer.rect((float) left, (float) wall.top, (float) width, (float) wall.height);
                     shapeRenderer.end();
                     Gdx.gl.glDisable(GL20.GL_BLEND);
+                
+                    break;
                 }
             }
         }
