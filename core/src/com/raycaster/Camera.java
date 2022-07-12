@@ -120,7 +120,7 @@ public class Camera {
                 if (s == hit) {
                     Step step = ray.steps.get(s);
                     double textureX = Math.floor(texture.getWidth() * step.offset);
-                    Projection wall = this.project(step.height, angle, step.distance, (int)width);
+                    Projection wall = this.project(step.height, angle, step.distance);
 
                     batch.begin();
                     batch.draw(texture, (float) left, (float) wall.top, (float) width, (float) wall.height, (int) textureX, 0, 1, texture.getHeight(), false, true);
@@ -143,21 +143,25 @@ public class Camera {
     private void drawWeapon(Texture weapon, double paces) {
         double width = weapon.getWidth() * this.spacing;
         double height = weapon.getHeight() * this.spacing;
-        double left = this.alias((this.width - width / 2) - Math.sin(paces) * width / 4,(int)this.spacing);
-        double top = this.alias((this.height - height / 2) - Math.sin(paces * 2) * height / 4,(int)this.spacing);
+        double left = this.alias((this.width - width / 2) - Math.sin(paces) * width / 4);
+        double top = this.alias((this.height - height / 2) - Math.sin(paces * 2) * height / 4);
         batch.begin();
         batch.draw(weapon, (float) left, (float) top, (float) width, (float) height, 0, 0, weapon.getWidth(), weapon.getHeight(), false, true);
         batch.end();
     }
 
+    private double alias(double d) {
+        return this.alias(d,(int)this.spacing);
+    }
+    
     private double alias(double i, int v) {
         return (v == 0)? i : (int)(i/v)*v;
     }
 
-    private Projection project(double height, double angle, double distance, int spacing) {
+    private Projection project(double height, double angle, double distance) {
         double z = distance * Math.cos(angle);
-        double wallHeight = this.alias(this.height * height / z, spacing);
-        double bottom = this.alias(this.height / 2 * (1 + 1 / z), spacing);
+        double wallHeight = this.alias(this.height * height / z);
+        double bottom = this.alias(this.height / 2 * (1 + 1 / z));
         return new Projection(bottom - wallHeight, wallHeight);
     }
     
