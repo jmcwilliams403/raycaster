@@ -105,7 +105,7 @@ public class Camera {
         for (int column = 0; column < this.resolution; column++) {
             double angle = column / this.resolution;
             angle = this.fov * (0.5 - (2 * Math.atan2(1-angle,angle) / Math.PI));
-            Ray ray = this.cast(map, player.x, player.y, player.direction + angle, this.range);
+            Ray ray = new Ray(map, player.x, player.y, player.direction + angle, this.range);
             Texture texture = map.wallTexture;
             double left = Math.floor(column * this.spacing);
             double width = Math.ceil(this.spacing);
@@ -161,9 +161,5 @@ public class Camera {
         double wallHeight = this.alias(this.height * height / z);
         double bottom = this.alias(this.height / 2 * (1 + 1 / z));
         return new Projection(bottom - wallHeight, wallHeight);
-    }
-    
-    public Ray cast(Map map, double x, double y, double angle, double range) {
-        return new Ray(map, new Step(x, y), Math.sin(angle), Math.cos(angle), range);
     }
 }

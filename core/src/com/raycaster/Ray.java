@@ -9,13 +9,13 @@ public class Ray {
     protected double cos;
     protected List<Step> steps;
 
-    public Ray(Map map, Step origin, double sin, double cos, double range) {
+    public Ray(Map map, double x, double y, double angle, double range) {
         this.steps = new ArrayList<Step>();
         this.map = map;
-        this.sin = sin;
-        this.cos = cos;
+        this.sin = Math.sin(angle);
+        this.cos = Math.cos(angle);
 
-        this.cast(origin, range);
+        this.cast(new Step(x,y), range);
     }
 
     protected void cast(Step origin, double range) {
