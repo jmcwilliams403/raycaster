@@ -8,8 +8,8 @@ public class Ray {
         protected double x;
         protected double y;
         protected double height;
-        protected double distance;
         protected double length;
+        protected double distance;
         protected double shading;
         protected double offset;
 
@@ -17,8 +17,8 @@ public class Ray {
             this.x = x;
             this.y = y;
             this.height = 0;
-            this.distance = 0;
             this.length = 0;
+            this.distance = 0;
             this.shading = 0;
             this.offset = 0;
         }
@@ -28,8 +28,8 @@ public class Ray {
             	this.x = 0;
             	this.y = 0;
             	this.height = 0;
-            	this.distance = 0;
             	this.length = Double.POSITIVE_INFINITY;
+            	this.distance = 0;
             	this.shading = 0;
             	this.offset = 0;
             }
@@ -40,8 +40,8 @@ public class Ray {
                 this.x = inverted ? y + dy : x + dx;
                 this.y = inverted ? x + dx : y + dy;
                 this.height = 0;
-                this.distance = 0;
                 this.length = Math.hypot(dx, dy);
+                this.distance = 0;
                 this.shading = 0;
                 this.offset = 0;
             }
@@ -54,8 +54,8 @@ public class Ray {
             this.x = step.x;
             this.y = step.y;
             this.height = map.get(this.x - dx, this.y - dy);
-            this.distance = distance + step.length;
             this.length = step.length;
+            this.distance = distance + this.length;
             if (shiftX == 1)
                 this.shading = cos < 0 ? 2 : 0;
             else
