@@ -26,6 +26,30 @@ public class Ray {
             this.shading = shading;
             this.offset = offset;
         }
+        
+        public Step(double rise, double run, double x, double y, boolean inverted) {
+            if (run == 0) {
+            	this.x = 0;
+            	this.y = 0;
+            	this.height = 0;
+            	this.distance = 0;
+            	this.length = Double.POSITIVE_INFINITY;
+            	this.shading = 0;
+            	this.offset = 0;
+            }
+            else {
+            	double dx = run > 0 ? Math.floor(x + 1) - x : Math.ceil(x - 1) - x;
+                double dy = dx * (rise / run);
+                
+                this.x = inverted ? y + dy : x + dx;
+                this.y = inverted ? x + dx : y + dy;
+                this.height = 0;
+                this.distance = 0;
+                this.length = Math.hypot(dx, dy);
+                this.shading = 0;
+                this.offset = 0;
+            }
+        }
     }
 
     protected Map map;
@@ -46,20 +70,13 @@ public class Ray {
     	Step nextStep = new Step(x, y);
     	do {
     		this.steps.add(nextStep);
-            Step stepX = step(sin, cos, nextStep.x, nextStep.y, false);
-            Step stepY = step(cos, sin, nextStep.y, nextStep.x, true);
+            Step stepX = new Step(sin, cos, nextStep.x, nextStep.y, false);
+            Step stepY = new Step(cos, sin, nextStep.y, nextStep.x, true);
             nextStep = stepX.length < stepY.length
                 ? inspect(stepX, 1, 0, nextStep.distance, stepX.y)
                 : inspect(stepY, 0, 1, nextStep.distance, stepY.x);
     	}
     	while (nextStep.distance < range);
-    }
-
-    protected Step step(double rise, double run, double x, double y, boolean inverted) {
-        if (run == 0) return new Step(0, 0, 0, 0, Double.POSITIVE_INFINITY, 0, 0);
-        double dx = run > 0 ? Math.floor(x + 1) - x : Math.ceil(x - 1) - x;
-        double dy = dx * (rise / run);
-        return new Step(inverted ? y + dy : x + dx, inverted ? x + dx : y + dy, 0, 0, Math.hypot(dx, dy), 0, 0);
     }
 
     protected Step inspect(Step step, double shiftX, double shiftY, double distance, double offset) {
