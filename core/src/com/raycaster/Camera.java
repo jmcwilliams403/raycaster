@@ -20,18 +20,16 @@ public class Camera {
     protected double range;
     protected double lightRange;
 
-    private OrthographicCamera camera;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     
     public Camera(OrthographicCamera camera, double resolution, double fov) {
-        this.camera = camera;
         this.batch = new SpriteBatch();
         this.batch.setProjectionMatrix(camera.combined);
         this.shapeRenderer = new ShapeRenderer();
         this.shapeRenderer.setProjectionMatrix(camera.combined);
-        this.width = this.camera.viewportWidth;
-        this.height = this.camera.viewportHeight;
+        this.width = camera.viewportWidth;
+        this.height = camera.viewportHeight;
         this.resolution = resolution;
         this.spacing = this.width / resolution;
         this.fov = Math.toRadians(fov);
