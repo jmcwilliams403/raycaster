@@ -103,8 +103,8 @@ public class Camera {
 
     private void drawColumns(Player player, Map map) {
         for (int column = 0; column < this.resolution; column++) {
-            double angle = column / this.resolution;
-            angle = this.fov * (0.5 - (2 * Math.atan2(1-angle,angle) / Math.PI));
+            double x = column / this.resolution;
+            double angle = this.fov * ((1 - (Math.atan2(1-x,x) / Math.PI)) / 2);
             Ray ray = new Ray(map, player.x, player.y, player.direction + angle, this.range);
             Texture texture = map.wallTexture;
             double left = Math.floor(column * this.spacing);
