@@ -2,7 +2,6 @@ package com.raycaster;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.graphics.Pixmap;
 
 public class Map {
@@ -33,7 +32,7 @@ public class Map {
     public void randomize() {
         for (int x = 0; x < this.size; x++) {
             for (int y = 0; y < this.size; y++) {
-                this.wallGrid[x][y] = MathUtils.randomBoolean(0.3f)? 1 : 0;
+                this.wallGrid[x][y] = Math.random() < 0.3 ? 1 : 0;
             }
         }
     }
