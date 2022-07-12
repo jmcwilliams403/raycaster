@@ -143,13 +143,10 @@ public class Camera {
         batch.draw(weapon, (float) left, (float) top, (float) width, (float) height, 0, 0, weapon.getWidth(), weapon.getHeight(), false, true);
         batch.end();
     }
-
+        
     private double alias(double d) {
-        return this.alias(d,(int)this.spacing);
-    }
-    
-    private double alias(double i, int v) {
-        return (v == 0)? i : (int)(i/v)*v;
+    	int spacing = (int)Math.ceil(this.spacing);
+        return (int)(d/spacing)*spacing;
     }
 
     private Projection project(double height, double angle, double distance) {
