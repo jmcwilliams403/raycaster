@@ -39,20 +39,20 @@ public class Ray {
         this.sin = Math.sin(angle);
         this.cos = Math.cos(angle);
 
-        this.cast(new Step(x,y), range);
+        this.cast(x, y, range);
     }
 
-    protected void cast(Step origin, double range) {
-        Step stepX = step(sin, cos, origin.x, origin.y, false);
-        Step stepY = step(cos, sin, origin.y, origin.x, true);
-        Step nextStep = stepX.length < stepY.length
-                ? inspect(stepX, 1, 0, origin.distance, stepX.y)
-                : inspect(stepY, 0, 1, origin.distance, stepY.x);
-
-        this.steps.add(origin);
-        if (nextStep.distance < range) {
-            this.cast(nextStep, range);
-        }
+    protected void cast(double x, double y, double range) {
+    	Step nextStep = new Step(x, y);
+    	do {
+    		this.steps.add(nextStep);
+            Step stepX = step(sin, cos, nextStep.x, nextStep.y, false);
+            Step stepY = step(cos, sin, nextStep.y, nextStep.x, true);
+            nextStep = stepX.length < stepY.length
+                ? inspect(stepX, 1, 0, nextStep.distance, stepX.y)
+                : inspect(stepY, 0, 1, nextStep.distance, stepY.x);
+    	}
+    	while (nextStep.distance < range);
     }
 
     protected Step step(double rise, double run, double x, double y, boolean inverted) {
