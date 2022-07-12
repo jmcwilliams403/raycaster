@@ -22,7 +22,7 @@ public class Player {
     }
 
     public void rotate(double angle) {
-        this.direction = (this.direction + angle + Raycaster.TAU) % (Raycaster.TAU);
+        this.direction = (this.direction + angle + Math.PI*2) % (Math.PI*2);
     }
 
     public void walk(double distance, Map map, double direction) {
@@ -40,7 +40,7 @@ public class Player {
 	        if (controls.right) this.walk(distance, map, this.direction + Math.PI/2);
 	        if (controls.forward) this.walk(distance, map, this.direction);
 	        if (controls.backward) this.walk(distance, map, this.direction + Math.PI);
-	        this.paces = (this.paces + distance) % Raycaster.TAU;
+	        this.paces = (this.paces + distance) % (Math.PI*2);
         }
         else {
         	this.paces = 0;
