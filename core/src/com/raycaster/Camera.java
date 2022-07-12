@@ -116,7 +116,7 @@ public class Camera {
 
             for (int s = 0; s < ray.steps.size(); s++) {
                 if (s == hit) {
-                    Step step = ray.steps.get(s);
+                    Ray.Step step = ray.steps.get(s);
                     double textureX = Math.floor(texture.getWidth() * step.offset);
                     Projection wall = this.project(step.height, angle, step.distance);
 
