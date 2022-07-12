@@ -14,17 +14,13 @@ public class Ray {
         protected double offset;
 
         public Step(double x, double y) {
-            this(x,y,0,0,0,0,0);
-        }
-
-        public Step(double x, double y, double height, double distance, double length, double shading, double offset) {
             this.x = x;
             this.y = y;
-            this.height = height;
-            this.distance = distance;
-            this.length = length;
-            this.shading = shading;
-            this.offset = offset;
+            this.height = 0;
+            this.distance = 0;
+            this.length = 0;
+            this.shading = 0;
+            this.offset = 0;
         }
         
         public Step(double rise, double run, double x, double y, boolean inverted) {
