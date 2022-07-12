@@ -29,10 +29,10 @@ public class Map {
         return (x < 0 || x > this.size - 1 || y < 0 || y > this.size - 1)? -1 : this.wallGrid[x][y];
     }
 
-    public void randomize() {
+    public void randomize(float chance) {
         for (int x = 0; x < this.size; x++) {
             for (int y = 0; y < this.size; y++) {
-                this.wallGrid[x][y] = Math.random() < 0.3 ? 1 : 0;
+                this.wallGrid[x][y] = Math.random() < chance ? 1 : 0;
             }
         }
     }

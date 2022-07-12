@@ -34,7 +34,7 @@ public class Raycaster extends ApplicationAdapter {
         this.controls = new Controls();
         this.camera = new Camera(orthoCamera, 360, 90);
 
-        this.map.randomize();
+        this.map.randomize(0.3f);
     }
 
     @Override
