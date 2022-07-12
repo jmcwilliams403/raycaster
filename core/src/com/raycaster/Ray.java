@@ -50,6 +50,22 @@ public class Ray {
                 this.offset = 0;
             }
         }
+        
+        public Step(Step step, double shiftX, double shiftY, double distance, double offset) {
+            double dx = cos < 0 ? shiftX : 0;
+            double dy = sin < 0 ? shiftY : 0;
+            
+            this.x = step.x;
+            this.y = step.y;
+            this.height = map.get(this.x - dx, this.y - dy);
+            this.distance = distance + step.length;
+            this.length = step.length;
+            if (shiftX == 1)
+                this.shading = cos < 0 ? 2 : 0;
+            else
+                this.shading = sin < 0 ? 2 : 1;
+            this.offset = offset - Math.floor(offset);
+        }
     }
 
     protected Map map;
@@ -73,20 +89,9 @@ public class Ray {
             Step stepX = new Step(sin, cos, nextStep.x, nextStep.y, false);
             Step stepY = new Step(cos, sin, nextStep.y, nextStep.x, true);
             nextStep = stepX.length < stepY.length
-                ? inspect(stepX, 1, 0, nextStep.distance, stepX.y)
-                : inspect(stepY, 0, 1, nextStep.distance, stepY.x);
+                ? new Step(stepX, 1, 0, nextStep.distance, stepX.y)
+                : new Step(stepY, 0, 1, nextStep.distance, stepY.x);
     	}
     	while (nextStep.distance < range);
-    }
-
-    protected Step inspect(Step step, double shiftX, double shiftY, double distance, double offset) {
-        double dx = cos < 0 ? shiftX : 0;
-        double dy = sin < 0 ? shiftY : 0;
-        step.height = map.get(step.x - dx, step.y - dy);
-        step.distance = distance + step.length;
-        if (shiftX == 1) step.shading = cos < 0 ? 2 : 0;
-        else step.shading = sin < 0 ? 2 : 1;
-        step.offset = offset - Math.floor(offset);
-        return step;
     }
 }
