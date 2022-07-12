@@ -9,7 +9,7 @@ public class Ray {
         protected double y;
         protected double height;
         protected double distance;
-        protected double length2;
+        protected double length;
         protected double shading;
         protected double offset;
 
@@ -17,12 +17,12 @@ public class Ray {
             this(x,y,0,0,0,0,0);
         }
 
-        public Step(double x, double y, double height, double distance, double length2, double shading, double offset) {
+        public Step(double x, double y, double height, double distance, double length, double shading, double offset) {
             this.x = x;
             this.y = y;
             this.height = height;
             this.distance = distance;
-            this.length2 = length2;
+            this.length = length;
             this.shading = shading;
             this.offset = offset;
         }
@@ -45,7 +45,7 @@ public class Ray {
     protected void cast(Step origin, double range) {
         Step stepX = step(sin, cos, origin.x, origin.y, false);
         Step stepY = step(cos, sin, origin.y, origin.x, true);
-        Step nextStep = stepX.length2 < stepY.length2
+        Step nextStep = stepX.length < stepY.length
                 ? inspect(stepX, 1, 0, origin.distance, stepX.y)
                 : inspect(stepY, 0, 1, origin.distance, stepY.x);
 
@@ -59,14 +59,14 @@ public class Ray {
         if (run == 0) return new Step(0, 0, 0, 0, Double.POSITIVE_INFINITY, 0, 0);
         double dx = run > 0 ? Math.floor(x + 1) - x : Math.ceil(x - 1) - x;
         double dy = dx * (rise / run);
-        return new Step(inverted ? y + dy : x + dx, inverted ? x + dx : y + dy, 0, 0, dx * dx + dy * dy, 0, 0);
+        return new Step(inverted ? y + dy : x + dx, inverted ? x + dx : y + dy, 0, 0, Math.hypot(dx, dy), 0, 0);
     }
 
     protected Step inspect(Step step, double shiftX, double shiftY, double distance, double offset) {
         double dx = cos < 0 ? shiftX : 0;
         double dy = sin < 0 ? shiftY : 0;
         step.height = map.get(step.x - dx, step.y - dy);
-        step.distance = distance + Math.sqrt(step.length2);
+        step.distance = distance + step.length;
         if (shiftX == 1) step.shading = cos < 0 ? 2 : 0;
         else step.shading = sin < 0 ? 2 : 1;
         step.offset = offset - Math.floor(offset);
