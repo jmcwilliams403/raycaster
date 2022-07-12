@@ -114,26 +114,22 @@ public class Camera {
             while (hit < ray.steps.size() && ray.steps.get(hit).height <= 0)
                 hit++;
 
-            for (int s = 0; s < ray.steps.size(); s++) {
-                if (s == hit) {
-                    Ray.Step step = ray.steps.get(s);
-                    double textureX = Math.floor(texture.getWidth() * step.offset);
-                    Projection wall = this.project(step.height, angle, step.distance);
+            if (hit < ray.steps.size()) {
+                Ray.Step step = ray.steps.get(hit);
+                double textureX = Math.floor(texture.getWidth() * step.offset);
+                Projection wall = this.project(step.height, angle, step.distance);
 
-                    batch.begin();
-                    batch.draw(texture, (float) left, (float) wall.top, (float) width, (float) wall.height, (int) textureX, 0, 1, texture.getHeight(), false, true);
-                    batch.end();
+                batch.begin();
+                batch.draw(texture, (float) left, (float) wall.top, (float) width, (float) wall.height, (int) textureX, 0, 1, texture.getHeight(), false, true);
+                batch.end();
 
-                    Gdx.gl.glEnable(GL20.GL_BLEND);
-                    Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                    shapeRenderer.setColor(0, 0, 0, (float) Math.max((step.distance + step.shading) / this.lightRange - (map.light/256)*this.lightRange, 0));
-                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                    shapeRenderer.rect((float) left, (float) wall.top, (float) width, (float) wall.height);
-                    shapeRenderer.end();
-                    Gdx.gl.glDisable(GL20.GL_BLEND);
-                
-                    break;
-                }
+                Gdx.gl.glEnable(GL20.GL_BLEND);
+                Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+                shapeRenderer.setColor(0, 0, 0, (float) Math.max((step.distance + step.shading) / this.lightRange - (map.light/256)*this.lightRange, 0));
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.rect((float) left, (float) wall.top, (float) width, (float) wall.height);
+                shapeRenderer.end();
+                Gdx.gl.glDisable(GL20.GL_BLEND);
             }
         }
     }
