@@ -20,6 +20,12 @@ public class Camera {
             this.top = top;
             this.height = height;
         }
+        
+        public Projection(double angle, double height, Ray.Step step) {
+            double z = step.distance * Math.cos(angle);
+            this.height = height * step.height / z;
+            this.top = height / 2 * (1 + 1 / z) - this.height;
+        }
 	}
 	
     protected double width;
@@ -124,17 +130,20 @@ public class Camera {
                 if (ray.steps.get(hit).height > 0) {
                     Ray.Step step = ray.steps.get(hit);
                     double textureX = Math.floor(texture.getWidth() * step.offset);
-                    Projection wall = this.project(step.height, angle, step.distance);
+                    Projection wall = new Projection(angle, this.height, step);
+
+                    double top = this.alias(wall.top);
+                    double height = this.alias(wall.height);
 
                     batch.begin();
-                    batch.draw(texture, (float) left, (float) wall.top, (float) width, (float) wall.height, (int) textureX, 0, 1, texture.getHeight(), false, true);
+                    batch.draw(texture, (float) left, (float) top, (float) width, (float) height, (int) textureX, 0, 1, texture.getHeight(), false, true);
                     batch.end();
 
                     Gdx.gl.glEnable(GL20.GL_BLEND);
                     Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
                     shapeRenderer.setColor(0, 0, 0, (float) Math.max((step.distance + step.shading) / this.lightRange - (map.light/256)*this.lightRange, 0));
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                    shapeRenderer.rect((float) left, (float) wall.top, (float) width, (float) wall.height);
+                    shapeRenderer.rect((float) left, (float) top, (float) width, (float) height);
                     shapeRenderer.end();
                     Gdx.gl.glDisable(GL20.GL_BLEND);
 
@@ -157,12 +166,5 @@ public class Camera {
     private double alias(double d) {
     	int spacing = (int)Math.ceil(this.spacing);
         return (int)(d/spacing)*spacing;
-    }
-
-    private Projection project(double height, double angle, double distance) {
-        double z = distance * Math.cos(angle);
-        double wallHeight = this.alias(this.height * height / z);
-        double bottom = this.alias(this.height / 2 * (1 + 1 / z));
-        return new Projection(bottom - wallHeight, wallHeight);
     }
 }
