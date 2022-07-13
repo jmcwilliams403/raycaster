@@ -15,11 +15,6 @@ public class Camera {
     protected class Projection {
         protected double top;
         protected double height;
-
-        public Projection(double top, double height) {
-            this.top = top;
-            this.height = height;
-        }
         
         public Projection(double angle, double height, Ray.Step step) {
             double z = step.distance * Math.cos(angle);
