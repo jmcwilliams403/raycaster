@@ -12,6 +12,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
 
 public class Camera {
+    protected class Projection {
+        protected double top;
+        protected double height;
+
+        public Projection(double top, double height) {
+            this.top = top;
+            this.height = height;
+        }
+	}
+	
     protected double width;
     protected double height;
     protected double resolution;
