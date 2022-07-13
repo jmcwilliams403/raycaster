@@ -28,10 +28,6 @@ public class Map {
     public Integer get(int x, int y) {
         return (x < 0 || x > this.size - 1 || y < 0 || y > this.size - 1)? -1 : this.wallGrid[x][y];
     }
-
-    public float getLight() {
-        return (float)(0xFF & (short)this.light)/256f;
-    }
     
     public void randomize(float chance) {
         for (int x = 0; x < this.size; x++) {
