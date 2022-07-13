@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 public class Map {
     protected int size;
     protected int[][] wallGrid;
-    protected int light;
+    protected byte light;
     protected Texture skybox;
     protected Texture wallTexture;
     protected Pixmap floorTexture;
@@ -29,6 +29,10 @@ public class Map {
         return (x < 0 || x > this.size - 1 || y < 0 || y > this.size - 1)? -1 : this.wallGrid[x][y];
     }
 
+    public float getLight() {
+        return (float)(0xFF & (short)this.light)/256f;
+    }
+    
     public void randomize(float chance) {
         for (int x = 0; x < this.size; x++) {
             for (int y = 0; y < this.size; y++) {

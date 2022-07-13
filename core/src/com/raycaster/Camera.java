@@ -49,13 +49,14 @@ public class Camera {
     }
 
     public void render(Player player, Map map) {
-        this.drawSky(player.direction, map.skybox, map.light);
+        this.drawSky(player.direction, map);
         this.drawFloor(player, map);
         this.drawColumns(player, map);
         this.drawWeapon(player.weapon, player.paces);
     }
 
-    private void drawSky(double direction, Texture sky, int ambient) {
+    private void drawSky(double direction, Map map) {
+        Texture sky = map.skybox;
         double width = this.width * (Math.PI / this.fov);
         double left = width * -direction / (Math.PI*2);
 
@@ -65,11 +66,12 @@ public class Camera {
             batch.draw(sky, (float) (left + width), (float) 0, (float) width, (float) this.height, 0, 0, sky.getWidth(), sky.getHeight(), false, true);
         }
         batch.end();
-
+        
+        float ambient = map.getLight();
         if (ambient > 0) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            shapeRenderer.setColor(new Color(0xFFFFFF00 | ambient));
+            shapeRenderer.setColor(1,1,1,ambient);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.rect(0, 0, (float) this.width, (float) this.height/2);
             shapeRenderer.end();
@@ -107,7 +109,7 @@ public class Camera {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.rectLine((float)this.width/2, (float)this.height/2, (float)this.width/2, (float)this.height, (float)this.width, Color.BLACK, new Color(0x00000000 | map.light));
+        shapeRenderer.rectLine((float)this.width/2, (float)this.height/2, (float)this.width/2, (float)this.height, (float)this.width, Color.BLACK, new Color(0,0,0,map.getLight()));
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
     }
@@ -136,7 +138,7 @@ public class Camera {
 
                     Gdx.gl.glEnable(GL20.GL_BLEND);
                     Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                    shapeRenderer.setColor(0, 0, 0, (float) Math.max((step.distance + step.shading) / this.lightRange - (map.light/256)*this.lightRange, 0));
+                    shapeRenderer.setColor(0, 0, 0, (float) Math.max((step.distance + step.shading) / this.lightRange - map.getLight(), 0));
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                     shapeRenderer.rect((float) left, (float) top, (float) width, (float) height);
                     shapeRenderer.end();
