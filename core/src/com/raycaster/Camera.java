@@ -50,7 +50,7 @@ public class Camera {
     }
 
     public void render(Player player, Map map) {
-        int ambient = 0xFF & (int)map.light;
+        int ambient = Byte.toUnsignedInt(map.light);
         this.drawSky(player.direction, map.skybox, ambient);
         this.drawFloor(player, map.floorTexture, ambient);
         this.drawColumns(player, map, ambient);
