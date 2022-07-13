@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Pixmap.Filter;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
@@ -83,7 +84,10 @@ public class Camera {
     {
         Pixmap buffer = new Pixmap((int)this.resolution, (int)this.resolution, Format.RGB888);
         buffer.setFilter(Filter.NearestNeighbour);
-        Pixmap floor = map.floorTexture;
+        TextureData textureData = map.floorTexture.getTextureData();
+        if(!textureData.isPrepared())
+            textureData.prepare();
+        Pixmap floor = textureData.consumePixmap();
 
         final double scale = Math.max(floor.getWidth(), floor.getHeight());
         final double tx = player.x * scale;
@@ -100,6 +104,7 @@ public class Camera {
             for (int x = 0; x < this.resolution; x++, sx -= dx, sy += dy)
                 buffer.drawPixel(x, y, floor.getPixel((int) Math.abs(sx % floor.getWidth()), (int) Math.abs(sy % floor.getHeight())));
         }
+        floor.dispose();
 
         batch.begin();
         batch.draw(new Texture(buffer, Format.RGB888, true),0,(float)this.height/2,(float)this.width,(float)this.height,0,0,(int)this.resolution,(int)this.resolution,false, true);

@@ -10,7 +10,7 @@ public class Map {
     protected byte light;
     protected Texture skybox;
     protected Texture wallTexture;
-    protected Pixmap floorTexture;
+    protected Texture floorTexture;
 
     public Map(int size) {
         this.size = size;
@@ -18,7 +18,7 @@ public class Map {
         this.light = 32;
         this.skybox = new Texture(Gdx.files.internal("panorama.png"));
         this.wallTexture = new Texture(Gdx.files.internal("wall.png"));
-        this.floorTexture = new Pixmap(Gdx.files.internal("floor.png"));
+        this.floorTexture = new Texture(Gdx.files.internal("floor.png"));
     }
     
     public Integer get(double x, double y) {
