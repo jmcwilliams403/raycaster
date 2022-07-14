@@ -25,8 +25,10 @@ public class Player {
         this.weapon = new Texture(Gdx.files.internal("hand.png"));
     }
 
-    public void rotate(double angle) {
-        this.direction = (this.direction + angle + Math.PI*2) % (Math.PI*2);
+    public double rotate(double angle) {
+        final double direction = this.direction;
+        this.direction = (direction + angle + Math.PI*2) % (Math.PI*2);
+        return Math.copySign(this.direction - direction, angle)/2;
     }
 
     public double walk(double distance, Map map, double direction) {
