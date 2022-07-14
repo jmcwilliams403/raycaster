@@ -31,6 +31,7 @@ public class Camera {
     protected double fov;
     protected double range;
     protected double lightRange;
+    protected float scale;
 
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
@@ -47,6 +48,7 @@ public class Camera {
         this.fov = Math.toRadians(fov);
         this.range = 32;
         this.lightRange = 16;
+        this.scale = 0.333333f;
     }
 
     public void render(Player player, Map map) {
@@ -158,8 +160,9 @@ public class Camera {
     }
 
     private void drawWeapon(Texture weapon, double paces) {
-        double width = weapon.getWidth() * this.spacing;
-        double height = weapon.getHeight() * this.spacing;
+        double ratio = (double)weapon.getWidth()/(double)weapon.getHeight();
+        double width = this.alias(this.width*this.scale*ratio);
+        double height = this.alias(this.width*this.scale);
         double left = this.alias((this.width - width / 2) - Math.sin(paces) * width / 4);
         double top = this.alias((this.height - height / 2) - Math.abs(Math.cos(paces)) * height / 4);
         batch.begin();
