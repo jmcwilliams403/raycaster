@@ -8,14 +8,13 @@ public class Controls {
     protected int x;
 
     public Controls() {
-        turnLeft = turnRight = left = right = forward = backward = move = turn = false;
-        x = 0;
+        this.reset();
         Gdx.input.setCursorCatched(true);
         Gdx.input.setCursorPosition(x,0);
     }
 
     public void update() {
-        turnLeft = turnRight = left = right = forward = backward = move = turn = false;
+        this.reset();
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             left = true;
@@ -42,5 +41,11 @@ public class Controls {
         }
         
         turn = turnLeft ^ turnRight;
+    }
+    
+    private void reset() {
+        left = right = forward = backward = move = false;
+        turnLeft = turnRight = turn = false;
+        x = 0;
     }
 }
