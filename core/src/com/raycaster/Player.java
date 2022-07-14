@@ -15,7 +15,7 @@ public class Player {
     public Player(double x, double y, double direction) {
         this.x = x;
         this.y = y;
-        this.direction = Math.toRadians(direction);
+        this.direction = direction;
         this.rotate(Math.PI/2);
         this.paces = 0;
         this.speed = 3;
