@@ -12,6 +12,10 @@ public class Player {
     protected Texture weapon;
     protected float speed;
 
+    public Player(double x, double y) {
+        this(x, y, 0);
+    }
+    
     public Player(double x, double y, double direction) {
         this.x = x;
         this.y = y;

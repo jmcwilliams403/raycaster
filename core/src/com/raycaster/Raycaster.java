@@ -28,7 +28,7 @@ public class Raycaster extends ApplicationAdapter {
         orthoCamera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
         orthoCamera.setToOrtho(true, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 
-        this.player = new Player(15.5, -1.5, 0);
+        this.player = new Player(15.5, -1.5);
         this.map = new Map(32);
         this.controls = new Controls();
         this.camera = new Camera(orthoCamera, 360, 90);
