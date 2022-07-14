@@ -30,7 +30,7 @@ public class Controls {
             backward = true;
         }
         
-        move = (left || right || forward || backward);
+        move = (left ^ right) || (forward ^ backward);
 
         // Add mouse movement
         x = Gdx.input.getDeltaX();
@@ -41,6 +41,6 @@ public class Controls {
             turnRight = true;
         }
         
-        turn = (turnLeft || turnRight);
+        turn = turnLeft ^ turnRight;
     }
 }
