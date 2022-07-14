@@ -144,7 +144,7 @@ public class Camera {
 
                     Gdx.gl.glEnable(GL20.GL_BLEND);
                     Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                    shapeRenderer.setColor(new Color((int)Math.max((step.distance + step.shading) / this.lightRange * 0xFF - ambient, 0)));
+                    shapeRenderer.setColor(new Color(Math.max((int)(255d * Math.min((step.distance + step.shading) / this.lightRange, 1d) - ambient), 0)));
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                     shapeRenderer.rect((float) left, (float) top, (float) width, (float) height);
                     shapeRenderer.end();
