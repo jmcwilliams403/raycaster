@@ -161,7 +161,7 @@ public class Camera {
         double width = weapon.getWidth() * this.spacing;
         double height = weapon.getHeight() * this.spacing;
         double left = this.alias((this.width - width / 2) - Math.sin(paces) * width / 4);
-        double top = this.alias((this.height - height / 2) - Math.sin(paces * 2) * height / 4);
+        double top = this.alias((this.height - height / 2) - Math.abs(Math.cos(paces)) * height / 4);
         batch.begin();
         batch.draw(weapon, (float) left, (float) top, (float) width, (float) height, 0, 0, weapon.getWidth(), weapon.getHeight(), false, true);
         batch.end();
