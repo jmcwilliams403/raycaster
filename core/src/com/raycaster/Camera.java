@@ -50,14 +50,15 @@ public class Camera {
     }
 
     public void render(Player player, Map map) {
-        int ambient = Byte.toUnsignedInt(map.light);
+        float ambient = (float)Byte.toUnsignedInt(map.light)/255f;
+        batch.setColor(Color.WHITE);
         this.drawSky(player.direction, map.skybox, ambient);
         this.drawFloor(player, map.floorTexture, ambient);
         this.drawColumns(player, map, ambient);
         this.drawWeapon(player.weapon, player.paces);
     }
 
-    private void drawSky(double direction, Texture sky, int ambient) {
+    private void drawSky(double direction, Texture sky, float ambient) {
         double width = this.width * (Math.PI / this.fov);
         double left = width * -direction / (Math.PI*2);
 
@@ -71,7 +72,7 @@ public class Camera {
         if (ambient > 0) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            shapeRenderer.setColor(new Color(0xFFFFFF00|ambient));
+            shapeRenderer.setColor(1,1,1,ambient);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.rect(0, 0, (float) this.width, (float) this.height/2);
             shapeRenderer.end();
@@ -79,7 +80,7 @@ public class Camera {
         }
     }
 
-    private void drawFloor(Player player, Texture texture, int ambient)
+    private void drawFloor(Player player, Texture texture, float ambient)
     {
         Pixmap buffer = new Pixmap((int)this.resolution, (int)this.resolution, Format.RGB888);
         buffer.setFilter(Filter.NearestNeighbour);
@@ -114,13 +115,13 @@ public class Camera {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.rectLine((float)this.width/2, (float)this.height/2, (float)this.width/2, (float)this.height, (float)this.width, new Color(0xFF-ambient), Color.CLEAR);
+            shapeRenderer.rectLine((float)this.width/2, (float)this.height/2, (float)this.width/2, (float)this.height, (float)this.width, new Color(0,0,0,1f-ambient), Color.CLEAR);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
     }
 
-    private void drawColumns(Player player, Map map, int ambient) {
+    private void drawColumns(Player player, Map map, float ambient) {
         for (int column = 0; column < this.resolution; column++) {
             double x = column / this.resolution;
             double angle = this.fov * (0.5 - (2 * Math.atan2(1-x,x) / Math.PI));
@@ -144,7 +145,7 @@ public class Camera {
 
                     Gdx.gl.glEnable(GL20.GL_BLEND);
                     Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                    shapeRenderer.setColor(new Color(Math.max((int)(255d * Math.min((step.distance + step.shading) / this.lightRange, 1d) - ambient), 0)));
+                    shapeRenderer.setColor(0,0,0,(float)Math.max(Math.min((step.distance + step.shading) / this.lightRange, 1d) - ambient, 0d));
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                     shapeRenderer.rect((float) left, (float) top, (float) width, (float) height);
                     shapeRenderer.end();
