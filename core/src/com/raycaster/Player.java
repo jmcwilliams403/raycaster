@@ -16,6 +16,7 @@ public class Player {
         this.x = x;
         this.y = y;
         this.direction = Math.toRadians(direction);
+        this.rotate(Math.PI/2);
         this.paces = 0;
         this.speed = 3;
         this.weapon = new Texture(Gdx.files.internal("hand.png"));
