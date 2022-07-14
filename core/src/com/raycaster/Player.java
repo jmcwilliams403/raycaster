@@ -13,14 +13,13 @@ public class Player {
     protected float speed;
 
     public Player(double x, double y) {
-        this(x, y, 0);
+        this(x, y, Math.PI/2);
     }
     
     public Player(double x, double y, double direction) {
         this.x = x;
         this.y = y;
         this.direction = direction;
-        this.rotate(Math.PI/2);
         this.paces = 0;
         this.speed = 3;
         this.weapon = new Texture(Gdx.files.internal("hand.png"));
