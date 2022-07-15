@@ -2,6 +2,7 @@ package com.raycaster;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 
 public class Player {
     protected double x;
@@ -46,8 +47,8 @@ public class Player {
     public void update(Controls controls, Map map, double seconds) {
     	if (controls.turn) this.rotate((controls.x / Math.PI) * seconds);
 
+        final double distance = this.speed * seconds;
         if (controls.move) {
-	        final double distance = this.speed * seconds;
 	        double delta = 0;
 	        if (controls.left) delta = Math.max(delta, this.walk(distance, map, this.direction - Math.PI/2));
 	        if (controls.right) delta = Math.max(delta, this.walk(distance, map, this.direction + Math.PI/2));
@@ -55,8 +56,9 @@ public class Player {
 	        if (controls.backward) delta = Math.max(delta, this.walk(distance, map, this.direction + Math.PI));
 	        this.paces = (this.paces + delta) % (Math.PI*2);
         }
-        else {
-        	this.paces = 0;
+        else if (this.paces > 0) {
+            float closer = (this.paces - Math.PI > MathUtils.HALF_PI)? 0 : MathUtils.PI;
+            this.paces = MathUtils.lerpAngle((float)this.paces, closer, (float)distance);
         }
     }
 }
