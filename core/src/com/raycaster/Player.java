@@ -8,6 +8,7 @@ public class Player {
     protected double y;
     protected double direction;
     protected double paces;
+    protected double weaponScale;
 
     protected Texture weapon;
     protected float speed;
@@ -23,6 +24,7 @@ public class Player {
         this.paces = 0;
         this.speed = 3;
         this.weapon = new Texture(Gdx.files.internal("hand.png"));
+        this.weaponScale = 0.5f;
     }
 
     public double rotate(double angle) {
