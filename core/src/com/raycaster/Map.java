@@ -2,6 +2,7 @@ package com.raycaster;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
 
 public class Map {
     protected int size;
@@ -16,6 +17,7 @@ public class Map {
         this.wallGrid = new int[this.size][this.size];
         this.light = 32;
         this.skybox = new Texture(Gdx.files.internal("panorama.png"));
+        this.skybox.setWrap(TextureWrap.Repeat, TextureWrap.MirroredRepeat);
         this.wallTexture = new Texture(Gdx.files.internal("wall.png"));
         this.floorTexture = new Texture(Gdx.files.internal("floor.png"));
     }

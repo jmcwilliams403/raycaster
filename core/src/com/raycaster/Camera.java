@@ -61,13 +61,13 @@ public class Camera {
     }
 
     private void drawSky(double direction, Texture sky, float ambient) {
-        double width = this.width * (Math.PI / this.fov);
+        double width = this.width * (Math.PI*2 / this.fov);
         double left = width * -direction / (Math.PI*2);
 
         batch.begin();
-        batch.draw(sky, (float) left, (float) 0, (float) width, (float) this.height, 0, 0, sky.getWidth(), sky.getHeight(), false, true);
+        batch.draw(sky, (float) left, (float) 0, (float) width, (float) this.height, 0, 0, sky.getWidth()*2, sky.getHeight(), false, true);
         if (left < width - this.width) {
-            batch.draw(sky, (float) (left + width), (float) 0, (float) width, (float) this.height, 0, 0, sky.getWidth(), sky.getHeight(), false, true);
+            batch.draw(sky, (float) (left + width), (float) 0, (float) width, (float) this.height, 0, 0, sky.getWidth()*2, sky.getHeight(), false, true);
         }
         batch.end();
         
