@@ -86,7 +86,7 @@ public class Camera {
 
     private void drawFloor(Player player, Texture texture, float ambient)
     {
-        Pixmap buffer = new Pixmap((int)this.resolution, (int)this.resolution, Format.RGB888);
+        Pixmap buffer = new Pixmap((int)this.resolution, (int)this.resolution, Format.RGBA8888);
         buffer.setFilter(Filter.NearestNeighbour);
         TextureData textureData = texture.getTextureData();
         if(!textureData.isPrepared())
@@ -111,7 +111,7 @@ public class Camera {
         floor.dispose();
 
         batch.begin();
-        batch.draw(new Texture(buffer, Format.RGB888, true),0,(float)this.height/2,(float)this.width,(float)this.height,0,0,(int)this.resolution,(int)this.resolution,false, true);
+        batch.draw(new Texture(buffer, Format.RGBA8888, true),0,(float)this.height/2,(float)this.width,(float)this.height,0,0,(int)this.resolution,(int)this.resolution,false, true);
         batch.end();
         buffer.dispose();
     	
