@@ -2,7 +2,6 @@ package com.raycaster;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
 
 public class Player {
     protected double x;
@@ -57,8 +56,9 @@ public class Player {
 	        this.paces = (this.paces + delta) % (Math.PI*2);
         }
         else if (this.paces > 0) {
-            float closer = (this.paces - Math.PI > MathUtils.HALF_PI)? 0 : MathUtils.PI;
-            this.paces = MathUtils.lerpAngle((float)this.paces, closer, (float)distance);
+            double closer = (this.paces - Math.PI > Math.PI/2)? 0 : Math.PI;
+            double delta = ((closer - this.paces + Math.PI*3) % (Math.PI*2)) - Math.PI;
+            this.paces = (this.paces + delta * distance + Math.PI*2) % (Math.PI*2);
         }
     }
 }
