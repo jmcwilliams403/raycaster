@@ -133,27 +133,27 @@ public class Camera {
             double angle = this.fov * (0.5 - (2 * Math.atan2(1-x,x) / Math.PI));
             Ray ray = new Ray(map, player.x, player.y, player.direction + angle, this.range);
             Texture texture = map.wallTexture;
-            double left = Math.floor(column * this.spacing);
-            double width = Math.ceil(this.spacing);
+            int left = (int)Math.floor(column * this.spacing);
+            int width = (int)Math.ceil(this.spacing);
 
             for (int hit = 0; hit < ray.steps.size(); hit++) {
                 if (ray.steps.get(hit).height > 0) {
                     Ray.Step step = ray.steps.get(hit);
-                    double textureX = Math.floor(texture.getWidth() * step.offset);
+                    int textureX = (int)Math.floor(texture.getWidth() * step.offset);
                     Projection wall = new Projection(angle, this.height, step);
 
-                    double top = this.alias(wall.top);
-                    double height = this.alias(wall.height);
+                    int top = this.alias(wall.top);
+                    int height = this.alias(wall.height);
 
                     batch.begin();
-                    batch.draw(texture, (float) left, (float) top, (float) width, (float) height, (int) textureX, 0, 1, texture.getHeight(), false, true);
+                    batch.draw(texture, left, top, width, height, textureX, 0, 1, texture.getHeight(), false, true);
                     batch.end();
 
                     Gdx.gl.glEnable(GL20.GL_BLEND);
                     Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
                     shapeRenderer.setColor(0,0,0,(float)Math.max(Math.min((step.distance + step.shading) / this.lightRange, 1d) - ambient, 0d));
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                    shapeRenderer.rect((float) left, (float) top, (float) width, (float) height);
+                    shapeRenderer.rect(left, top, width, height);
                     shapeRenderer.end();
                     Gdx.gl.glDisable(GL20.GL_BLEND);
 
@@ -165,16 +165,16 @@ public class Camera {
 
     private void drawWeapon(Texture weapon, double paces) {
         double ratio = (double)weapon.getWidth()/(double)weapon.getHeight();
-        double width = this.alias(this.height*this.scale*ratio);
-        double height = this.alias(this.height*this.scale);
-        double left = this.alias((this.width - width / 2) - Math.sin(paces) * width / 4);
-        double top = this.alias((this.height - height / 2) - Math.cos(paces * 2) * height / 4);
+        int width = this.alias(this.height*this.scale*ratio);
+        int height = this.alias(this.height*this.scale);
+        int left = this.alias((this.width - width / 2) - Math.sin(paces) * width / 4);
+        int top = this.alias((this.height - height / 2) - Math.cos(paces * 2) * height / 4);
         batch.begin();
-        batch.draw(weapon, (float) left, (float) top, (float) width, (float) height, 0, 0, weapon.getWidth(), weapon.getHeight(), false, true);
+        batch.draw(weapon, left, top, width, height, 0, 0, weapon.getWidth(), weapon.getHeight(), false, true);
         batch.end();
     }
         
-    private double alias(double d) {
+    private int alias(double d) {
     	int spacing = (int)Math.ceil(this.spacing);
         return (int)(d/spacing)*spacing;
     }
