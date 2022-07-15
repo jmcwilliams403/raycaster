@@ -17,15 +17,15 @@ public class Camera {
         protected double top;
         protected double height;
         
-        public Projection(double angle, double height, Ray.Step step) {
+        public Projection(double angle, Ray.Step step) {
             double z = step.distance * Math.cos(angle);
-            this.height = height * step.height / z;
-            this.top = height / 2 * (1 + 1 / z) - this.height;
+            this.height = viewportHeight * step.height / z;
+            this.top = viewportHeight / 2 * (1 + 1 / z) - this.height;
         }
 	}
 	
-    protected double width;
-    protected double height;
+    protected double viewportWidth;
+    protected double viewportHeight;
     protected double resolution;
     protected double spacing;
     protected double fov;
@@ -44,10 +44,10 @@ public class Camera {
         this.batch.setProjectionMatrix(camera.combined);
         this.shapeRenderer = new ShapeRenderer();
         this.shapeRenderer.setProjectionMatrix(camera.combined);
-        this.width = camera.viewportWidth;
-        this.height = camera.viewportHeight;
+        this.viewportWidth = camera.viewportWidth;
+        this.viewportHeight = camera.viewportHeight;
         this.resolution = resolution;
-        this.spacing = this.width / resolution;
+        this.spacing = this.viewportWidth / resolution;
         this.fov = Math.toRadians(fov);
         this.range = 32;
         this.lightRange = 16;
@@ -63,13 +63,13 @@ public class Camera {
     }
 
     private void drawSky(double direction, Texture sky, float ambient) {
-        double width = this.width * (Math.PI*2 / this.fov);
+        double width = this.viewportWidth * (Math.PI*2 / this.fov);
         double left = width * -direction / (Math.PI*2);
 
         batch.begin();
-        batch.draw(sky, (float) left, (float) 0, (float) width, (float) this.height, 0, 0, sky.getWidth()*2, sky.getHeight(), false, true);
-        if (left < width - this.width) {
-            batch.draw(sky, (float) (left + width), (float) 0, (float) width, (float) this.height, 0, 0, sky.getWidth()*2, sky.getHeight(), false, true);
+        batch.draw(sky, (float) left, (float) 0, (float) width, (float) this.viewportHeight, 0, 0, sky.getWidth()*2, sky.getHeight(), false, true);
+        if (left < width - this.viewportWidth) {
+            batch.draw(sky, (float) (left + width), (float) 0, (float) width, (float) this.viewportHeight, 0, 0, sky.getWidth()*2, sky.getHeight(), false, true);
         }
         batch.end();
         
@@ -78,7 +78,7 @@ public class Camera {
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.setColor(1,1,1,ambient);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.rect(0, 0, (float) this.width, (float) this.height/2);
+            shapeRenderer.rect(0, 0, (float) this.viewportWidth, (float) this.viewportHeight/2);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
@@ -111,7 +111,7 @@ public class Camera {
         floor.dispose();
 
         batch.begin();
-        batch.draw(new Texture(buffer, Format.RGBA8888, true),0,(float)this.height/2,(float)this.width,(float)this.height,0,0,(int)this.resolution,(int)this.resolution,false, true);
+        batch.draw(new Texture(buffer, Format.RGBA8888, true),0,(float)this.viewportHeight/2,(float)this.viewportWidth,(float)this.viewportHeight,0,0,(int)this.resolution,(int)this.resolution,false, true);
         batch.end();
         buffer.dispose();
     	
@@ -119,7 +119,7 @@ public class Camera {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.rectLine((float)this.width/2, (float)this.height/2, (float)this.width/2, (float)this.height, (float)this.width, new Color(0,0,0,1f-ambient), Color.CLEAR);
+            shapeRenderer.rectLine((float)this.viewportWidth/2, (float)this.viewportHeight/2, (float)this.viewportWidth/2, (float)this.viewportHeight, (float)this.viewportWidth, new Color(0,0,0,1f-ambient), Color.CLEAR);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
@@ -138,7 +138,7 @@ public class Camera {
                 if (ray.steps.get(hit).height > 0) {
                     Ray.Step step = ray.steps.get(hit);
                     int textureX = (int)Math.floor(texture.getWidth() * step.offset);
-                    Projection wall = new Projection(angle, this.height, step);
+                    Projection wall = new Projection(angle, step);
 
                     int top = this.alias(wall.top);
                     int height = this.alias(wall.height);
@@ -163,10 +163,10 @@ public class Camera {
 
     private void drawWeapon(Texture weapon, double scale, double paces) {
         double ratio = (double)weapon.getWidth()/(double)weapon.getHeight();
-        int width = this.alias(this.height*scale*ratio);
-        int height = this.alias(this.height*scale);
-        int left = this.alias((this.width - width / 2) - Math.sin(paces) * width / 4);
-        int top = this.alias((this.height - height / 2) - Math.cos(paces * 2) * height / 4);
+        int width = this.alias(this.viewportHeight*scale*ratio);
+        int height = this.alias(this.viewportHeight*scale);
+        int left = this.alias((this.viewportWidth - width / 2) - Math.sin(paces) * width / 4);
+        int top = this.alias((this.viewportHeight - height / 2) - Math.cos(paces * 2) * height / 4);
         batch.begin();
         batch.draw(weapon, left, top, width, height, 0, 0, weapon.getWidth(), weapon.getHeight(), false, true);
         batch.end();
