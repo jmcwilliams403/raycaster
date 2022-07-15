@@ -36,6 +36,10 @@ public class Camera {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     
+    public Camera(OrthographicCamera camera, double resolution) {
+        this(camera, resolution, 90);
+    }
+    
     public Camera(OrthographicCamera camera, double resolution, double fov) {
         this.batch = new SpriteBatch();
         this.batch.setProjectionMatrix(camera.combined);
