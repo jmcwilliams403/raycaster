@@ -27,7 +27,14 @@ public class Map {
     }
     
     public Integer get(int x, int y) {
-        return (x < 0 || x > this.size - 1 || y < 0 || y > this.size - 1)? -1 : this.wallGrid[x][y];
+        int height;
+        try {
+            height = this.wallGrid[x][y];
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            height = -1;
+        }
+        return height;
     }
     
     public void randomize(float chance) {
