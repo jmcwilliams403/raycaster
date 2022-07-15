@@ -24,8 +24,8 @@ public class Camera {
         }
 	}
 	
-    protected double viewportWidth;
-    protected double viewportHeight;
+    protected int viewportWidth;
+    protected int viewportHeight;
     protected double resolution;
     protected double spacing;
     protected double fov;
@@ -44,8 +44,8 @@ public class Camera {
         this.batch.setProjectionMatrix(camera.combined);
         this.shapeRenderer = new ShapeRenderer();
         this.shapeRenderer.setProjectionMatrix(camera.combined);
-        this.viewportWidth = camera.viewportWidth;
-        this.viewportHeight = camera.viewportHeight;
+        this.viewportWidth = (int)camera.viewportWidth;
+        this.viewportHeight = (int)camera.viewportHeight;
         this.resolution = resolution;
         this.spacing = this.viewportWidth / resolution;
         this.fov = Math.toRadians(fov);
@@ -63,13 +63,13 @@ public class Camera {
     }
 
     private void drawSky(double direction, Texture sky, float ambient) {
-        double width = this.viewportWidth * (Math.PI*2 / this.fov);
-        double left = width * -direction / (Math.PI*2);
+        int width = (int)Math.ceil(this.viewportWidth * (Math.PI*2 / this.fov));
+        int left = (int)Math.floor(width * -direction / (Math.PI*2));
 
         batch.begin();
-        batch.draw(sky, (float) left, (float) 0, (float) width, (float) this.viewportHeight, 0, 0, sky.getWidth()*2, sky.getHeight(), false, true);
+        batch.draw(sky, left, 0, width, this.viewportHeight, 0, 0, sky.getWidth()*2, sky.getHeight(), false, true);
         if (left < width - this.viewportWidth) {
-            batch.draw(sky, (float) (left + width), (float) 0, (float) width, (float) this.viewportHeight, 0, 0, sky.getWidth()*2, sky.getHeight(), false, true);
+            batch.draw(sky, (left + width), 0, width, this.viewportHeight, 0, 0, sky.getWidth()*2, sky.getHeight(), false, true);
         }
         batch.end();
         
@@ -78,7 +78,7 @@ public class Camera {
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.setColor(1,1,1,ambient);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.rect(0, 0, (float) this.viewportWidth, (float) this.viewportHeight/2);
+            shapeRenderer.rect(0, 0, this.viewportWidth, this.viewportHeight/2);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
@@ -111,7 +111,7 @@ public class Camera {
         floor.dispose();
 
         batch.begin();
-        batch.draw(new Texture(buffer, Format.RGBA8888, true),0,(float)this.viewportHeight/2,(float)this.viewportWidth,(float)this.viewportHeight,0,0,(int)this.resolution,(int)this.resolution,false, true);
+        batch.draw(new Texture(buffer, Format.RGBA8888, true),0,this.viewportHeight/2,this.viewportWidth,this.viewportHeight,0,0,(int)this.resolution,(int)this.resolution,false, true);
         batch.end();
         buffer.dispose();
     	
@@ -119,7 +119,7 @@ public class Camera {
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.rectLine((float)this.viewportWidth/2, (float)this.viewportHeight/2, (float)this.viewportWidth/2, (float)this.viewportHeight, (float)this.viewportWidth, new Color(0,0,0,1f-ambient), Color.CLEAR);
+            shapeRenderer.rectLine(this.viewportWidth/2, this.viewportHeight/2, this.viewportWidth/2, this.viewportHeight, this.viewportWidth, new Color(0,0,0,1f-ambient), Color.CLEAR);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
