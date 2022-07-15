@@ -57,7 +57,7 @@ public class Player {
         }
         else if (this.paces > 0) {
             double closer = (Math.abs(this.paces - Math.PI) > Math.PI/2)? 0 : Math.PI;
-            double delta = (((Math.PI*2 - this.paces) % (Math.PI*2)) - closer) * distance;
+            double delta = (((Math.PI*3 - closer - this.paces ) % (Math.PI*2)) - Math.PI) * distance;
             this.paces = (this.paces + delta + Math.PI*2) % (Math.PI*2);
             if(Math.abs(this.paces - closer) < 0x1p-8) this.paces = 0;
         }
