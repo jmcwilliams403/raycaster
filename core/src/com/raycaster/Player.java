@@ -19,7 +19,7 @@ public class Player {
     public Player(double x, double y, double direction) {
         this.x = x;
         this.y = y;
-        this.direction = direction;
+        this.direction = (float)direction;
         this.paces = 0;
         this.speed = 3;
         this.weapon = new Texture(Gdx.files.internal("hand.png"));
