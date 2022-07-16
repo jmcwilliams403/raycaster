@@ -74,4 +74,11 @@ public class Raycaster extends ApplicationAdapter {
 		player.update(controls, map, seconds);
 		camera.render(player, map);
 	}
+	
+	@Override
+	public void dispose() {
+		this.camera.dispose();
+		this.map.dispose();
+		this.player.dispose();
+	}
 }

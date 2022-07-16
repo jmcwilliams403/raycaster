@@ -1,10 +1,11 @@
 package com.raycaster;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 
-public class Map {
+public class Map implements Disposable {
 	protected int size;
 	protected int[][] wallGrid;
 	protected byte light;
@@ -42,5 +43,12 @@ public class Map {
 				this.wallGrid[x][y] = Math.random() < chance ? 1 : 0;
 			}
 		}
+	}
+
+	@Override
+	public void dispose() {
+		this.skybox.dispose();
+		this.wallTexture.dispose();
+		this.floorTexture.dispose();
 	}
 }

@@ -1,6 +1,7 @@
 package com.raycaster;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -12,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
 
-public class Camera {
+public class Camera implements Disposable {
 	protected class Projection {
 		protected double top;
 		protected double height;
@@ -174,5 +175,11 @@ public class Camera {
 	private int alias(double d) {
 		int spacing = (int) Math.ceil(this.spacing);
 		return (int) (d / spacing) * spacing;
+	}
+
+	@Override
+	public void dispose() {
+		this.batch.dispose();
+		this.shapeRenderer.dispose();
 	}
 }

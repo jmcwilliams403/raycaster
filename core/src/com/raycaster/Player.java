@@ -1,9 +1,10 @@
 package com.raycaster;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.Texture;
 
-public class Player {
+public class Player implements Disposable {
 	protected double x;
 	protected double y;
 	protected double direction;
@@ -72,5 +73,10 @@ public class Player {
 			if (Math.abs(this.paces - closer) < 0x1p-8)
 				this.paces = 0;
 		}
+	}
+
+	@Override
+	public void dispose() {
+		this.weapon.dispose();
 	}
 }
