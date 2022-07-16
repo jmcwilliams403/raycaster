@@ -71,7 +71,7 @@ public class Player implements Disposable {
 			double closer = (Math.abs(this.paces - PI) > ETA) ? 0 : PI;
 			double delta = (((TAU + (PI - closer) - this.paces) % TAU) - PI) * distance;
 			this.paces = (this.paces + delta + TAU) % TAU;
-			if (Math.abs(this.paces - closer) < 0x1p-8)
+			if (Math.abs(this.paces - closer) < EPSILON)
 				this.paces = 0;
 		}
 	}

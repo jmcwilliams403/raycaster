@@ -11,6 +11,7 @@ public class Raycaster extends ApplicationAdapter {
 	protected static final double PI = Math.PI;
 	protected static final double TAU = PI*2;
 	protected static final double ETA = PI/2;
+	protected static final float EPSILON = 0x1p-23f;
 	private static final int VIRTUAL_WIDTH = 1920;
 	private static final int VIRTUAL_HEIGHT = 1080;
 	private static final float ASPECT_RATIO = (float) VIRTUAL_WIDTH / (float) VIRTUAL_HEIGHT;
