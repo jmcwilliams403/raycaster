@@ -3,6 +3,7 @@ package com.raycaster;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.Texture;
+import static com.raycaster.Raycaster.*;
 
 public class Player implements Disposable {
 	protected double x;
@@ -15,7 +16,7 @@ public class Player implements Disposable {
 	protected float speed;
 
 	public Player(double x, double y) {
-		this(x, y, Math.PI / 2);
+		this(x, y, ETA);
 	}
 
 	public Player(double x, double y, double direction) {
@@ -30,7 +31,7 @@ public class Player implements Disposable {
 
 	public double rotate(double angle) {
 		final double direction = this.direction;
-		this.direction = (direction + angle + Math.PI * 2) % (Math.PI * 2);
+		this.direction = (direction + angle + TAU) % TAU;
 		return Math.copySign(this.direction - direction, angle) / 2;
 	}
 
@@ -52,24 +53,24 @@ public class Player implements Disposable {
 
 	public void update(Controls controls, Map map, double seconds) {
 		if (controls.turn)
-			this.rotate((controls.x / Math.PI) * seconds);
+			this.rotate((controls.x / PI) * seconds);
 
 		final double distance = this.speed * seconds;
 		if (controls.move) {
 			double delta = 0;
 			if (controls.left)
-				delta = Math.max(delta, this.walk(distance, map, this.direction - Math.PI / 2));
+				delta = Math.max(delta, this.walk(distance, map, this.direction - ETA));
 			if (controls.right)
-				delta = Math.max(delta, this.walk(distance, map, this.direction + Math.PI / 2));
+				delta = Math.max(delta, this.walk(distance, map, this.direction + ETA));
 			if (controls.forward)
 				delta = Math.max(delta, this.walk(distance, map, this.direction));
 			if (controls.backward)
-				delta = Math.max(delta, this.walk(distance, map, this.direction + Math.PI));
-			this.paces = (this.paces + delta) % (Math.PI * 2);
+				delta = Math.max(delta, this.walk(distance, map, this.direction + PI));
+			this.paces = (this.paces + delta) % TAU;
 		} else if (this.paces > 0) {
-			double closer = (Math.abs(this.paces - Math.PI) > Math.PI / 2) ? 0 : Math.PI;
-			double delta = (((Math.PI * 3 - closer - this.paces) % (Math.PI * 2)) - Math.PI) * distance;
-			this.paces = (this.paces + delta + Math.PI * 2) % (Math.PI * 2);
+			double closer = (Math.abs(this.paces - PI) > ETA) ? 0 : PI;
+			double delta = (((TAU + (PI - closer) - this.paces) % TAU) - PI) * distance;
+			this.paces = (this.paces + delta + TAU) % TAU;
 			if (Math.abs(this.paces - closer) < 0x1p-8)
 				this.paces = 0;
 		}

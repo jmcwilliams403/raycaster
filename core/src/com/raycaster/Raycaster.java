@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Raycaster extends ApplicationAdapter {
+	protected static final double PI = Math.PI;
+	protected static final double TAU = PI*2;
+	protected static final double ETA = PI/2;
 	private static final int VIRTUAL_WIDTH = 1920;
 	private static final int VIRTUAL_HEIGHT = 1080;
 	private static final float ASPECT_RATIO = (float) VIRTUAL_WIDTH / (float) VIRTUAL_HEIGHT;
