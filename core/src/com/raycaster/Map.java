@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
 public class Map implements Disposable {
 	protected int size;
 	protected int[][] wallGrid;
-	protected byte light;
+	protected int light;
 	protected Texture skybox;
 	protected Texture wallTexture;
 	protected Texture floorTexture;
@@ -16,7 +16,7 @@ public class Map implements Disposable {
 	public Map(int size) {
 		this.size = size;
 		this.wallGrid = new int[this.size][this.size];
-		this.light = 32;
+		this.light = 0xFFFFFF20;
 		this.skybox = new Texture(Gdx.files.internal("panorama.png"));
 		this.skybox.setWrap(TextureWrap.Repeat, TextureWrap.ClampToEdge);
 		this.wallTexture = new Texture(Gdx.files.internal("wall.png"));
