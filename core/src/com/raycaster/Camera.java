@@ -128,7 +128,7 @@ public class Camera implements Disposable {
 
 	private void drawColumns(Player player, Map map, float ambient) {
 		for (int column = 0; column < this.resolution; column++) {
-			double x = column / this.resolution;
+			double x = (1 + column) / this.resolution;
 			double angle = this.fov * (0.5 - (Math.atan2(1 - x, x) / η));
 			Ray ray = new Ray(map, player.x, player.y, player.direction + angle, this.range);
 			Texture texture = map.wallTexture;
