@@ -70,7 +70,7 @@ public class Camera implements Disposable {
 	private void drawSky(double direction, Texture texture, float ambient) {
 		TextureRegion sky = new TextureRegion(texture,0,0,texture.getWidth()*2,texture.getHeight());
 		sky.flip(false, true);
-		int width = (int) Math.ceil((double)sky.getRegionWidth() * ((double)this.viewportHeight / (double)sky.getRegionHeight())*η);
+		int width = (int) Math.ceil((double)sky.getRegionWidth() * ((double)this.viewportHeight / (double)sky.getRegionHeight())*this.fov);
 		int left = (int) Math.floor(width * -direction / τ);
 
 		batch.begin();
