@@ -65,8 +65,8 @@ public class Camera implements Disposable {
 	}
 
 	private void drawSky(double direction, Texture sky, float ambient) {
-		int width = (int) Math.ceil(this.viewportWidth * (TAU / this.fov));
-		int left = (int) Math.floor(width * -direction / TAU);
+		int width = (int) Math.ceil(this.viewportWidth * (τ / this.fov));
+		int left = (int) Math.floor(width * -direction / τ);
 
 		batch.begin();
 		batch.draw(sky, left, 0, width, this.viewportHeight, 0, 0, sky.getWidth() * 2, sky.getHeight(), false, true);
@@ -129,7 +129,7 @@ public class Camera implements Disposable {
 	private void drawColumns(Player player, Map map, float ambient) {
 		for (int column = 0; column < this.resolution; column++) {
 			double x = column / this.resolution;
-			double angle = this.fov * (0.5 - (Math.atan2(1 - x, x) / ETA));
+			double angle = this.fov * (0.5 - (Math.atan2(1 - x, x) / η));
 			Ray ray = new Ray(map, player.x, player.y, player.direction + angle, this.range);
 			Texture texture = map.wallTexture;
 			int left = (int) Math.floor(column * this.spacing);
