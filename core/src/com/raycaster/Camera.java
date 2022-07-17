@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Pixmap.Filter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
@@ -66,14 +67,16 @@ public class Camera implements Disposable {
 		this.drawWeapon(player.weapon, player.weaponScale, player.paces);
 	}
 
-	private void drawSky(double direction, Texture sky, float ambient) {
-		int width = (int) Math.ceil((double)sky.getWidth() * ((double)this.viewportHeight / (double)sky.getHeight())*π);
+	private void drawSky(double direction, Texture texture, float ambient) {
+		TextureRegion sky = new TextureRegion(texture,0,0,texture.getWidth()*2,texture.getHeight());
+		sky.flip(false, true);
+		int width = (int) Math.ceil((double)sky.getRegionWidth() * ((double)this.viewportHeight / (double)sky.getRegionHeight())*η);
 		int left = (int) Math.floor(width * -direction / τ);
 
 		batch.begin();
-		batch.draw(sky, left, 0, width, this.viewportHeight, 0, 0, sky.getWidth() * 2, sky.getHeight(), false, true);
+		batch.draw(sky, left, 0, width, this.viewportHeight);
 		if (left < width - this.viewportWidth) {
-			batch.draw(sky, (left + width), 0, width, this.viewportHeight, 0, 0, sky.getWidth() * 2, sky.getHeight(), false, true);
+			batch.draw(sky, (left + width), 0, width, this.viewportHeight);
 		}
 		batch.end();
 
