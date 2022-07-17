@@ -67,7 +67,7 @@ public class Camera implements Disposable {
 	}
 
 	private void drawSky(double direction, Texture sky, float ambient) {
-		int width = (int) Math.ceil(this.viewportWidth * (τ / this.fov));
+		int width = (int) Math.ceil((double)sky.getWidth() * ((double)this.viewportHeight / (double)sky.getHeight())*π);
 		int left = (int) Math.floor(width * -direction / τ);
 
 		batch.begin();
