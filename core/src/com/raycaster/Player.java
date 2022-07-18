@@ -16,7 +16,7 @@ public class Player implements Disposable {
 	protected float speed;
 
 	public Player(double x, double y) {
-		this(x, y, η);
+		this(x, y, ETA);
 	}
 
 	public Player(double x, double y, double direction) {
@@ -31,7 +31,7 @@ public class Player implements Disposable {
 
 	public double rotate(double angle) {
 		final double direction = this.direction;
-		this.direction = (direction + angle + τ) % τ;
+		this.direction = (direction + angle + TAU) % TAU;
 		return Math.copySign(this.direction - direction, angle) / 2;
 	}
 
@@ -53,25 +53,25 @@ public class Player implements Disposable {
 
 	public void update(Controls controls, Map map, double seconds) {
 		if (controls.turn)
-			this.rotate((controls.x / π) * seconds);
+			this.rotate((controls.x / PI) * seconds);
 
 		final double distance = this.speed * seconds;
 		if (controls.move) {
 			double delta = 0;
 			if (controls.left)
-				delta = Math.max(delta, this.walk(distance, map, this.direction - η));
+				delta = Math.max(delta, this.walk(distance, map, this.direction - ETA));
 			if (controls.right)
-				delta = Math.max(delta, this.walk(distance, map, this.direction + η));
+				delta = Math.max(delta, this.walk(distance, map, this.direction + ETA));
 			if (controls.forward)
 				delta = Math.max(delta, this.walk(distance, map, this.direction));
 			if (controls.backward)
-				delta = Math.max(delta, this.walk(distance, map, this.direction + π));
-			this.paces = (this.paces + delta) % τ;
+				delta = Math.max(delta, this.walk(distance, map, this.direction + PI));
+			this.paces = (this.paces + delta) % TAU;
 		} else if (this.paces > 0) {
-			double closer = (Math.abs(this.paces - π) > η) ? 0 : π;
-			double delta = (((τ + (π - closer) - this.paces) % τ) - π) * distance;
-			this.paces = (this.paces + delta + τ) % τ;
-			if (Math.abs(this.paces - closer) < ε)
+			double closer = (Math.abs(this.paces - PI) > ETA) ? 0 : PI;
+			double delta = (((TAU + (PI - closer) - this.paces) % TAU) - PI) * distance;
+			this.paces = (this.paces + delta + TAU) % TAU;
+			if (Math.abs(this.paces - closer) < EPSILON)
 				this.paces = 0;
 		}
 	}

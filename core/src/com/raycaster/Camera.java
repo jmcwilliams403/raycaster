@@ -53,7 +53,7 @@ public class Camera implements Disposable {
 		this.resolution = resolution;
 		this.spacing = this.viewportWidth / resolution;
 		this.fov = Math.toRadians(fov);
-		this.focalLength = this.fov/π;
+		this.focalLength = this.fov/PI;
 		this.range = 32;
 		this.lightRange = 16;
 	}
@@ -71,7 +71,7 @@ public class Camera implements Disposable {
 		TextureRegion sky = new TextureRegion(texture,0,0,texture.getWidth()*2,texture.getHeight());
 		sky.flip(false, true);
 		int width = (int) Math.ceil((double)sky.getRegionWidth() * ((double)this.viewportHeight / (double)sky.getRegionHeight())*this.fov);
-		int left = (int) Math.floor(width * -direction / τ);
+		int left = (int) Math.floor(width * -direction / TAU);
 
 		batch.begin();
 		batch.draw(sky, left, 0, width, this.viewportHeight);
