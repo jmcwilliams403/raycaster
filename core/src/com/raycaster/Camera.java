@@ -95,7 +95,8 @@ public class Camera implements Disposable {
 		Pixmap buffer = new Pixmap((int) this.resolution, (int) this.resolution, Format.RGBA8888);
 		buffer.setFilter(Filter.NearestNeighbour);
 		TextureData textureData = texture.getTextureData();
-		if (!textureData.isPrepared())
+		boolean isPrepared = textureData.isPrepared();
+		if (!isPrepared)
 			textureData.prepare();
 		Pixmap floor = textureData.consumePixmap();
 
@@ -114,7 +115,8 @@ public class Camera implements Disposable {
 			for (int x = 0; x < this.resolution; x++, sx -= dx, sy += dy)
 				buffer.drawPixel(x, y, floor.getPixel((int) Math.abs(sx % floor.getWidth()), (int) Math.abs(sy % floor.getHeight())));
 		}
-		floor.dispose();
+		if (!isPrepared)
+			floor.dispose();
 
 		batch.begin();
 		batch.draw(new Texture(buffer, Format.RGBA8888, true), 0, this.viewportHeight / 2, this.viewportWidth, this.viewportHeight, 0, 0, (int) this.resolution, (int) this.resolution, false, true);
