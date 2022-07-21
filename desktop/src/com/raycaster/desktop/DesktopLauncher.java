@@ -7,6 +7,7 @@ import com.raycaster.Raycaster;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		config.setForegroundFPS(60);
 		config.setMaximized(true);
 		new Lwjgl3Application(new Raycaster(), config);
 	}
