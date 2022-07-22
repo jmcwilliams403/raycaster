@@ -53,7 +53,9 @@ public class Noise {
 	public static Pixmap fractalNoise(int width, int height, int depth, Color tint, float clip) {
 		float[][] result = new float[width][height];
 		
-		for (int i = 1; i <= depth; i *= 2) {
+		final int exponent = depth > 0 ? 1 << depth : 1;
+		
+		for (int i = 1; i <= exponent; i *= 2) {
 			result = blend(result, noise(width, height, i), i);
 		}
 		return getPixmap(normalize(result), tint, clip);
