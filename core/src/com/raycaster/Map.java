@@ -18,12 +18,12 @@ public class Map implements Disposable {
 	public Map(int size) {
 		this.size = size;
 		this.wallGrid = new int[this.size][this.size];
-		this.light = 0xFFFFFF20;
-		this.skybox = new Texture(Noise.perlinNoise(2160, 1080, 1, new Color(0xC0E0FFFF)));
+		this.light = 0xFFFFDF20;
+		this.skybox = new Texture(Noise.perlinNoise(2160, 1080, 1, new Color(0xDFEFFFFF)));
 		this.skybox.setWrap(TextureWrap.Repeat, TextureWrap.ClampToEdge);
 		this.wallTexture = new Texture(Gdx.files.internal("wall.png"));
 		this.floorTexture = new Texture(Gdx.files.internal("floor.png"));
-		this.cloudMap = new Texture(Noise.fractalNoise(512, 512, 16, 0.75f));
+		this.cloudMap = new Texture(Noise.fractalNoise(512, 512, 16, new Color(0xDFEFFFFF), 0.75f));
 	}
 
 	public Integer get(double x, double y) {
