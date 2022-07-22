@@ -2,6 +2,7 @@ package com.raycaster;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 
@@ -18,7 +19,7 @@ public class Map implements Disposable {
 		this.size = size;
 		this.wallGrid = new int[this.size][this.size];
 		this.light = 0xFFFFFF20;
-		this.skybox = new Texture(Gdx.files.internal("panorama.png"));
+		this.skybox = new Texture(Noise.perlinNoise(2160, 1080, 1, new Color(0xC0E0FFFF)));
 		this.skybox.setWrap(TextureWrap.Repeat, TextureWrap.ClampToEdge);
 		this.wallTexture = new Texture(Gdx.files.internal("wall.png"));
 		this.floorTexture = new Texture(Gdx.files.internal("floor.png"));
