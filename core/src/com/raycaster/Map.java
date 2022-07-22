@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureWrap;
 
 public class Map implements Disposable {
 	protected class SkyBox implements Disposable{
@@ -13,7 +12,6 @@ public class Map implements Disposable {
 		
 		protected SkyBox(int backgroundWidth, int backgroundHeight, int cloudMapWidth, int cloudMapHeight, int cloudMapDepth, float gain, float clip, int color) {
 			this.background = new Texture(Noise.perlinNoise(backgroundWidth, backgroundHeight, 1, gain, 1f, new Color(color|0xFF)));
-			this.background.setWrap(TextureWrap.Repeat, TextureWrap.ClampToEdge);
 			this.foreground = new Texture(Noise.fractalNoise(cloudMapWidth, cloudMapHeight, cloudMapDepth, gain, clip, new Color(color)));
 		}
 		

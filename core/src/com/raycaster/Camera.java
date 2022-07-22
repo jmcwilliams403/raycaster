@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
@@ -66,20 +65,8 @@ public class Camera implements Disposable {
 	}
 
 	private void drawSky(Player player, Map.SkyBox skybox, float ambient) {
+		drawFlat(player, skybox.background,2f,Float.POSITIVE_INFINITY, true);
 		
-		Texture texture = skybox.background;
-		TextureRegion sky = new TextureRegion(texture,0,0,texture.getWidth()*4,texture.getHeight());
-		sky.flip(false, true);
-		int width = (int) Math.ceil((double)sky.getRegionWidth() * ((double)this.viewportHeight / (double)sky.getRegionHeight())*this.fov);
-		int left = (int) Math.floor(width * -player.direction / TAU);
-
-		batch.begin();
-		batch.draw(sky, left, 0, width, this.viewportHeight);
-		if (left < width - this.viewportWidth) {
-			batch.draw(sky, (left + width), 0, width, this.viewportHeight);
-		}
-		batch.end();
-
 		if (ambient > 0) {
 			Gdx.gl.glEnable(GL20.GL_BLEND);
 			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -90,11 +77,11 @@ public class Camera implements Disposable {
 			Gdx.gl.glDisable(GL20.GL_BLEND);
 		}
 		
-		drawFlat(player, skybox.foreground, 100, true);
+		drawFlat(player, skybox.foreground, 1f, 100, true);
 	}
 
 	private void drawFloor(Player player, Texture texture, float ambient) {
-		drawFlat(player, texture, 0, false);
+		drawFlat(player, texture, false);
 		
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -104,11 +91,15 @@ public class Camera implements Disposable {
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 	}
 	
-	private void drawFlat(Player player, Texture texture, float offset, boolean flip) {
-		drawFlat(player, texture, offset, flip, Color.CLEAR);
+	private void drawFlat(Player player, Texture texture, boolean flip) {
+		drawFlat(player, texture, 1f, 0f, flip);
 	}
 	
-	private void drawFlat(Player player, Texture texture, float offset, boolean flip, Color fill) {
+	private void drawFlat(Player player, Texture texture, float scale, float offset, boolean flip) {
+		drawFlat(player, texture, scale, offset, flip, Color.CLEAR);
+	}
+	
+	private void drawFlat(Player player, Texture texture, double scale, double offset, boolean flip, Color fill) {
 		Pixmap buffer = new Pixmap((int) this.resolution, (int) this.resolution, Pixmap.Format.RGBA8888);
 		buffer.setFilter(Pixmap.Filter.NearestNeighbour);
 		buffer.setColor(fill);
@@ -118,15 +109,25 @@ public class Camera implements Disposable {
 		if (!isPrepared)
 			textureData.prepare();
 		Pixmap flat = textureData.consumePixmap();
-
+		
 		final int width = flat.getWidth(), height = flat.getHeight();
+		final double size = (scale > EPSILON) ? Math.max(width, height) / scale : 1d;
+		
+		final double tx, ty;
+		if (Double.isFinite(offset)) {
+			final double z = size / Math.max(1d + offset, 1d);
+			tx = player.x * z;
+			ty = player.y * z;
+		} else {
+			tx = 0;
+			ty = 0;
+		}
+		
+		final double scaleX = Math.sin(player.direction) * size;
+		final double scaleY = Math.cos(player.direction) * size;
+		
 		final int horizon = (int)this.resolution/2;
-		final double scale = Math.max(width, height);
-		final float paralax = Math.max(1f + offset, 1f);
-		final double tx = player.x * scale / paralax;
-		final double ty = player.y * scale / paralax;
-		final double scaleX = Math.sin(player.direction) * scale;
-		final double scaleY = Math.cos(player.direction) * scale;
+		
 		for (int y = 0; y < horizon; y++) {
 			final double dx = scaleX / (1 + y);
 			final double dy = scaleY / (1 + y);
