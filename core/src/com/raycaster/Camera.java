@@ -5,8 +5,6 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Pixmap.Filter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -111,8 +109,8 @@ public class Camera implements Disposable {
 	}
 	
 	private void drawFlat(Player player, Texture texture, float offset, boolean flip, Color fill) {
-		Pixmap buffer = new Pixmap((int) this.resolution, (int) this.resolution, Format.RGBA8888);
-		buffer.setFilter(Filter.NearestNeighbour);
+		Pixmap buffer = new Pixmap((int) this.resolution, (int) this.resolution, Pixmap.Format.RGBA8888);
+		buffer.setFilter(Pixmap.Filter.NearestNeighbour);
 		buffer.setColor(fill);
 		buffer.fill();
 		TextureData textureData = texture.getTextureData();
@@ -142,7 +140,7 @@ public class Camera implements Disposable {
 			floor.dispose();
 		
 		batch.begin();
-		batch.draw(new Texture(buffer, Format.RGBA8888, true), 0, 0, this.viewportWidth, this.viewportHeight, 0, 0, (int) this.resolution, (int) this.resolution, false, !flip);
+		batch.draw(new Texture(buffer, Pixmap.Format.RGBA8888, true), 0, 0, this.viewportWidth, this.viewportHeight, 0, 0, (int) this.resolution, (int) this.resolution, false, !flip);
 		batch.end();
 		buffer.dispose();
 	}
