@@ -86,7 +86,7 @@ public class Noise {
 				if (gamma <= clip)
 				{
 					Color color = new Color(tint);
-					color.mul(gamma, gamma, gamma, 1f);
+					color.mul(gamma, gamma, gamma, clip);
 					result.drawPixel(x, y, Color.rgba8888(color));
 				}
 			}
