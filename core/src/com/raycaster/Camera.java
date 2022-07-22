@@ -56,7 +56,7 @@ public class Camera implements Disposable {
 		this.resolution = resolution;
 		this.spacing = this.viewportWidth / resolution;
 		this.fov = Math.toRadians(fov);
-		this.focalLength = this.fov/PI;
+		this.focalLength = 1-(this.fov/PI);
 		this.range = 32;
 		this.lightRange = 16;
 	}
@@ -108,6 +108,8 @@ public class Camera implements Disposable {
 	private void drawFlat(Player player, Texture texture, float scale, float offset, boolean flip) {
 		drawFlat(player, texture, scale, offset, flip, Color.CLEAR);
 	}
+	
+	// FIXME: the following function does not scale correctly with FOV angles other than perfect 90 degrees
 	
 	private void drawFlat(Player player, Texture texture, double scale, double offset, boolean flip, Color fill) {
 		Pixmap buffer = new Pixmap((int) this.resolution, (int) this.resolution, Pixmap.Format.RGBA8888);
