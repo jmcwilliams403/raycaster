@@ -11,30 +11,30 @@ public class Map implements Disposable {
 		protected Texture background;
 		protected Texture foreground;
 		
-		protected SkyBox(int backgroundWidth, int backgroundHeight, int cloudMapWidth, int cloudMapHeight, int cloudMapDepth, Color color, float clip) {
-			this.background = new Texture(Noise.perlinNoise(backgroundWidth, backgroundHeight, 1, color));
+		protected SkyBox(int backgroundWidth, int backgroundHeight, int cloudMapWidth, int cloudMapHeight, int cloudMapDepth, float gain, float clip, Color color) {
+			this.background = new Texture(Noise.perlinNoise(backgroundWidth, backgroundHeight, 1, gain, 1f, color));
 			this.background.setWrap(TextureWrap.Repeat, TextureWrap.ClampToEdge);
-			this.foreground = new Texture(Noise.fractalNoise(cloudMapWidth, cloudMapHeight, cloudMapDepth, color, clip));
+			this.foreground = new Texture(Noise.fractalNoise(cloudMapWidth, cloudMapHeight, cloudMapDepth, gain, clip, color));
 		}
 		
-		protected SkyBox(int backgroundWidth, int backgroundHeight, int foregroundWidth, int foregroundHeight, int foregroundDepth, int color, float clip) {
-			this(backgroundWidth, backgroundHeight, foregroundWidth, foregroundHeight, foregroundDepth, new Color(color), clip);
+		protected SkyBox(int backgroundWidth, int backgroundHeight, int foregroundWidth, int foregroundHeight, int foregroundDepth, float gain, float clip, int color) {
+			this(backgroundWidth, backgroundHeight, foregroundWidth, foregroundHeight, foregroundDepth, gain, clip, new Color(color));
 		}
 		
-		protected SkyBox(int backgroundWidth, int backgroundHeight, int foregroundWidth, int foregroundHeight, int foregroundDepth, float clip) {
-			this(backgroundWidth, backgroundHeight, foregroundWidth, foregroundHeight, foregroundDepth, Color.WHITE, clip);
+		protected SkyBox(int backgroundWidth, int backgroundHeight, int foregroundWidth, int foregroundHeight, int foregroundDepth, float gain, float clip) {
+			this(backgroundWidth, backgroundHeight, foregroundWidth, foregroundHeight, foregroundDepth, gain, clip, Color.WHITE);
 		}
 		
-		protected SkyBox(int backgroundSize, int foregroundSize, int foregroundDepth, Color color, float clip) {
-			this(backgroundSize, backgroundSize, foregroundSize, foregroundSize, foregroundDepth, color, clip);
+		protected SkyBox(int backgroundSize, int foregroundSize, int foregroundDepth, float gain, float clip, Color color) {
+			this(backgroundSize, backgroundSize, foregroundSize, foregroundSize, foregroundDepth, gain, clip, color);
 		}
 		
-		protected SkyBox(int backgroundSize, int foregroundSize, int foregroundDepth, int color, float clip) {
-			this(backgroundSize, backgroundSize, foregroundSize, foregroundSize, foregroundDepth, color, clip);
+		protected SkyBox(int backgroundSize, int foregroundSize, int foregroundDepth, float gain, float clip, int color) {
+			this(backgroundSize, backgroundSize, foregroundSize, foregroundSize, foregroundDepth, gain, clip, color);
 		}
 		
-		protected SkyBox(int backgroundSize, int foregroundSize, int foregroundDepth, float clip) {
-			this(backgroundSize, backgroundSize, foregroundSize, foregroundSize, foregroundDepth, clip);
+		protected SkyBox(int backgroundSize, int foregroundSize, int foregroundDepth, float gain, float clip) {
+			this(backgroundSize, backgroundSize, foregroundSize, foregroundSize, foregroundDepth, gain, clip);
 		}
 		
 		@Override
@@ -55,7 +55,7 @@ public class Map implements Disposable {
 		this.size = size;
 		this.wallGrid = new int[this.size][this.size];
 		this.light = 0xFFFFDF20;
-		this.skybox = new SkyBox(1080,512,4,0x9097A4FF,0.75f);
+		this.skybox = new SkyBox(1080,512,4,0.1f,0.9f,0x9097A4FF);
 		this.wallTexture = new Texture(Gdx.files.internal("wall.png"));
 		this.floorTexture = new Texture(Gdx.files.internal("floor.png"));
 	}

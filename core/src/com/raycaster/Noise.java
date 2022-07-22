@@ -40,17 +40,17 @@ public class Noise {
 			p[i] = p[i + length] = permutation[i];
 	}
 	
-	public static Pixmap fractalNoise(int width, int height, int depth, float clip) {
-		return fractalNoise(width, height, depth, Color.WHITE, clip);
+	public static Pixmap fractalNoise(int width, int height, int depth, float gain, float clip) {
+		return fractalNoise(width, height, depth, gain, clip, Color.WHITE);
 	}
 	
 	public static Pixmap fractalNoise(int width, int height, int depth) {
-		return fractalNoise(width, height, depth, Color.WHITE, 1f);
+		return fractalNoise(width, height, depth, 0f, 1f, Color.WHITE);
 	}
 	public static Pixmap fractalNoise(int width, int height, int depth, Color tint) {
-		return fractalNoise(width, height, depth, tint, 1f);
+		return fractalNoise(width, height, depth, 0f, 1f, tint);
 	}
-	public static Pixmap fractalNoise(int width, int height, int depth, Color tint, float clip) {
+	public static Pixmap fractalNoise(int width, int height, int depth, float gain, float clip, Color tint) {
 		float[][] result = new float[width][height];
 		
 		final int exponent = depth > 0 ? 1 << depth : 1;
@@ -58,7 +58,7 @@ public class Noise {
 		for (int i = 1; i <= exponent; i *= 2) {
 			result = blend(result, noise(width, height, i), i);
 		}
-		return getPixmap(normalize(result), tint, clip);
+		return getPixmap(normalize(result), gain, clip, tint);
 	}
 	
 	protected static float[][] blend(float[][] noise1, float[][] noise2, float persistence)
@@ -77,14 +77,14 @@ public class Noise {
         return result;
     }
 	
-	protected static Pixmap getPixmap(float[][] noise, Color tint, float clip) {
+	protected static Pixmap getPixmap(float[][] noise, float gain, float clip, Color tint) {
 		final int width = noise.length, height = noise[0].length;
 		
 		Pixmap result = new Pixmap(width, height, Pixmap.Format.RGBA8888);
 		result.setFilter(Pixmap.Filter.NearestNeighbour);
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				float gamma = noise[x][y];
+				float gamma = Math.max(Math.min(noise[x][y] + gain, 1f),0f);
 				if (gamma <= clip)
 				{
 					Color color = new Color(tint);
@@ -98,19 +98,19 @@ public class Noise {
 	}
 	
 	public static Pixmap perlinNoise(int width, int height, int exponent) {
-		return perlinNoise(width, height, exponent, Color.WHITE, 1f);
+		return perlinNoise(width, height, exponent, 0f, 1f, Color.WHITE);
 	}
 	
-	public static Pixmap perlinNoise(int width, int height, int exponent, float clip) {
-		return perlinNoise(width, height, exponent, Color.WHITE, clip);
+	public static Pixmap perlinNoise(int width, int height, int exponent, float gain, float clip) {
+		return perlinNoise(width, height, exponent, gain, clip, Color.WHITE);
 	}
 	
 	public static Pixmap perlinNoise(int width, int height, int exponent, Color tint) {
-		return perlinNoise(width, height, exponent, tint, 1f);
+		return perlinNoise(width, height, exponent, 0f, 1f, tint);
 	}
 	
-	public static Pixmap perlinNoise(int width, int height, int exponent, Color tint, float clip) {		
-		return getPixmap(noise(width, height, exponent), tint, clip);
+	public static Pixmap perlinNoise(int width, int height, int exponent, float gain, float clip, Color tint) {		
+		return getPixmap(noise(width, height, exponent), gain, clip, tint);
 	}
 
 	private static float[][] normalize(float[][] noise){
