@@ -44,7 +44,8 @@ public class Map implements Disposable {
 		}
 	}
 	
-	protected int size;
+	protected int width;
+	protected int height;
 	protected int[][] wallGrid;
 	protected int light;
 	protected SkyBox skybox;
@@ -52,8 +53,13 @@ public class Map implements Disposable {
 	protected Texture floorTexture;
 
 	public Map(int size) {
-		this.size = size;
-		this.wallGrid = new int[this.size][this.size];
+		this(size, size);
+	}
+	
+	public Map(int width, int height) {
+		this.width = width;
+		this.height = height;
+		this.wallGrid = new int[this.width][this.height];
 		this.light = 0xFFFFDF20;
 		this.skybox = new SkyBox(1080,512,4,0.1f,0.9f,0x9097A47F);
 		this.wallTexture = new Texture(Gdx.files.internal("wall.png"));
@@ -75,8 +81,8 @@ public class Map implements Disposable {
 	}
 
 	public void randomize(float chance) {
-		for (int x = 0; x < this.size; x++) {
-			for (int y = 0; y < this.size; y++) {
+		for (int x = 0; x < this.width; x++) {
+			for (int y = 0; y < this.height; y++) {
 				this.wallGrid[x][y] = Math.random() < chance ? 1 : 0;
 			}
 		}
