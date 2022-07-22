@@ -1,19 +1,11 @@
 # Raycaster
 
-Based on Fredrik Wallgren's port of "A first-person engine in 265 lines" from JavaScript to Java using the libGDX framework. 
+Based on Fredrik Wallgren's Java port of "A first-person engine in 265 lines" using the libGDX framework. 
 
 * http://www.playfuljs.com/a-first-person-engine-in-265-lines/
 * http://libgdx.badlogicgames.com/
 
 ![Screenshot](https://pbs.twimg.com/media/FYStdbOWYAEApAF.jpg:large)
-
-## Porting details
-
-Besides the obvious changes in rendering and input code there is four new types introduced that in the original code are represented either as an `Array` or `Object`.
-
-* Projection
-* Ray
-* Step
 
 ## Building
 
@@ -31,9 +23,7 @@ The following instructions assumes you are in the root folder of the project, eg
 
 The first time you build the project is going to take a while since all dependencies are downloaded, will be faster after that.
 
-### Building the desktop version
-
-The easiest way to test the project is on desktop, just run
+**Building the desktop launcher**
 
     $ ./gradlew desktop:run
 
