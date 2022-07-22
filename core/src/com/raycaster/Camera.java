@@ -121,8 +121,9 @@ public class Camera implements Disposable {
 
 		final int horizon = (int)this.resolution/2;
 		final double scale = Math.max(floor.getWidth(), floor.getHeight());
-		final double tx = player.x * scale / (1f + offset);
-		final double ty = player.y * scale / (1f + offset);
+		final float paralax = Math.max(1f + offset, 1f);
+		final double tx = player.x * scale / paralax;
+		final double ty = player.y * scale / paralax;
 		final double scaleX = Math.sin(player.direction) * scale;
 		final double scaleY = Math.cos(player.direction) * scale;
 		for (int y = 0; y < horizon; y++) {
