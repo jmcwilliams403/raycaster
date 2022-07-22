@@ -10,6 +10,7 @@ public class Map implements Disposable {
 	protected int[][] wallGrid;
 	protected int light;
 	protected Texture skybox;
+	protected Texture cloudMap;
 	protected Texture wallTexture;
 	protected Texture floorTexture;
 
@@ -21,6 +22,7 @@ public class Map implements Disposable {
 		this.skybox.setWrap(TextureWrap.Repeat, TextureWrap.ClampToEdge);
 		this.wallTexture = new Texture(Gdx.files.internal("wall.png"));
 		this.floorTexture = new Texture(Gdx.files.internal("floor.png"));
+		this.cloudMap = new Texture(Noise.fractalNoise(512, 512, 16, 0.75f));
 	}
 
 	public Integer get(double x, double y) {

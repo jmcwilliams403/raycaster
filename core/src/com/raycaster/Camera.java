@@ -61,17 +61,19 @@ public class Camera implements Disposable {
 	public void render(Player player, Map map) {
 		float ambient = (float) (map.light & 0xFF) / 0xFF;
 		batch.setColor(new Color(map.light | 0xFF));
-		this.drawSky(player.direction, map.skybox, ambient);
+		this.drawSky(player, map, ambient);
 		this.drawFloor(player, map.floorTexture, ambient);
 		this.drawColumns(player, map, ambient);
 		this.drawWeapon(player.weapon, player.weaponScale, player.paces);
 	}
 
-	private void drawSky(double direction, Texture texture, float ambient) {
+	private void drawSky(Player player, Map map, float ambient) {
+		
+		Texture texture = map.skybox;
 		TextureRegion sky = new TextureRegion(texture,0,0,texture.getWidth()*2,texture.getHeight());
 		sky.flip(false, true);
 		int width = (int) Math.ceil((double)sky.getRegionWidth() * ((double)this.viewportHeight / (double)sky.getRegionHeight())*this.fov);
-		int left = (int) Math.floor(width * -direction / TAU);
+		int left = (int) Math.floor(width * -player.direction / TAU);
 
 		batch.begin();
 		batch.draw(sky, left, 0, width, this.viewportHeight);
@@ -89,48 +91,60 @@ public class Camera implements Disposable {
 			shapeRenderer.end();
 			Gdx.gl.glDisable(GL20.GL_BLEND);
 		}
+		
+		drawFlat(player, map.cloudMap, 100, true);
 	}
 
 	private void drawFloor(Player player, Texture texture, float ambient) {
+		drawFlat(player, texture, 0, false);
+		
+		Gdx.gl.glEnable(GL20.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+		shapeRenderer.rectLine(this.viewportWidth / 2, this.viewportHeight / 2, this.viewportWidth / 2, this.viewportHeight, this.viewportWidth, new Color(0, 0, 0, 1f - ambient), Color.CLEAR);
+		shapeRenderer.end();
+		Gdx.gl.glDisable(GL20.GL_BLEND);
+	}
+	
+	private void drawFlat(Player player, Texture texture, float offset, boolean flip) {
+		drawFlat(player, texture, offset, flip, Color.CLEAR);
+	}
+	
+	private void drawFlat(Player player, Texture texture, float offset, boolean flip, Color fill) {
 		Pixmap buffer = new Pixmap((int) this.resolution, (int) this.resolution, Format.RGBA8888);
 		buffer.setFilter(Filter.NearestNeighbour);
+		buffer.setColor(fill);
+		buffer.fill();
 		TextureData textureData = texture.getTextureData();
 		boolean isPrepared = textureData.isPrepared();
 		if (!isPrepared)
 			textureData.prepare();
 		Pixmap floor = textureData.consumePixmap();
 
+		final int horizon = (int)this.resolution/2;
 		final double scale = Math.max(floor.getWidth(), floor.getHeight());
-		final double tx = player.x * scale;
-		final double ty = player.y * scale;
+		final double tx = player.x * scale / (1f + offset);
+		final double ty = player.y * scale / (1f + offset);
 		final double scaleX = Math.sin(player.direction) * scale;
 		final double scaleY = Math.cos(player.direction) * scale;
-		for (int y = 0; y < this.resolution; y++) {
+		for (int y = 0; y < horizon; y++) {
 			final double dx = scaleX / (1 + y);
 			final double dy = scaleY / (1 + y);
 
-			double sx = tx + (this.resolution / 2) * (dx + dy);
-			double sy = ty + (this.resolution / 2) * (dx - dy);
+			double sx = tx + horizon * (dx + dy);
+			double sy = ty + horizon * (dx - dy);
 
 			for (int x = 0; x < this.resolution; x++, sx -= dx, sy += dy)
-				buffer.drawPixel(x, y, floor.getPixel((int) Math.abs(sx % floor.getWidth()), (int) Math.abs(sy % floor.getHeight())));
+				buffer.drawPixel(x, y + horizon, floor.getPixel((int) Math.abs(sx % floor.getWidth()), (int) Math.abs(sy % floor.getHeight())));
 		}
+		
 		if (!isPrepared)
 			floor.dispose();
-
+		
 		batch.begin();
-		batch.draw(new Texture(buffer, Format.RGBA8888, true), 0, this.viewportHeight / 2, this.viewportWidth, this.viewportHeight, 0, 0, (int) this.resolution, (int) this.resolution, false, true);
+		batch.draw(new Texture(buffer, Format.RGBA8888, true), 0, 0, this.viewportWidth, this.viewportHeight, 0, 0, (int) this.resolution, (int) this.resolution, false, !flip);
 		batch.end();
 		buffer.dispose();
-
-		if (ambient > 0) {
-			Gdx.gl.glEnable(GL20.GL_BLEND);
-			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-			shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-			shapeRenderer.rectLine(this.viewportWidth / 2, this.viewportHeight / 2, this.viewportWidth / 2, this.viewportHeight, this.viewportWidth, new Color(0, 0, 0, 1f - ambient), Color.CLEAR);
-			shapeRenderer.end();
-			Gdx.gl.glDisable(GL20.GL_BLEND);
-		}
 	}
 
 	private void drawColumns(Player player, Map map, float ambient) {
