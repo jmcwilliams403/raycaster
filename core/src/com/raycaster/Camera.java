@@ -61,16 +61,16 @@ public class Camera implements Disposable {
 	public void render(Player player, Map map) {
 		float ambient = (float) (map.light & 0xFF) / 0xFF;
 		batch.setColor(new Color(map.light | 0xFF));
-		this.drawSky(player, map, ambient);
+		this.drawSky(player, map.skybox, ambient);
 		this.drawFloor(player, map.floorTexture, ambient);
 		this.drawColumns(player, map, ambient);
 		this.drawWeapon(player.weapon, player.weaponScale, player.paces);
 	}
 
-	private void drawSky(Player player, Map map, float ambient) {
+	private void drawSky(Player player, Map.SkyBox skybox, float ambient) {
 		
-		Texture texture = map.skybox;
-		TextureRegion sky = new TextureRegion(texture,0,0,texture.getWidth()*2,texture.getHeight());
+		Texture texture = skybox.background;
+		TextureRegion sky = new TextureRegion(texture,0,0,texture.getWidth()*4,texture.getHeight());
 		sky.flip(false, true);
 		int width = (int) Math.ceil((double)sky.getRegionWidth() * ((double)this.viewportHeight / (double)sky.getRegionHeight())*this.fov);
 		int left = (int) Math.floor(width * -player.direction / TAU);
@@ -92,7 +92,7 @@ public class Camera implements Disposable {
 			Gdx.gl.glDisable(GL20.GL_BLEND);
 		}
 		
-		drawFlat(player, map.cloudMap, 100, true);
+		drawFlat(player, skybox.clouds, 100, true);
 	}
 
 	private void drawFloor(Player player, Texture texture, float ambient) {
