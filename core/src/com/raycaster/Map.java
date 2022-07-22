@@ -61,7 +61,7 @@ public class Map implements Disposable {
 		this.height = height;
 		this.wallGrid = new int[this.width][this.height];
 		this.light = 0xFFFFDF20;
-		this.skybox = new SkyBox(1080,512,4,0.1f,0.9f,0x9097A47F);
+		this.skybox = new SkyBox(1080,512,4,0.2f,0.9f,0x9097A4DF);
 		this.wallTexture = new Texture(Gdx.files.internal("wall.png"));
 		this.floorTexture = new Texture(Gdx.files.internal("floor.png"));
 	}
