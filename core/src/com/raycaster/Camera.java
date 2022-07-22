@@ -92,7 +92,7 @@ public class Camera implements Disposable {
 			Gdx.gl.glDisable(GL20.GL_BLEND);
 		}
 		
-		drawFlat(player, skybox.clouds, 100, true);
+		drawFlat(player, skybox.foreground, 100, true);
 	}
 
 	private void drawFloor(Player player, Texture texture, float ambient) {

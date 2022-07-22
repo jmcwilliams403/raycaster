@@ -9,38 +9,38 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
 public class Map implements Disposable {
 	protected class SkyBox implements Disposable{
 		protected Texture background;
-		protected Texture clouds;
+		protected Texture foreground;
 		
 		protected SkyBox(int backgroundWidth, int backgroundHeight, int cloudMapWidth, int cloudMapHeight, int cloudMapDepth, Color color, float clip) {
 			this.background = new Texture(Noise.perlinNoise(backgroundWidth, backgroundHeight, 1, color));
 			this.background.setWrap(TextureWrap.Repeat, TextureWrap.ClampToEdge);
-			this.clouds = new Texture(Noise.fractalNoise(cloudMapWidth, cloudMapHeight, cloudMapDepth, color, clip));
+			this.foreground = new Texture(Noise.fractalNoise(cloudMapWidth, cloudMapHeight, cloudMapDepth, color, clip));
 		}
 		
-		protected SkyBox(int backgroundWidth, int backgroundHeight, int cloudMapWidth, int cloudMapHeight, int cloudMapDepth, int color, float clip) {
-			this(backgroundWidth, backgroundHeight, cloudMapWidth, cloudMapHeight, cloudMapDepth, new Color(color), clip);
+		protected SkyBox(int backgroundWidth, int backgroundHeight, int foregroundWidth, int foregroundHeight, int foregroundDepth, int color, float clip) {
+			this(backgroundWidth, backgroundHeight, foregroundWidth, foregroundHeight, foregroundDepth, new Color(color), clip);
 		}
 		
-		protected SkyBox(int backgroundWidth, int backgroundHeight, int cloudMapWidth, int cloudMapHeight, int cloudMapDepth, float clip) {
-			this(backgroundWidth, backgroundHeight, cloudMapWidth, cloudMapHeight, cloudMapDepth, Color.WHITE, clip);
+		protected SkyBox(int backgroundWidth, int backgroundHeight, int foregroundWidth, int foregroundHeight, int foregroundDepth, float clip) {
+			this(backgroundWidth, backgroundHeight, foregroundWidth, foregroundHeight, foregroundDepth, Color.WHITE, clip);
 		}
 		
-		protected SkyBox(int backgroundHeight, int cloudMapWidth, int cloudMapDepth, Color color, float clip) {
-			this(backgroundHeight, backgroundHeight, cloudMapWidth, cloudMapWidth, cloudMapDepth, color, clip);
+		protected SkyBox(int backgroundSize, int foregroundSize, int foregroundDepth, Color color, float clip) {
+			this(backgroundSize, backgroundSize, foregroundSize, foregroundSize, foregroundDepth, color, clip);
 		}
 		
-		protected SkyBox(int backgroundHeight, int cloudMapWidth, int cloudMapDepth, int color, float clip) {
-			this(backgroundHeight, backgroundHeight, cloudMapWidth, cloudMapWidth, cloudMapDepth, color, clip);
+		protected SkyBox(int backgroundSize, int foregroundSize, int foregroundDepth, int color, float clip) {
+			this(backgroundSize, backgroundSize, foregroundSize, foregroundSize, foregroundDepth, color, clip);
 		}
 		
-		protected SkyBox(int backgroundHeight, int cloudMapWidth, int cloudMapDepth, float clip) {
-			this(backgroundHeight, backgroundHeight, cloudMapWidth, cloudMapWidth, cloudMapDepth, clip);
+		protected SkyBox(int backgroundSize, int foregroundSize, int foregroundDepth, float clip) {
+			this(backgroundSize, backgroundSize, foregroundSize, foregroundSize, foregroundDepth, clip);
 		}
 		
 		@Override
 		public void dispose() {
 			background.dispose();
-			clouds.dispose();
+			foreground.dispose();
 		}
 	}
 	
