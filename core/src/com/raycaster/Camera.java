@@ -117,9 +117,9 @@ public class Camera implements Disposable {
 		boolean isPrepared = textureData.isPrepared();
 		if (!isPrepared)
 			textureData.prepare();
-		Pixmap floor = textureData.consumePixmap();
+		Pixmap flat = textureData.consumePixmap();
 
-		final int width = floor.getWidth(), height = floor.getHeight();
+		final int width = flat.getWidth(), height = flat.getHeight();
 		final int horizon = (int)this.resolution/2;
 		final double scale = Math.max(width, height);
 		final float paralax = Math.max(1f + offset, 1f);
@@ -135,11 +135,11 @@ public class Camera implements Disposable {
 			double sy = ty + horizon * (dx - dy);
 
 			for (int x = 0; x < this.resolution; x++, sx -= dx, sy += dy)
-				buffer.drawPixel(x, y + horizon, floor.getPixel((int) Math.abs((sx + width) % width), (int) Math.abs((sy + height) % height)));
+				buffer.drawPixel(x, y + horizon, flat.getPixel((int) Math.abs((sx + width) % width), (int) Math.abs((sy + height) % height)));
 		}
 		
 		if (!isPrepared)
-			floor.dispose();
+			flat.dispose();
 		
 		batch.begin();
 		batch.draw(new Texture(buffer, Pixmap.Format.RGBA8888, true), 0, 0, this.viewportWidth, this.viewportHeight, 0, 0, (int) this.resolution, (int) this.resolution, false, !flip);
