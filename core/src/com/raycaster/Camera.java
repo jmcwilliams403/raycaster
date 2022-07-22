@@ -33,20 +33,26 @@ public class Camera implements Disposable {
 	protected double range;
 	protected double lightRange;
 
+	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private ShapeRenderer shapeRenderer;
 
-	public Camera(OrthographicCamera camera, double resolution) {
-		this(camera, resolution, 90);
+	public Camera(int width, int height, double resolution) {
+		this(width, height, resolution, 90);
 	}
 
-	public Camera(OrthographicCamera camera, double resolution, double fov) {
+	public Camera(int width, int height, double resolution, double fov) {
+		this.viewportWidth = width;
+		this.viewportHeight = height;
+		// Setup 2d camera with top left coordinates
+		// http://stackoverflow.com/questions/7708379/changing-the-coordinate-system-in-libgdx-java/7751183#7751183
+		// This forces us to flip textures on the y axis, eg. in Camera#drawSky
+		this.camera = new OrthographicCamera(width, height);
+		this.camera.setToOrtho(true, width, height);
 		this.batch = new SpriteBatch();
 		this.batch.setProjectionMatrix(camera.combined);
 		this.shapeRenderer = new ShapeRenderer();
 		this.shapeRenderer.setProjectionMatrix(camera.combined);
-		this.viewportWidth = (int) camera.viewportWidth;
-		this.viewportHeight = (int) camera.viewportHeight;
 		this.resolution = resolution;
 		this.spacing = this.viewportWidth / resolution;
 		this.fov = Math.toRadians(fov);
@@ -55,6 +61,10 @@ public class Camera implements Disposable {
 		this.lightRange = 16;
 	}
 
+	public void update() {
+		this.camera.update();
+	}
+	
 	public void render(Player player, Map map) {
 		float ambient = (float) (map.light & 0xFF) / 0xFF;
 		batch.setColor(new Color(map.light | 0xFF));

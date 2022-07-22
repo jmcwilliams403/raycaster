@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Raycaster extends ApplicationAdapter {
@@ -22,21 +21,13 @@ public class Raycaster extends ApplicationAdapter {
 	private float seconds = 0;
 	private Rectangle viewport;
 	private float scale = 1f;
-	private OrthographicCamera orthoCamera;
 
 	@Override
 	public void create() {
-		// Setup 2d camera with top left coordinates
-		// http://stackoverflow.com/questions/7708379/changing-the-coordinate-system-in-libgdx-java/7751183#7751183
-		// This forces us to flip textures on the y axis, eg. in Camera#drawSky
-		orthoCamera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
-		orthoCamera.setToOrtho(true, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
-
 		this.player = new Player(15.5, -1.5);
 		this.map = new Map(32);
 		this.controls = new Controls();
-		this.camera = new Camera(orthoCamera, 360);
-
+		this.camera = new Camera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 360);
 		this.map.randomize(0.3f);
 	}
 
@@ -70,7 +61,7 @@ public class Raycaster extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		orthoCamera.update();
+		camera.update();
 		Gdx.gl.glViewport((int) viewport.x, (int) viewport.y, (int) viewport.width, (int) viewport.height);
 
 		seconds = Gdx.graphics.getDeltaTime();
