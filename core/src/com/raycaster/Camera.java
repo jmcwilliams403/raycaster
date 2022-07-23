@@ -29,7 +29,6 @@ public class Camera implements Disposable {
 	protected double resolution;
 	protected double spacing;
 	protected double fov;
-	protected double focalLength;
 	protected double range;
 	protected double lightRange;
 
@@ -56,7 +55,6 @@ public class Camera implements Disposable {
 		this.resolution = resolution;
 		this.spacing = this.viewportWidth / resolution;
 		this.fov = Math.toRadians(fov);
-		this.focalLength = 1-(this.fov/PI);
 		this.range = 32;
 		this.lightRange = 16;
 	}
@@ -162,8 +160,8 @@ public class Camera implements Disposable {
 
 	private void drawColumns(Player player, Map map, float ambient) {
 		for (int column = 0; column < this.resolution; column++) {
-			double delta = (1 + column) / this.resolution - 0.5;
-			double angle = Math.atan2(delta, this.focalLength);
+			double delta = (1 + column) / this.resolution;
+			double angle = this.fov * (0.5 - (Math.atan2(1-delta, delta)/ETA));
 			Ray ray = new Ray(map, player.x, player.y, player.direction + angle, this.range);
 			Texture texture = map.wallTexture;
 			int left = (int) Math.floor(column * this.spacing);
