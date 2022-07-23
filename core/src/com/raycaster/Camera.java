@@ -75,7 +75,7 @@ public class Camera implements Disposable {
 	}
 
 	private void drawSky(Player player, Map.SkyBox skybox, float ambient) {
-		drawFlat(player, skybox.background,2f,Float.POSITIVE_INFINITY, true);
+		drawFlat(player, skybox.background,2,Double.POSITIVE_INFINITY, true);
 		
 		if (ambient > 0) {
 			Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -102,10 +102,10 @@ public class Camera implements Disposable {
 	}
 	
 	private void drawFlat(Player player, Texture texture, boolean flip) {
-		drawFlat(player, texture, 1f, 0f, flip);
+		drawFlat(player, texture, 1, 0, flip);
 	}
 	
-	private void drawFlat(Player player, Texture texture, float scale, float offset, boolean flip) {
+	private void drawFlat(Player player, Texture texture, double scale, double offset, boolean flip) {
 		drawFlat(player, texture, scale, offset, flip, Color.CLEAR);
 	}
 	
