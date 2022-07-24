@@ -86,7 +86,7 @@ public class Camera implements Disposable {
 	}
 
 	private void drawFloor(Player player, Texture texture, float ambient) {
-		drawFlat(player.x,player.y,player.direction, texture, false);
+		drawFlat(player.x,player.y,player.direction, texture, 1, false);
 		
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -100,8 +100,8 @@ public class Camera implements Disposable {
 		drawFlat(0,0,0,angle, texture, scale, flip);
 	}
 	
-	private void drawFlat(double x, double y, double angle, Texture texture, boolean flip) {
-		drawFlat(x, y, 0, angle, texture, 1, flip);
+	private void drawFlat(double x, double y, double angle, Texture texture, double scale, boolean flip) {
+		drawFlat(x, y, 0, angle, texture, scale, flip);
 	}
 	
 	private void drawFlat(double px, double py, double pz, double angle, Texture texture, double scale, boolean flip) {
