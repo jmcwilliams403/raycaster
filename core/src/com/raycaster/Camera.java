@@ -82,7 +82,7 @@ public class Camera implements Disposable {
 			Gdx.gl.glDisable(GL20.GL_BLEND);
 		}
 		
-		drawFlat(player.x, player.y, 100, player.direction, skybox.foreground, 100, true);
+		drawFlat(player.x, player.y, 50, player.direction, skybox.foreground, 50, true);
 	}
 
 	private void drawFloor(Player player, Texture texture, float ambient) {
@@ -115,11 +115,11 @@ public class Camera implements Disposable {
 		
 		final int width = flat.getWidth(), height = flat.getHeight();
 		
-		final double size = Math.max(width, height) / scale;
+		final double size = Math.max(width, height) / (2 * scale);
 		
 		final double tx = px * size;
 		final double ty = py * size;
-		final double tz = Math.max(1d + pz, 1d) * size;
+		final double tz = Math.max(1d + 2 * pz, 1d) * size;
 		
 		final double sin = Math.sin(angle);
 		final double cos = Math.cos(angle);
