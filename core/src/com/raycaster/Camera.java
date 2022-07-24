@@ -107,8 +107,6 @@ public class Camera implements Disposable {
 		drawFlat(player, texture, scale, offset, flip, Color.CLEAR);
 	}
 	
-	// FIXME: the following function does not scale correctly with FOV angles other than perfect 90 degrees
-	
 	private void drawFlat(Player player, Texture texture, double scale, double offset, boolean flip, Color fill) {
 		Pixmap buffer = new Pixmap((int) this.resolution, (int) this.resolution, Pixmap.Format.RGBA8888);
 		buffer.setFilter(Pixmap.Filter.NearestNeighbour);
@@ -133,20 +131,26 @@ public class Camera implements Disposable {
 			ty = 0;
 		}
 		
-		final double scaleX = Math.sin(player.direction) * size;
-		final double scaleY = Math.cos(player.direction) * size;
+		final double sin = Math.sin(player.direction);
+		final double cos = Math.cos(player.direction);
 		
 		final int horizon = (int)this.resolution/2;
 		
+		final double scaleY = horizon*size;
+		final double scaleX = horizon*(ETA/this.fov);
+		
 		for (int y = 0; y < horizon; y++) {
-			final double dx = scaleX / (1 + y);
-			final double dy = scaleY / (1 + y);
+			double distance = scaleY / (1 + y);
+			double ratio = distance/scaleX;
+			
+			final double dx = -sin * ratio;
+			final double dy = cos * ratio;
 
-			double sx = tx + horizon * (dx + dy);
-			double sy = ty + horizon * (dx - dy);
+			double sx = tx + distance * cos - horizon * dx;
+			double sy = ty + distance * sin - horizon * dy;
 
-			for (int x = 0; x < this.resolution; x++, sx -= dx, sy += dy)
-				buffer.drawPixel(x, y + horizon, flat.getPixel((int) Math.abs((sx + width) % width), (int) Math.abs((sy + height) % height)));
+			for (int x = 0; x < this.resolution; x++, sx += dx, sy += dy)
+				buffer.drawPixel(x, y+horizon, flat.getPixel((int) Math.abs((sx + width) % width), (int) Math.abs((sy + height) % height)));
 		}
 		
 		if (!isPrepared)
@@ -160,7 +164,8 @@ public class Camera implements Disposable {
 
 	private void drawColumns(Player player, Map map, float ambient) {
 		for (int column = 0; column < this.resolution; column++) {
-			double angle = this.fov * (0.5 - Math.atan(this.resolution / (1 + column) - 1)/ETA);
+			double delta = (1 + column) / this.resolution - 0.5;
+			double angle = Math.atan2(delta, ETA/this.fov/2);
 			Ray ray = new Ray(map, player.x, player.y, player.direction + angle, this.range);
 			Texture texture = map.wallTexture;
 			int left = (int) Math.floor(column * this.spacing);
