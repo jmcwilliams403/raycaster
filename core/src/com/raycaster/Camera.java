@@ -37,10 +37,6 @@ public class Camera implements Disposable {
 	private SpriteBatch batch;
 	private ShapeRenderer shapeRenderer;
 
-	public Camera(int width, int height, int resolution) {
-		this(width, height, resolution, 90);
-	}
-
 	public Camera(int width, int height, int resolution, int fov) {
 		this.viewportWidth = width;
 		this.viewportHeight = height;
