@@ -70,7 +70,7 @@ public class Camera implements Disposable {
 	}
 
 	private void drawSky(Player player, Map.SkyBox skybox, float ambient) {
-		drawFlat(player, skybox.background,2,Double.POSITIVE_INFINITY, true);
+		drawFlat(player.direction, skybox.background, 2, true);
 		
 		if (ambient > 0) {
 			Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -82,11 +82,11 @@ public class Camera implements Disposable {
 			Gdx.gl.glDisable(GL20.GL_BLEND);
 		}
 		
-		drawFlat(player, skybox.foreground, 1f, 100, true);
+		drawFlat(player.x, player.y, 100, player.direction, skybox.foreground, 100, true);
 	}
 
 	private void drawFloor(Player player, Texture texture, float ambient) {
-		drawFlat(player, texture, false);
+		drawFlat(player.x,player.y,player.direction, texture, false);
 		
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -96,11 +96,15 @@ public class Camera implements Disposable {
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 	}
 	
-	private void drawFlat(Player player, Texture texture, boolean flip) {
-		drawFlat(player, texture, 1, 0, flip);
+	private void drawFlat(double angle, Texture texture, double scale, boolean flip) {
+		drawFlat(0,0,0,angle, texture, scale, flip);
 	}
 	
-	private void drawFlat(Player player, Texture texture, double scale, double offset, boolean flip) {
+	private void drawFlat(double x, double y, double angle, Texture texture, boolean flip) {
+		drawFlat(x, y, 0, angle, texture, 1, flip);
+	}
+	
+	private void drawFlat(double px, double py, double pz, double angle, Texture texture, double scale, boolean flip) {
 		Pixmap buffer = new Pixmap(this.resolution, this.resolution, Pixmap.Format.RGBA8888);
 		buffer.setFilter(Pixmap.Filter.NearestNeighbour);
 		TextureData textureData = texture.getTextureData();
@@ -110,25 +114,20 @@ public class Camera implements Disposable {
 		Pixmap flat = textureData.consumePixmap();
 		
 		final int width = flat.getWidth(), height = flat.getHeight();
-		final double size = (scale > EPSILON) ? Math.max(width, height) / scale : 1d;
 		
-		final double tx, ty;
-		if (Double.isFinite(offset)) {
-			final double z = size / Math.max(1d + offset, 1d);
-			tx = player.x * z;
-			ty = player.y * z;
-		} else {
-			tx = 0;
-			ty = 0;
-		}
+		final double size = Math.max(width, height) / scale;
 		
-		final double sin = Math.sin(player.direction);
-		final double cos = Math.cos(player.direction);
+		final double tx = px * size;
+		final double ty = py * size;
+		final double tz = Math.max(1d + pz, 1d) * size;
+		
+		final double sin = Math.sin(angle);
+		final double cos = Math.cos(angle);
 		
 		final int horizon = this.resolution/2;
 		
-		final double scaleY = horizon*size;
-		final double scaleX = horizon*this.focalLength;
+		final double scaleY = horizon * tz;
+		final double scaleX = horizon * this.focalLength;
 		
 		for (int y = 0; y < horizon; y++) {
 			double distance = scaleY / (1 + y);
