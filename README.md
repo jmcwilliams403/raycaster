@@ -5,7 +5,7 @@ Based on Fredrik Wallgren's Java port of "A first-person engine in 265 lines" us
 * http://www.playfuljs.com/a-first-person-engine-in-265-lines/
 * http://libgdx.badlogicgames.com/
 
-![Screenshot](https://pbs.twimg.com/media/FYStdbOWYAEApAF.jpg:large)
+![Screenshot](https://pbs.twimg.com/media/FYdQNP8XEAEO_mQ.jpg:large)
 
 ## Building
 
