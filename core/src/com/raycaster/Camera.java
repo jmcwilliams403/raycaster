@@ -54,7 +54,8 @@ public class Camera implements Disposable {
 		this.shapeRenderer.setProjectionMatrix(camera.combined);
 		this.resolution = resolution;
 		this.spacing = this.viewportWidth / resolution;
-		this.fov = Math.toRadians(fov);
+		this.fov =  Math.toRadians(Math.max(Math.min(fov,180d),0d));
+		this.fov *= ETA/(PI-this.fov);
 		this.range = 32;
 		this.lightRange = 16;
 	}
