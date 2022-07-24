@@ -62,8 +62,7 @@ public class Camera implements Disposable {
 	}
 	
 	public void render(Player player, Map map) {
-		float ambient = (float) (map.light & 0xFF) / 0xFF;
-		batch.setColor(new Color(map.light | 0xFF));
+		float ambient = (float) Byte.toUnsignedInt(map.light) / 0xFF;
 		this.drawSky(player, map.skybox, ambient);
 		this.drawFloor(player, map.floorTexture, ambient);
 		this.drawColumns(player, map, ambient);
