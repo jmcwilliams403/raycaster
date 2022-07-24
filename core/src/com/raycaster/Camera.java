@@ -54,7 +54,7 @@ public class Camera implements Disposable {
 		this.shapeRenderer = new ShapeRenderer();
 		this.shapeRenderer.setProjectionMatrix(camera.combined);
 		this.resolution = resolution;
-		this.spacing = (double)this.viewportWidth / this.resolution;
+		this.spacing = (double) this.viewportWidth / this.resolution;
 		this.fov =  Math.toRadians(Math.max(Math.min(fov,180),0));
 		this.focalLength = PI/this.fov-1;
 		this.range = 32;
@@ -166,7 +166,7 @@ public class Camera implements Disposable {
 
 	private void drawColumns(Player player, Map map, float ambient) {
 		for (int column = 0; column < this.resolution; column++) {
-			double delta = 2*((double)column / this.resolution) - 1;
+			double delta = 2*((double) column / this.resolution) - 1;
 			double angle = Math.atan2(delta, this.focalLength);
 			Ray ray = new Ray(map, player.x, player.y, player.direction + angle, this.range);
 			Texture texture = map.wallTexture;
@@ -201,7 +201,7 @@ public class Camera implements Disposable {
 	}
 
 	private void drawWeapon(Texture weapon, double scale, double paces) {
-		double ratio = (double) weapon.getWidth() / (double) weapon.getHeight();
+		double ratio = (double) weapon.getWidth() / weapon.getHeight();
 		int width = this.alias(this.viewportHeight * scale * ratio);
 		int height = this.alias(this.viewportHeight * scale);
 		int left = this.alias((this.viewportWidth - width / 2) - Math.sin(paces) * width / 4);
