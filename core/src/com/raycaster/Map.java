@@ -10,17 +10,17 @@ public class Map implements Disposable {
 		protected Texture background;
 		protected Texture foreground;
 		
-		protected SkyBox(int backgroundWidth, int backgroundHeight, int cloudMapWidth, int cloudMapHeight, int cloudMapDepth, float gain, float clip, int color) {
-			this.background = new Texture(Noise.perlinNoise(backgroundWidth, backgroundHeight, 1, gain, 1f, new Color(color|0xFF)));
-			this.foreground = new Texture(Noise.fractalNoise(cloudMapWidth, cloudMapHeight, cloudMapDepth, gain, clip, new Color(color)));
+		protected SkyBox(int backgroundWidth, int backgroundHeight, int cloudMapWidth, int cloudMapHeight, int cloudMapDepth, float gain, float clip, Color color) {
+			this.background = new Texture(Noise.perlinNoise(backgroundWidth, backgroundHeight, 1, gain, 1f, color));
+			this.foreground = new Texture(Noise.fractalNoise(cloudMapWidth, cloudMapHeight, cloudMapDepth, gain, clip, color));
 		}
 		
-		protected SkyBox(int backgroundWidth, int backgroundHeight, int foregroundWidth, int foregroundHeight, int foregroundDepth, float gain, float clip, Color color) {
-			this(backgroundWidth, backgroundHeight, foregroundWidth, foregroundHeight, foregroundDepth, gain, clip, Color.rgba8888(color));
+		protected SkyBox(int backgroundWidth, int backgroundHeight, int foregroundWidth, int foregroundHeight, int foregroundDepth, float gain, float clip, int color) {
+			this(backgroundWidth, backgroundHeight, foregroundWidth, foregroundHeight, foregroundDepth, gain, clip, new Color(color));
 		}
 		
 		protected SkyBox(int backgroundWidth, int backgroundHeight, int foregroundWidth, int foregroundHeight, int foregroundDepth, float gain, float clip) {
-			this(backgroundWidth, backgroundHeight, foregroundWidth, foregroundHeight, foregroundDepth, gain, clip, 0xFFFFFFFF);
+			this(backgroundWidth, backgroundHeight, foregroundWidth, foregroundHeight, foregroundDepth, gain, clip, Color.WHITE);
 		}
 		
 		protected SkyBox(int backgroundSize, int foregroundSize, int foregroundDepth, float gain, float clip, int color) {
@@ -59,7 +59,7 @@ public class Map implements Disposable {
 		this.height = height;
 		this.wallGrid = new int[this.width][this.height];
 		this.light = 0xFFFFDF20;
-		this.skybox = new SkyBox(1080,512,4,0.2f,0.9f,0x9097A4DF);
+		this.skybox = new SkyBox(1080,512,4,0.2f,0.9f,0x9097A4FF);
 		this.wallTexture = new Texture(Gdx.files.internal("wall.png"));
 		this.floorTexture = new Texture(Gdx.files.internal("floor.png"));
 	}
