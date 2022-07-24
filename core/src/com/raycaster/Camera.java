@@ -41,7 +41,7 @@ public class Camera implements Disposable {
 		this(width, height, resolution, 90);
 	}
 
-	public Camera(int width, int height, int resolution, double fov) {
+	public Camera(int width, int height, int resolution, int fov) {
 		this.viewportWidth = width;
 		this.viewportHeight = height;
 		// Setup 2d camera with top left coordinates
@@ -55,7 +55,7 @@ public class Camera implements Disposable {
 		this.shapeRenderer.setProjectionMatrix(camera.combined);
 		this.resolution = resolution;
 		this.spacing = (double)this.viewportWidth / this.resolution;
-		this.fov =  Math.toRadians(Math.max(Math.min(fov,180d),0d));
+		this.fov =  Math.toRadians(Math.max(Math.min(fov,180),0));
 		this.focalLength = PI/this.fov-1;
 		this.range = 32;
 		this.lightRange = 16;
