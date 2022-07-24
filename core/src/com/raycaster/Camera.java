@@ -26,7 +26,7 @@ public class Camera implements Disposable {
 
 	protected int viewportWidth;
 	protected int viewportHeight;
-	protected double resolution;
+	protected int resolution;
 	protected double spacing;
 	protected double fov;
 	protected double focalLength;
@@ -37,11 +37,11 @@ public class Camera implements Disposable {
 	private SpriteBatch batch;
 	private ShapeRenderer shapeRenderer;
 
-	public Camera(int width, int height, double resolution) {
+	public Camera(int width, int height, int resolution) {
 		this(width, height, resolution, 90);
 	}
 
-	public Camera(int width, int height, double resolution, double fov) {
+	public Camera(int width, int height, int resolution, double fov) {
 		this.viewportWidth = width;
 		this.viewportHeight = height;
 		// Setup 2d camera with top left coordinates
@@ -54,7 +54,7 @@ public class Camera implements Disposable {
 		this.shapeRenderer = new ShapeRenderer();
 		this.shapeRenderer.setProjectionMatrix(camera.combined);
 		this.resolution = resolution;
-		this.spacing = this.viewportWidth / resolution;
+		this.spacing = (double)this.viewportWidth / (double)this.resolution;
 		this.fov =  Math.toRadians(Math.max(Math.min(fov,180d),0d));
 		this.focalLength = PI/this.fov-1;
 		this.range = 32;
@@ -110,7 +110,7 @@ public class Camera implements Disposable {
 	}
 	
 	private void drawFlat(Player player, Texture texture, double scale, double offset, boolean flip, Color fill) {
-		Pixmap buffer = new Pixmap((int) this.resolution, (int) this.resolution, Pixmap.Format.RGBA8888);
+		Pixmap buffer = new Pixmap(this.resolution, this.resolution, Pixmap.Format.RGBA8888);
 		buffer.setFilter(Pixmap.Filter.NearestNeighbour);
 		buffer.setColor(fill);
 		buffer.fill();
@@ -136,7 +136,7 @@ public class Camera implements Disposable {
 		final double sin = Math.sin(player.direction);
 		final double cos = Math.cos(player.direction);
 		
-		final int horizon = (int)this.resolution/2;
+		final int horizon = this.resolution/2;
 		
 		final double scaleY = horizon*size;
 		final double scaleX = horizon*this.focalLength;
@@ -159,14 +159,14 @@ public class Camera implements Disposable {
 			flat.dispose();
 		
 		batch.begin();
-		batch.draw(new Texture(buffer, Pixmap.Format.RGBA8888, true), 0, 0, this.viewportWidth, this.viewportHeight, 0, 0, (int) this.resolution, (int) this.resolution, false, !flip);
+		batch.draw(new Texture(buffer, Pixmap.Format.RGBA8888, true), 0, 0, this.viewportWidth, this.viewportHeight, 0, 0, this.resolution, this.resolution, false, !flip);
 		batch.end();
 		buffer.dispose();
 	}
 
 	private void drawColumns(Player player, Map map, float ambient) {
 		for (int column = 0; column < this.resolution; column++) {
-			double delta = 2*(column / this.resolution) - 1;
+			double delta = 2*((double)column / (double)this.resolution) - 1;
 			double angle = Math.atan2(delta, this.focalLength);
 			Ray ray = new Ray(map, player.x, player.y, player.direction + angle, this.range);
 			Texture texture = map.wallTexture;
