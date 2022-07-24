@@ -16,7 +16,7 @@ public class Player implements Disposable {
 	protected float speed;
 
 	public Player(double x, double y) {
-		this(x, y, ETA);
+		this(x, y, EPSILON);
 	}
 
 	public Player(double x, double y, double direction) {

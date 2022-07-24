@@ -24,7 +24,7 @@ public class Raycaster extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-		this.player = new Player(15.5, -1.5);
+		this.player = new Player(-1.5, 15.5);
 		this.map = new Map(32);
 		this.controls = new Controls();
 		this.camera = new Camera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 360, 90);
