@@ -101,14 +101,8 @@ public class Camera implements Disposable {
 	}
 	
 	private void drawFlat(Player player, Texture texture, double scale, double offset, boolean flip) {
-		drawFlat(player, texture, scale, offset, flip, Color.CLEAR);
-	}
-	
-	private void drawFlat(Player player, Texture texture, double scale, double offset, boolean flip, Color fill) {
 		Pixmap buffer = new Pixmap(this.resolution, this.resolution, Pixmap.Format.RGBA8888);
 		buffer.setFilter(Pixmap.Filter.NearestNeighbour);
-		buffer.setColor(fill);
-		buffer.fill();
 		TextureData textureData = texture.getTextureData();
 		boolean isPrepared = textureData.isPrepared();
 		if (!isPrepared)
