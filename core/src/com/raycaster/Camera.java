@@ -70,7 +70,7 @@ public class Camera implements Disposable {
 	}
 
 	private void drawSky(Player player, Map.SkyBox skybox, float ambient) {
-		drawFlat(player.direction, skybox.background, 2, true);
+		drawFlat(player.direction, skybox.background, 4, true);
 		
 		if (ambient > 0) {
 			Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -82,7 +82,7 @@ public class Camera implements Disposable {
 			Gdx.gl.glDisable(GL20.GL_BLEND);
 		}
 		
-		drawFlat(player.x, player.y, 50, player.direction, skybox.foreground, 50, true);
+		drawFlat(player.x, player.y, 50, player.direction, skybox.foreground, 2500, true);
 	}
 
 	private void drawFloor(Player player, Texture texture, float ambient) {
@@ -115,7 +115,7 @@ public class Camera implements Disposable {
 		
 		final int width = flat.getWidth(), height = flat.getHeight();
 		
-		final double size = Math.max(width, height) / (2 * scale);
+		final double size = Math.max(width, height) / Math.sqrt(4 * scale);
 		
 		final double tx = px * size;
 		final double ty = py * size;
