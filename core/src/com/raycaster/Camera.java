@@ -115,7 +115,7 @@ public class Camera implements Disposable {
 		
 		final int width = flat.getWidth(), height = flat.getHeight();
 		
-		final double size = Math.max(width, height) / Math.sqrt(4 * scale);
+		final double size = Math.max(width, height) * 2 / Math.sqrt(4 * scale);
 		
 		final double tx = px * size;
 		final double ty = py * size;
