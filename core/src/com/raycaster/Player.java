@@ -16,7 +16,7 @@ public class Player implements Disposable {
 	protected float speed;
 
 	public Player(double x, double y) {
-		this(x, y, EPSILON);
+		this(x, y, EPSILONf);
 	}
 
 	public Player(double x, double y, double direction) {
@@ -71,7 +71,7 @@ public class Player implements Disposable {
 			double closer = (Math.abs(this.paces - PI) > ETA) ? 0 : PI;
 			double delta = (((TAU + (PI - closer) - this.paces) % TAU) - PI) * distance * 2;
 			this.paces = (this.paces + delta + TAU) % TAU;
-			if (Math.abs(this.paces - closer) < EPSILON)
+			if (Math.abs(this.paces - closer) < EPSILONf)
 				this.paces = 0;
 		}
 	}

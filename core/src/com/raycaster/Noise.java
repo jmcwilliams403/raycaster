@@ -2,7 +2,7 @@ package com.raycaster;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Color;
-import static com.raycaster.Raycaster.TAU;
+import static com.raycaster.Raycaster.TAUf;
 
 public class Noise {
 	protected static final long default_seed = 0x9E3779B97F4A7C15L;
@@ -153,7 +153,7 @@ public class Noise {
 	}
 	
 	private static float noise(float x, float y) {
-		double dx = x * TAU, dy = y * TAU;
+		float dx = x * TAUf, dy = y * TAUf;
 		return noise((float)Math.sin(dx),(float)Math.cos(dx),(float)Math.sin(dy),(float)Math.cos(dy));
 	}
 	
