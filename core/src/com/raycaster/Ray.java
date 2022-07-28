@@ -2,6 +2,7 @@ package com.raycaster;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.github.tommyettinger.digital.TrigTools;
 
 public class Ray {
 	protected class Step {
@@ -71,8 +72,8 @@ public class Ray {
 	public Ray(Map map, double x, double y, double angle, double range) {
 		this.steps = new ArrayList<Step>();
 		this.map = map;
-		this.sin = Math.sin(angle);
-		this.cos = Math.cos(angle);
+		this.sin = TrigTools.sin(angle);
+		this.cos = TrigTools.cos(angle);
 
 		this.cast(x, y, range);
 	}

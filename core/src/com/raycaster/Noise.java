@@ -85,7 +85,7 @@ public class Noise {
 		result.setFilter(Pixmap.Filter.NearestNeighbour);
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				float gamma = Math.max(Math.min(noise[x][y] + gain, 1f),0f);
+				float gamma = MathTools.clamp(noise[x][y] + gain, 0f, 1f);
 				if (gamma <= clip)
 				{
 					Color color = new Color(tint);

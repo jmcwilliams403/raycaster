@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
 import com.github.tommyettinger.digital.MathTools;
+import com.github.tommyettinger.digital.TrigTools;
 import static com.raycaster.Raycaster.*;
 
 public class Camera implements Disposable {
@@ -19,7 +20,7 @@ public class Camera implements Disposable {
 		protected double height;
 
 		public Projection(double angle, Ray.Step step) {
-			double z = step.distance * Math.cos(angle);
+			double z = step.distance * TrigTools.cos(angle);
 			this.height = viewportHeight * step.height / z;
 			this.top = viewportHeight / 2 * (1 + 1 / z) - this.height;
 		}
@@ -52,7 +53,7 @@ public class Camera implements Disposable {
 		this.shapeRenderer.setProjectionMatrix(camera.combined);
 		this.resolution = resolution;
 		this.spacing = (double) this.viewportWidth / this.resolution;
-		this.fov =  Math.toRadians(MathTools.clamp(fov, 0, 180));
+		this.fov =  TrigTools.degreesToRadiansD * MathTools.clamp(fov, 0, 180);
 		this.focalLength = PI/this.fov-1;
 		this.range = 32;
 		this.lightRange = 16;
@@ -122,8 +123,8 @@ public class Camera implements Disposable {
 		final double ty = py * size;
 		final double tz = Math.max(1d + 2 * pz, 1d) * size;
 		
-		final double sin = Math.sin(angle);
-		final double cos = Math.cos(angle);
+		final double sin = TrigTools.sin(angle);
+		final double cos = TrigTools.cos(angle);
 		
 		final int horizon = this.resolution/2;
 		
@@ -155,7 +156,7 @@ public class Camera implements Disposable {
 
 	private void drawColumns(Player player, Map map, float ambient) {
 		for (int column = 0; column < this.resolution; column++) {
-			double angle = Math.atan2(2d * column / this.resolution - 1, this.focalLength);
+			double angle = TrigTools.atan2(2d * column / this.resolution - 1, this.focalLength);
 			Ray ray = new Ray(map, player.x, player.y, player.direction + angle, this.range);
 			Texture texture = map.wallTexture;
 			int left = MathTools.floor(column * this.spacing);
@@ -176,7 +177,7 @@ public class Camera implements Disposable {
 
 					Gdx.gl.glEnable(GL20.GL_BLEND);
 					Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-					shapeRenderer.setColor(0, 0, 0, (float) Math.max(Math.min((step.distance + step.shading) / this.lightRange, 1d) - ambient, 0d));
+					shapeRenderer.setColor(0, 0, 0, (float) MathTools.clamp((step.distance + step.shading) / this.lightRange - ambient, 0d, 1d));
 					shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 					shapeRenderer.rect(left, top, width, height);
 					shapeRenderer.end();
@@ -192,8 +193,8 @@ public class Camera implements Disposable {
 		double ratio = (double) weapon.getWidth() / weapon.getHeight();
 		int width = this.alias(this.viewportHeight * scale * ratio);
 		int height = this.alias(this.viewportHeight * scale);
-		int left = this.alias((this.viewportWidth - width / 2) - Math.sin(paces) * width / 4);
-		int top = this.alias((this.viewportHeight - height / 2) - Math.cos(paces * 2) * height / 4);
+		int left = this.alias((this.viewportWidth - width / 2) - TrigTools.sin(paces) * width / 4);
+		int top = this.alias((this.viewportHeight - height / 2) - TrigTools.cos(paces * 2) * height / 4);
 		batch.begin();
 		batch.draw(weapon, left, top, width, height, 0, 0, weapon.getWidth(), weapon.getHeight(), false, true);
 		batch.end();
