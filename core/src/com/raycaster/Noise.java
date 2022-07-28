@@ -158,41 +158,37 @@ public class Noise {
 	}
 	
 	private static float noise(float x, float y, float z, float w) {
-		int x0, y0, z0, w0, x1, y1, z1, w1;
-	    float x0f, y0f, z0f, w0f, x1f, y1f, z1f, w1f;
-	    float s, t, u, v;
-
-	    x0 = floor( x ); // Integer part of x
-	    y0 = floor( y ); // Integer part of y
-	    z0 = floor( z ); // Integer part of y
-	    w0 = floor( w ); // Integer part of w
-	    x1 = x0 + 1;
-	    y1 = y0 + 1;
-	    z1 = z0 + 1;
-	    w1 = w0 + 1;
+	    int x0 = floor( x ); // Integer part of x
+	    int y0 = floor( y ); // Integer part of y
+	    int z0 = floor( z ); // Integer part of y
+	    int w0 = floor( w ); // Integer part of w
+	    int x1 = x0 + 1;
+	    int y1 = y0 + 1;
+	    int z1 = z0 + 1;
+	    int w1 = w0 + 1;
 	    
-	    x0f = x - x0;        // Fractional part of x
-	    y0f = y - y0;        // Fractional part of y
-	    z0f = z - z0;        // Fractional part of z
-	    w0f = w - w0;        // Fractional part of w
-	    x1f = x0f - 1f;
-	    y1f = y0f - 1f;
-	    z1f = z0f - 1f;
-	    w1f = w0f - 1f;
+	    float x0f = x - x0;        // Fractional part of x
+	    float y0f = y - y0;        // Fractional part of y
+	    float z0f = z - z0;        // Fractional part of z
+	    float w0f = w - w0;        // Fractional part of w
+	    float x1f = x0f - 1f;
+	    float y1f = y0f - 1f;
+	    float z1f = z0f - 1f;
+	    float w1f = w0f - 1f;
 	    
-	    x0 = x0 & mask; // Wrap to 0..255
-	    y0 = y0 & mask;
-	    z0 = z0 & mask;
-	    w0 = w0 & mask;
-	    x1 = x1 & mask;
-	    y1 = y1 & mask;
-	    z1 = z1 & mask;
-	    w1 = w1 & mask;
+	    x0 &= mask; // Wrap to 0..255
+	    y0 &= mask;
+	    z0 &= mask;
+	    w0 &= mask;
+	    x1 &= mask;
+	    y1 &= mask;
+	    z1 &= mask;
+	    w1 &= mask;
 	    
-	    s = fade( x0f );
-	    t = fade( y0f );
-	    u = fade( z0f );
-	    v = fade( w0f );
+	    float s = fade( x0f );
+	    float t = fade( y0f );
+	    float u = fade( z0f );
+	    float v = fade( w0f );
 
 	    return lerp( s,
     		lerp( t,
