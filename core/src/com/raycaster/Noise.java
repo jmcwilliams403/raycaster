@@ -161,7 +161,6 @@ public class Noise {
 		int ix0, iy0, iz0, iw0, ix1, iy1, iz1, iw1;
 	    float fx0, fy0, fz0, fw0, fx1, fy1, fz1, fw1;
 	    float s, t, r, q;
-	    float nxyz0, nxyz1, nxy0, nxy1, nx0, nx1, n0, n1;
 
 	    ix0 = floor( x ); // Integer part of x
 	    iy0 = floor( y ); // Integer part of y
@@ -196,51 +195,52 @@ public class Noise {
 	    t = fade( fy0 );
 	    s = fade( fx0 );
 
-	    nxyz0 = grad(p[ix0 + p[iy0 + p[iz0 + p[iw0]]]], fx0, fy0, fz0, fw0);
-	    nxyz1 = grad(p[ix0 + p[iy0 + p[iz0 + p[iw1]]]], fx0, fy0, fz0, fw1);
-	    nxy0 = lerp( q, nxyz0, nxyz1 );
-	        
-	    nxyz0 = grad(p[ix0 + p[iy0 + p[iz1 + p[iw0]]]], fx0, fy0, fz1, fw0);
-	    nxyz1 = grad(p[ix0 + p[iy0 + p[iz1 + p[iw1]]]], fx0, fy0, fz1, fw1);
-	    nxy1 = lerp( q, nxyz0, nxyz1 );
-	        
-	    nx0 = lerp ( r, nxy0, nxy1 );
-
-	    nxyz0 = grad(p[ix0 + p[iy1 + p[iz0 + p[iw0]]]], fx0, fy1, fz0, fw0);
-	    nxyz1 = grad(p[ix0 + p[iy1 + p[iz0 + p[iw1]]]], fx0, fy1, fz0, fw1);
-	    nxy0 = lerp( q, nxyz0, nxyz1 );
-	        
-	    nxyz0 = grad(p[ix0 + p[iy1 + p[iz1 + p[iw0]]]], fx0, fy1, fz1, fw0);
-	    nxyz1 = grad(p[ix0 + p[iy1 + p[iz1 + p[iw1]]]], fx0, fy1, fz1, fw1);
-	    nxy1 = lerp( q, nxyz0, nxyz1 );
-
-	    nx1 = lerp ( r, nxy0, nxy1 );
-
-	    n0 = lerp( t, nx0, nx1 );
-
-	    nxyz0 = grad(p[ix1 + p[iy0 + p[iz0 + p[iw0]]]], fx1, fy0, fz0, fw0);
-	    nxyz1 = grad(p[ix1 + p[iy0 + p[iz0 + p[iw1]]]], fx1, fy0, fz0, fw1);
-	    nxy0 = lerp( q, nxyz0, nxyz1 );
-	        
-	    nxyz0 = grad(p[ix1 + p[iy0 + p[iz1 + p[iw0]]]], fx1, fy0, fz1, fw0);
-	    nxyz1 = grad(p[ix1 + p[iy0 + p[iz1 + p[iw1]]]], fx1, fy0, fz1, fw1);
-	    nxy1 = lerp( q, nxyz0, nxyz1 );
-
-	    nx0 = lerp ( r, nxy0, nxy1 );
-
-	    nxyz0 = grad(p[ix1 + p[iy1 + p[iz0 + p[iw0]]]], fx1, fy1, fz0, fw0);
-	    nxyz1 = grad(p[ix1 + p[iy1 + p[iz0 + p[iw1]]]], fx1, fy1, fz0, fw1);
-	    nxy0 = lerp( q, nxyz0, nxyz1 );
-	        
-	    nxyz0 = grad(p[ix1 + p[iy1 + p[iz1 + p[iw0]]]], fx1, fy1, fz1, fw0);
-	    nxyz1 = grad(p[ix1 + p[iy1 + p[iz1 + p[iw1]]]], fx1, fy1, fz1, fw1);
-	    nxy1 = lerp( q, nxyz0, nxyz1 );
-
-	    nx1 = lerp ( r, nxy0, nxy1 );
-
-	    n1 = lerp( t, nx0, nx1 );
-
-	    return lerp( s, n0, n1 );
+	    return lerp( s,
+    		lerp( t,
+	    		lerp ( r,
+		    		lerp( q,
+		    		    grad(p[ix0 + p[iy0 + p[iz0 + p[iw0]]]], fx0, fy0, fz0, fw0),
+		    		    grad(p[ix0 + p[iy0 + p[iz0 + p[iw1]]]], fx0, fy0, fz0, fw1)
+		    		    ),
+		    		lerp( q,
+		    		    grad(p[ix0 + p[iy0 + p[iz1 + p[iw0]]]], fx0, fy0, fz1, fw0),
+		    		    grad(p[ix0 + p[iy0 + p[iz1 + p[iw1]]]], fx0, fy0, fz1, fw1)
+		    		)
+			    ),
+	    		lerp ( r,
+			    	lerp( q,
+			    		grad(p[ix0 + p[iy1 + p[iz0 + p[iw0]]]], fx0, fy1, fz0, fw0),
+			    		grad(p[ix0 + p[iy1 + p[iz0 + p[iw1]]]], fx0, fy1, fz0, fw1)
+			    	),
+			    	lerp( q,
+			    	    grad(p[ix0 + p[iy1 + p[iz1 + p[iw0]]]], fx0, fy1, fz1, fw0),
+			    	    grad(p[ix0 + p[iy1 + p[iz1 + p[iw1]]]], fx0, fy1, fz1, fw1)
+			    	)
+			    )
+		    ),
+    		lerp( t,
+	    		lerp ( r,
+		    		lerp( q,
+				    	grad(p[ix1 + p[iy0 + p[iz0 + p[iw0]]]], fx1, fy0, fz0, fw0),
+				    	grad(p[ix1 + p[iy0 + p[iz0 + p[iw1]]]], fx1, fy0, fz0, fw1)
+				    ),
+		    		lerp( q,
+				    	grad(p[ix1 + p[iy0 + p[iz1 + p[iw0]]]], fx1, fy0, fz1, fw0),
+				    	grad(p[ix1 + p[iy0 + p[iz1 + p[iw1]]]], fx1, fy0, fz1, fw1)
+				    )
+			    ),
+	    		lerp ( r,
+		    		lerp( q,
+				    	grad(p[ix1 + p[iy1 + p[iz0 + p[iw0]]]], fx1, fy1, fz0, fw0),
+				    	grad(p[ix1 + p[iy1 + p[iz0 + p[iw1]]]], fx1, fy1, fz0, fw1)
+				    ),
+		    		lerp( q,
+				    	grad(p[ix1 + p[iy1 + p[iz1 + p[iw0]]]], fx1, fy1, fz1, fw0),
+				    	grad(p[ix1 + p[iy1 + p[iz1 + p[iw1]]]], fx1, fy1, fz1, fw1)
+				    )
+			    )
+		    )
+	    );
 	}
 	
 	private static int floor(float x) {
