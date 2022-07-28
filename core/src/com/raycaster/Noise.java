@@ -158,110 +158,109 @@ public class Noise {
 	}
 	
 	private static float noise(float x, float y, float z, float w) {
-		int ix0, iy0, iz0, iw0, ix1, iy1, iz1, iw1;
-	    float fx0, fy0, fz0, fw0, fx1, fy1, fz1, fw1;
-	    float s, t, r, q;
+		int x0, y0, z0, w0, x1, y1, z1, w1;
+	    float x0f, y0f, z0f, w0f, x1f, y1f, z1f, w1f;
+	    float s, t, u, v;
 
-	    ix0 = floor( x ); // Integer part of x
-	    iy0 = floor( y ); // Integer part of y
-	    iz0 = floor( z ); // Integer part of y
-	    iw0 = floor( w ); // Integer part of w
-	    ix1 = ix0 + 1;
-	    iy1 = iy0 + 1;
-	    iz1 = iz0 + 1;
-	    iw1 = iw0 + 1;
+	    x0 = floor( x ); // Integer part of x
+	    y0 = floor( y ); // Integer part of y
+	    z0 = floor( z ); // Integer part of y
+	    w0 = floor( w ); // Integer part of w
+	    x1 = x0 + 1;
+	    y1 = y0 + 1;
+	    z1 = z0 + 1;
+	    w1 = w0 + 1;
 	    
-	    fx0 = x - ix0;        // Fractional part of x
-	    fy0 = y - iy0;        // Fractional part of y
-	    fz0 = z - iz0;        // Fractional part of z
-	    fw0 = w - iw0;        // Fractional part of w
-	    fx1 = fx0 - 1f;
-	    fy1 = fy0 - 1f;
-	    fz1 = fz0 - 1f;
-	    fw1 = fw0 - 1f;
+	    x0f = x - x0;        // Fractional part of x
+	    y0f = y - y0;        // Fractional part of y
+	    z0f = z - z0;        // Fractional part of z
+	    w0f = w - w0;        // Fractional part of w
+	    x1f = x0f - 1f;
+	    y1f = y0f - 1f;
+	    z1f = z0f - 1f;
+	    w1f = w0f - 1f;
 	    
-	    ix0 = ix0 & mask; // Wrap to 0..255
-	    iy0 = iy0 & mask;
-	    iz0 = iz0 & mask;
-	    iw0 = iw0 & mask;
-	    ix1 = ix1 & mask;
-	    iy1 = iy1 & mask;
-	    iz1 = iz1 & mask;
-	    iw1 = iw1 & mask;
+	    x0 = x0 & mask; // Wrap to 0..255
+	    y0 = y0 & mask;
+	    z0 = z0 & mask;
+	    w0 = w0 & mask;
+	    x1 = x1 & mask;
+	    y1 = y1 & mask;
+	    z1 = z1 & mask;
+	    w1 = w1 & mask;
 	    
-
-	    q = fade( fw0 );
-	    r = fade( fz0 );
-	    t = fade( fy0 );
-	    s = fade( fx0 );
+	    s = fade( x0f );
+	    t = fade( y0f );
+	    u = fade( z0f );
+	    v = fade( w0f );
 
 	    return lerp( s,
     		lerp( t,
-	    		lerp ( r,
-		    		lerp( q,
-		    		    grad(p[ix0 + p[iy0 + p[iz0 + p[iw0]]]], fx0, fy0, fz0, fw0),
-		    		    grad(p[ix0 + p[iy0 + p[iz0 + p[iw1]]]], fx0, fy0, fz0, fw1)
+	    		lerp ( u,
+		    		lerp( v,
+		    		    grad(p[x0 + p[y0 + p[z0 + p[w0]]]], x0f, y0f, z0f, w0f),
+		    		    grad(p[x0 + p[y0 + p[z0 + p[w1]]]], x0f, y0f, z0f, w1f)
 		    		    ),
-		    		lerp( q,
-		    		    grad(p[ix0 + p[iy0 + p[iz1 + p[iw0]]]], fx0, fy0, fz1, fw0),
-		    		    grad(p[ix0 + p[iy0 + p[iz1 + p[iw1]]]], fx0, fy0, fz1, fw1)
+		    		lerp( v,
+		    		    grad(p[x0 + p[y0 + p[z1 + p[w0]]]], x0f, y0f, z1f, w0f),
+		    		    grad(p[x0 + p[y0 + p[z1 + p[w1]]]], x0f, y0f, z1f, w1f)
 		    		)
 			    ),
-	    		lerp ( r,
-			    	lerp( q,
-			    		grad(p[ix0 + p[iy1 + p[iz0 + p[iw0]]]], fx0, fy1, fz0, fw0),
-			    		grad(p[ix0 + p[iy1 + p[iz0 + p[iw1]]]], fx0, fy1, fz0, fw1)
+	    		lerp ( u,
+			    	lerp( v,
+			    		grad(p[x0 + p[y1 + p[z0 + p[w0]]]], x0f, y1f, z0f, w0f),
+			    		grad(p[x0 + p[y1 + p[z0 + p[w1]]]], x0f, y1f, z0f, w1f)
 			    	),
-			    	lerp( q,
-			    	    grad(p[ix0 + p[iy1 + p[iz1 + p[iw0]]]], fx0, fy1, fz1, fw0),
-			    	    grad(p[ix0 + p[iy1 + p[iz1 + p[iw1]]]], fx0, fy1, fz1, fw1)
+			    	lerp( v,
+			    	    grad(p[x0 + p[y1 + p[z1 + p[w0]]]], x0f, y1f, z1f, w0f),
+			    	    grad(p[x0 + p[y1 + p[z1 + p[w1]]]], x0f, y1f, z1f, w1f)
 			    	)
 			    )
 		    ),
     		lerp( t,
-	    		lerp ( r,
-		    		lerp( q,
-				    	grad(p[ix1 + p[iy0 + p[iz0 + p[iw0]]]], fx1, fy0, fz0, fw0),
-				    	grad(p[ix1 + p[iy0 + p[iz0 + p[iw1]]]], fx1, fy0, fz0, fw1)
+	    		lerp ( u,
+		    		lerp( v,
+				    	grad(p[x1 + p[y0 + p[z0 + p[w0]]]], x1f, y0f, z0f, w0f),
+				    	grad(p[x1 + p[y0 + p[z0 + p[w1]]]], x1f, y0f, z0f, w1f)
 				    ),
-		    		lerp( q,
-				    	grad(p[ix1 + p[iy0 + p[iz1 + p[iw0]]]], fx1, fy0, fz1, fw0),
-				    	grad(p[ix1 + p[iy0 + p[iz1 + p[iw1]]]], fx1, fy0, fz1, fw1)
+		    		lerp( v,
+				    	grad(p[x1 + p[y0 + p[z1 + p[w0]]]], x1f, y0f, z1f, w0f),
+				    	grad(p[x1 + p[y0 + p[z1 + p[w1]]]], x1f, y0f, z1f, w1f)
 				    )
 			    ),
-	    		lerp ( r,
-		    		lerp( q,
-				    	grad(p[ix1 + p[iy1 + p[iz0 + p[iw0]]]], fx1, fy1, fz0, fw0),
-				    	grad(p[ix1 + p[iy1 + p[iz0 + p[iw1]]]], fx1, fy1, fz0, fw1)
+	    		lerp ( u,
+		    		lerp( v,
+				    	grad(p[x1 + p[y1 + p[z0 + p[w0]]]], x1f, y1f, z0f, w0f),
+				    	grad(p[x1 + p[y1 + p[z0 + p[w1]]]], x1f, y1f, z0f, w1f)
 				    ),
-		    		lerp( q,
-				    	grad(p[ix1 + p[iy1 + p[iz1 + p[iw0]]]], fx1, fy1, fz1, fw0),
-				    	grad(p[ix1 + p[iy1 + p[iz1 + p[iw1]]]], fx1, fy1, fz1, fw1)
+		    		lerp( v,
+				    	grad(p[x1 + p[y1 + p[z1 + p[w0]]]], x1f, y1f, z1f, w0f),
+				    	grad(p[x1 + p[y1 + p[z1 + p[w1]]]], x1f, y1f, z1f, w1f)
 				    )
 			    )
 		    )
 	    );
 	}
 	
-	private static int floor(float x) {
-		int ix = (int)x;
-		return x < ix ? ix - 1 : ix;
+	private static int floor(float f) {
+		int i = (int)f;
+		return f < i ? i - 1 : i;
 	}
 	
-	private static float fade(float t) {
-		return t * t * t * (t * (t * 6 - 15) + 10);
+	private static float fade(float f) {
+		return f * f * f * (f * (f * 6 - 15) + 10);
 	}
 
-	private static float lerp(float t, float a, float b) {
-		return a + t * (b - a);
+	private static float lerp(float c, float a, float b) {
+		return a + c * (b - a);
 	}
 
-	private static float grad(int hash, float x, float y, float z, float t) {
+	private static float grad(int hash, float x, float y, float z, float w) {
 		// CONVERT LO 4 BITS OF HASH CODE INTO 12 GRADIENT DIRECTIONS
 		int h = hash & 0b11111;
-		float u = h < 0b11000 ? x : y;
-		float v = h < 0b10000 ? y : z;
-		float w = h < 0b01000 ? z : t;
-		return ((h & 0b1) == 0 ? u : -u) + ((h & 0b10) == 0 ? v : -v) + ((h & 0b100) == 0 ? w : -w);
+		float t = h < 0b11000 ? x : y;
+		float u = h < 0b10000 ? y : z;
+		float v = h < 0b01000 ? z : w;
+		return ((h & 0b1) == 0 ? t : -t) + ((h & 0b10) == 0 ? u : -u) + ((h & 0b100) == 0 ? v : -v);
 	}
 }
