@@ -196,13 +196,13 @@ public class Noise {
 		    		lerp( v,
 		    		    grad(p[x0 + p[y0 + p[z0 + p[w0]]]], x0f, y0f, z0f, w0f),
 		    		    grad(p[x0 + p[y0 + p[z0 + p[w1]]]], x0f, y0f, z0f, w1f)
-		    		    ),
+		    		),
 		    		lerp( v,
 		    		    grad(p[x0 + p[y0 + p[z1 + p[w0]]]], x0f, y0f, z1f, w0f),
 		    		    grad(p[x0 + p[y0 + p[z1 + p[w1]]]], x0f, y0f, z1f, w1f)
 		    		)
 			    ),
-	    		lerp ( u,
+	    		lerp( u,
 			    	lerp( v,
 			    		grad(p[x0 + p[y1 + p[z0 + p[w0]]]], x0f, y1f, z0f, w0f),
 			    		grad(p[x0 + p[y1 + p[z0 + p[w1]]]], x0f, y1f, z0f, w1f)
@@ -224,7 +224,7 @@ public class Noise {
 				    	grad(p[x1 + p[y0 + p[z1 + p[w1]]]], x1f, y0f, z1f, w1f)
 				    )
 			    ),
-	    		lerp ( u,
+	    		lerp( u,
 		    		lerp( v,
 				    	grad(p[x1 + p[y1 + p[z0 + p[w0]]]], x1f, y1f, z0f, w0f),
 				    	grad(p[x1 + p[y1 + p[z0 + p[w1]]]], x1f, y1f, z0f, w1f)
