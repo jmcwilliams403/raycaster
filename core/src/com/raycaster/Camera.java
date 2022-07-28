@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
+import com.github.tommyettinger.digital.MathTools;
 import static com.raycaster.Raycaster.*;
 
 public class Camera implements Disposable {
@@ -51,7 +52,7 @@ public class Camera implements Disposable {
 		this.shapeRenderer.setProjectionMatrix(camera.combined);
 		this.resolution = resolution;
 		this.spacing = (double) this.viewportWidth / this.resolution;
-		this.fov =  Math.toRadians(Math.max(Math.min(fov,180),0));
+		this.fov =  Math.toRadians(MathTools.clamp(fov, 0, 180));
 		this.focalLength = PI/this.fov-1;
 		this.range = 32;
 		this.lightRange = 16;
@@ -140,7 +141,7 @@ public class Camera implements Disposable {
 			double sy = ty + distance * sin - horizon * dy;
 
 			for (int x = 0; x < this.resolution; x++, sx += dx, sy += dy)
-				buffer.drawPixel(x, y+horizon, flat.getPixel((int) Math.abs((sx + width) % width), (int) Math.abs((sy + height) % height)));
+				buffer.drawPixel(x, y+horizon, flat.getPixel((int) MathTools.remainder(sx, width), (int) MathTools.remainder(sy, height)));
 		}
 		
 		if (!isPrepared)
@@ -158,13 +159,13 @@ public class Camera implements Disposable {
 			double angle = Math.atan2(delta, this.focalLength);
 			Ray ray = new Ray(map, player.x, player.y, player.direction + angle, this.range);
 			Texture texture = map.wallTexture;
-			int left = (int) Math.floor(column * this.spacing);
-			int width = (int) Math.ceil(this.spacing);
+			int left = MathTools.floor(column * this.spacing);
+			int width = MathTools.ceil(this.spacing);
 
 			for (int hit = 0; hit < ray.steps.size(); hit++) {
 				if (ray.steps.get(hit).height > 0) {
 					Ray.Step step = ray.steps.get(hit);
-					int textureX = (int) Math.floor(texture.getWidth() * step.offset);
+					int textureX = MathTools.floor(texture.getWidth() * step.offset);
 					Projection wall = new Projection(angle, step);
 
 					int top = this.alias(wall.top);
@@ -200,7 +201,7 @@ public class Camera implements Disposable {
 	}
 
 	private int alias(double d) {
-		int spacing = (int) Math.ceil(this.spacing);
+		int spacing = MathTools.ceil(this.spacing);
 		return (int) (d / spacing) * spacing;
 	}
 

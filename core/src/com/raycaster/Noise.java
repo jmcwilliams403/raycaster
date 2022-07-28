@@ -2,10 +2,11 @@ package com.raycaster;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Color;
-import static com.raycaster.Raycaster.TAUf;
+import com.github.tommyettinger.digital.MathTools;
+import com.github.tommyettinger.digital.TrigTools;
 
 public class Noise {
-	protected static final long default_seed = 0x9E3779B97F4A7C15L;
+	protected static final long default_seed = MathTools.GOLDEN_LONGS[0];
 	protected static final int default_bits = Byte.SIZE;
 	protected static final int max_bits = Short.SIZE;
 	
@@ -130,7 +131,7 @@ public class Noise {
 		float[][] result = new float[width][height];
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				result[x][y] = ((noise[x][y] - minValue) / (maxValue - minValue));
+				result[x][y] = MathTools.norm(minValue, maxValue, noise[x][y]);
 			}
 		}
 		
@@ -153,15 +154,15 @@ public class Noise {
 	}
 	
 	private static float noise(float x, float y) {
-		float dx = x * TAUf, dy = y * TAUf;
-		return noise((float)Math.sin(dx),(float)Math.cos(dx),(float)Math.sin(dy),(float)Math.cos(dy));
+		float dx = x * TrigTools.TAU, dy = y * TrigTools.TAU;
+		return noise(TrigTools.sin(dx),TrigTools.cos(dx),TrigTools.sin(dy),TrigTools.cos(dy));
 	}
 	
 	private static float noise(float x, float y, float z, float w) {
-	    int x0 = floor( x ); // Integer part of x
-	    int y0 = floor( y ); // Integer part of y
-	    int z0 = floor( z ); // Integer part of y
-	    int w0 = floor( w ); // Integer part of w
+	    int x0 = MathTools.floor( x ); // Integer part of x
+	    int y0 = MathTools.floor( y ); // Integer part of y
+	    int z0 = MathTools.floor( z ); // Integer part of y
+	    int w0 = MathTools.floor( w ); // Integer part of w
 	    int x1 = x0 + 1;
 	    int y1 = y0 + 1;
 	    int z1 = z0 + 1;
@@ -190,65 +191,71 @@ public class Noise {
 	    float u = fade( z0f );
 	    float v = fade( w0f );
 
-	    return lerp( s,
-    		lerp( t,
-	    		lerp ( u,
-		    		lerp( v,
+	    return MathTools.lerp(
+    		MathTools.lerp(
+	    		MathTools.lerp (
+		    		MathTools.lerp(
 		    		    grad(p[x0 + p[y0 + p[z0 + p[w0]]]], x0f, y0f, z0f, w0f),
-		    		    grad(p[x0 + p[y0 + p[z0 + p[w1]]]], x0f, y0f, z0f, w1f)
+		    		    grad(p[x0 + p[y0 + p[z0 + p[w1]]]], x0f, y0f, z0f, w1f),
+		    		    v
 		    		),
-		    		lerp( v,
+		    		MathTools.lerp(
 		    		    grad(p[x0 + p[y0 + p[z1 + p[w0]]]], x0f, y0f, z1f, w0f),
-		    		    grad(p[x0 + p[y0 + p[z1 + p[w1]]]], x0f, y0f, z1f, w1f)
-		    		)
+		    		    grad(p[x0 + p[y0 + p[z1 + p[w1]]]], x0f, y0f, z1f, w1f),
+		    		    v
+		    		),
+		    		u
 			    ),
-	    		lerp( u,
-			    	lerp( v,
+	    		MathTools.lerp(
+			    	MathTools.lerp(
 			    		grad(p[x0 + p[y1 + p[z0 + p[w0]]]], x0f, y1f, z0f, w0f),
-			    		grad(p[x0 + p[y1 + p[z0 + p[w1]]]], x0f, y1f, z0f, w1f)
+			    		grad(p[x0 + p[y1 + p[z0 + p[w1]]]], x0f, y1f, z0f, w1f),
+			    		v
 			    	),
-			    	lerp( v,
+			    	MathTools.lerp(
 			    	    grad(p[x0 + p[y1 + p[z1 + p[w0]]]], x0f, y1f, z1f, w0f),
-			    	    grad(p[x0 + p[y1 + p[z1 + p[w1]]]], x0f, y1f, z1f, w1f)
-			    	)
-			    )
-		    ),
-    		lerp( t,
-	    		lerp ( u,
-		    		lerp( v,
-				    	grad(p[x1 + p[y0 + p[z0 + p[w0]]]], x1f, y0f, z0f, w0f),
-				    	grad(p[x1 + p[y0 + p[z0 + p[w1]]]], x1f, y0f, z0f, w1f)
-				    ),
-		    		lerp( v,
-				    	grad(p[x1 + p[y0 + p[z1 + p[w0]]]], x1f, y0f, z1f, w0f),
-				    	grad(p[x1 + p[y0 + p[z1 + p[w1]]]], x1f, y0f, z1f, w1f)
-				    )
+			    	    grad(p[x0 + p[y1 + p[z1 + p[w1]]]], x0f, y1f, z1f, w1f),
+			    	    v
+			    	),
+			    	u
 			    ),
-	    		lerp( u,
-		    		lerp( v,
-				    	grad(p[x1 + p[y1 + p[z0 + p[w0]]]], x1f, y1f, z0f, w0f),
-				    	grad(p[x1 + p[y1 + p[z0 + p[w1]]]], x1f, y1f, z0f, w1f)
+	    		t
+		    ),
+    		MathTools.lerp(
+	    		MathTools.lerp (
+		    		MathTools.lerp(
+				    	grad(p[x1 + p[y0 + p[z0 + p[w0]]]], x1f, y0f, z0f, w0f),
+				    	grad(p[x1 + p[y0 + p[z0 + p[w1]]]], x1f, y0f, z0f, w1f),
+				    	v
 				    ),
-		    		lerp( v,
+		    		MathTools.lerp(
+				    	grad(p[x1 + p[y0 + p[z1 + p[w0]]]], x1f, y0f, z1f, w0f),
+				    	grad(p[x1 + p[y0 + p[z1 + p[w1]]]], x1f, y0f, z1f, w1f),
+				    	v
+				    ),
+		    		u
+			    ),
+	    		MathTools.lerp(
+		    		MathTools.lerp(
+				    	grad(p[x1 + p[y1 + p[z0 + p[w0]]]], x1f, y1f, z0f, w0f),
+				    	grad(p[x1 + p[y1 + p[z0 + p[w1]]]], x1f, y1f, z0f, w1f),
+				    	v
+				    ),
+		    		MathTools.lerp(
 				    	grad(p[x1 + p[y1 + p[z1 + p[w0]]]], x1f, y1f, z1f, w0f),
-				    	grad(p[x1 + p[y1 + p[z1 + p[w1]]]], x1f, y1f, z1f, w1f)
-				    )
-			    )
-		    )
+				    	grad(p[x1 + p[y1 + p[z1 + p[w1]]]], x1f, y1f, z1f, w1f),
+				    	v
+				    ),
+		    		u
+			    ),
+	    		t
+		    ),
+    		s
 	    );
-	}
-	
-	private static int floor(float f) {
-		int i = (int)f;
-		return f < i ? i - 1 : i;
 	}
 	
 	private static float fade(float f) {
 		return f * f * f * (f * (f * 6 - 15) + 10);
-	}
-
-	private static float lerp(float c, float a, float b) {
-		return a + c * (b - a);
 	}
 
 	private static float grad(int hash, float x, float y, float z, float w) {

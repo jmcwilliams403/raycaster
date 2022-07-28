@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.Texture;
 import static com.raycaster.Raycaster.*;
+import com.github.tommyettinger.digital.MathTools;
 
 public class Player implements Disposable {
 	protected double x;
@@ -16,13 +17,13 @@ public class Player implements Disposable {
 	protected float speed;
 
 	public Player(double x, double y) {
-		this(x, y, EPSILONf);
+		this(x, y, MathTools.FLOAT_ROUNDING_ERROR);
 	}
 
 	public Player(double x, double y, double direction) {
 		this.x = x;
 		this.y = y;
-		this.direction = (float) direction;
+		this.direction = MathTools.truncate(direction);
 		this.paces = 0;
 		this.speed = 3;
 		this.weapon = new Texture(Gdx.files.internal("hand.png"));
@@ -31,7 +32,7 @@ public class Player implements Disposable {
 
 	public double rotate(double angle) {
 		final double direction = this.direction;
-		this.direction = (direction + angle + TAU) % TAU;
+		this.direction = MathTools.remainder(direction + angle, TAU);
 		return Math.copySign(this.direction - direction, angle) / 2;
 	}
 
@@ -69,9 +70,8 @@ public class Player implements Disposable {
 			this.paces = (this.paces + delta) % TAU;
 		} else if (this.paces > 0) {
 			double closer = (Math.abs(this.paces - PI) > ETA) ? 0 : PI;
-			double delta = (((TAU + (PI - closer) - this.paces) % TAU) - PI) * distance * 2;
-			this.paces = (this.paces + delta + TAU) % TAU;
-			if (Math.abs(this.paces - closer) < EPSILONf)
+			this.paces = MathTools.lerpAngle(this.paces, closer, distance * 2);
+			if (MathTools.isZero((float)MathTools.truncate(this.paces - closer)))
 				this.paces = 0;
 		}
 	}
