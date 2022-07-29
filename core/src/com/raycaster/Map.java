@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import squidpony.squidgrid.mapping.ConnectingMapGenerator;
 import squidpony.squidmath.RNG;
+import squidpony.ArrayTools;
 import squidpony.squidgrid.MimicFill;
 
 public class Map implements Disposable {
@@ -95,12 +96,17 @@ public class Map implements Disposable {
 	}
 	
 	public void randomize(float chance) {
-		final int roomSize = MathTools.round(0.5f/chance);
-		boolean[][] temp = MimicFill.mapToSample(new ConnectingMapGenerator(width, height, roomSize,roomSize, new RNG(),1).generate(),'#');
-		for (int x = 0; x < this.width; x++) {
-			for (int y = 0; y < this.height; y++) {
-				this.wallGrid[x][y] = temp[x][y]? 1 : 0;
+		if (chance < 1f) {
+			final int roomSize = MathTools.round(0.5f/chance);
+			boolean[][] temp = MimicFill.mapToSample(new ConnectingMapGenerator(width, height, roomSize,roomSize, new RNG(),1).generate(),'#');
+			for (int x = 0; x < this.width; x++) {
+				for (int y = 0; y < this.height; y++) {
+					this.wallGrid[x][y] = temp[x][y]? 1 : 0;
+				}
 			}
+		}
+		else {
+			ArrayTools.fill(wallGrid, 1);
 		}
 	}
 
