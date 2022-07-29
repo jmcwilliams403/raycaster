@@ -2,8 +2,12 @@ package com.raycaster;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
+import com.github.tommyettinger.digital.MathTools;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import squidpony.squidgrid.mapping.ConnectingMapGenerator;
+import squidpony.squidmath.RNG;
+import squidpony.squidgrid.MimicFill;
 
 public class Map implements Disposable {
 	protected class SkyBox implements Disposable{
@@ -78,10 +82,24 @@ public class Map implements Disposable {
 		return height;
 	}
 
+	public void set(double x, double y, int height) {
+		this.set((int) Math.floor(x), (int) Math.floor(y), height);
+	}
+	
+	public void set(int x, int y, int height) {
+		try {
+			this.wallGrid[x][y] = height;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return;
+		}
+	}
+	
 	public void randomize(float chance) {
+		final int roomSize = MathTools.round(1f/chance);
+		boolean[][] temp = MimicFill.mapToSample(new ConnectingMapGenerator(width, height, roomSize,roomSize, new RNG(),1).generate(),'#');
 		for (int x = 0; x < this.width; x++) {
 			for (int y = 0; y < this.height; y++) {
-				this.wallGrid[x][y] = Math.random() < chance ? 1 : 0;
+				this.wallGrid[x][y] = temp[x][y]? 1 : 0;
 			}
 		}
 	}
