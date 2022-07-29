@@ -95,7 +95,7 @@ public class Map implements Disposable {
 	}
 	
 	public void randomize(float chance) {
-		final int roomSize = MathTools.round(1f/chance);
+		final int roomSize = MathTools.round(0.5f/chance);
 		boolean[][] temp = MimicFill.mapToSample(new ConnectingMapGenerator(width, height, roomSize,roomSize, new RNG(),1).generate(),'#');
 		for (int x = 0; x < this.width; x++) {
 			for (int y = 0; y < this.height; y++) {

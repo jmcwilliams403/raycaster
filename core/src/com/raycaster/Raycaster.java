@@ -24,7 +24,7 @@ public class Raycaster extends ApplicationAdapter {
 		this.map = new Map(32);
 		this.controls = new Controls();
 		this.camera = new Camera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 360, 90);
-		this.map.randomize(0.3f);
+		this.map.randomize(0.15f);
 		this.map.set(player.x, player.y, 0);
 	}
 
