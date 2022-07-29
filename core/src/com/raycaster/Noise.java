@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Color;
 import com.github.tommyettinger.digital.MathTools;
 import com.github.tommyettinger.digital.TrigTools;
+import com.github.tommyettinger.digital.ArrayTools;
 
 public class Noise {
 	protected static final long default_seed = MathTools.GOLDEN_LONGS[0];
@@ -24,9 +25,7 @@ public class Noise {
 		length = shift > 0 ? 1 << shift : 1;
 		mask = length - 1;
 
-		permutation = new char[length];
-		for (char i = 0; i < length; i++)
-			permutation[i] = i;
+		permutation = ArrayTools.charSpan((char)0, (char)mask);
 
 		java.util.Random rand = (seed == null)? new java.util.Random() : new java.util.Random(seed);
 		for (int i = length - 1; i > 0; i--) {
