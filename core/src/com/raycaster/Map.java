@@ -70,7 +70,7 @@ public class Map implements Disposable {
 	}
 
 	public Integer get(double x, double y) {
-		return this.get((int) Math.floor(x), (int) Math.floor(y));
+		return this.get(MathTools.floor(x), MathTools.floor(y));
 	}
 
 	public Integer get(int x, int y) {
@@ -84,7 +84,7 @@ public class Map implements Disposable {
 	}
 
 	public void set(double x, double y, int height) {
-		this.set((int) Math.floor(x), (int) Math.floor(y), height);
+		this.set(MathTools.floor(x), MathTools.floor(y), height);
 	}
 	
 	public void set(int x, int y, int height) {
