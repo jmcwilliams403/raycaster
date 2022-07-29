@@ -3,11 +3,11 @@ package com.raycaster;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.tommyettinger.digital.MathTools;
+import com.github.tommyettinger.digital.ArrayTools;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import squidpony.squidgrid.mapping.ConnectingMapGenerator;
 import squidpony.squidmath.RNG;
-import squidpony.ArrayTools;
 import squidpony.squidgrid.MimicFill;
 
 public class Map implements Disposable {
