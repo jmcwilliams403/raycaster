@@ -3,8 +3,8 @@ package com.raycaster;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.Texture;
-import static com.raycaster.Raycaster.*;
 import com.github.tommyettinger.digital.MathTools;
+import com.github.tommyettinger.digital.TrigTools;
 
 public class Player implements Disposable {
 	protected double x;
@@ -32,7 +32,7 @@ public class Player implements Disposable {
 
 	public double rotate(double angle) {
 		final double direction = this.direction;
-		this.direction = MathTools.remainder(direction + angle, TAU);
+		this.direction = MathTools.remainder(direction + angle, TrigTools.TAU_D);
 		return Math.copySign(this.direction - direction, angle) / 2;
 	}
 
@@ -54,22 +54,22 @@ public class Player implements Disposable {
 
 	public void update(Controls controls, Map map, double seconds) {
 		if (controls.turn)
-			this.rotate((controls.x / PI) * seconds);
+			this.rotate((controls.x / TrigTools.PI_D) * seconds);
 
 		final double distance = this.speed * seconds;
 		if (controls.move) {
 			double delta = 0;
 			if (controls.left)
-				delta = Math.max(delta, this.walk(distance, map, this.direction - ETA));
+				delta = Math.max(delta, this.walk(distance, map, this.direction - TrigTools.HALF_PI_D));
 			if (controls.right)
-				delta = Math.max(delta, this.walk(distance, map, this.direction + ETA));
+				delta = Math.max(delta, this.walk(distance, map, this.direction + TrigTools.HALF_PI_D));
 			if (controls.forward)
 				delta = Math.max(delta, this.walk(distance, map, this.direction));
 			if (controls.backward)
-				delta = Math.max(delta, this.walk(distance, map, this.direction + PI));
-			this.paces = (this.paces + delta) % TAU;
+				delta = Math.max(delta, this.walk(distance, map, this.direction + TrigTools.PI_D));
+			this.paces = (this.paces + delta) % TrigTools.TAU_D;
 		} else if (this.paces > 0) {
-			double closer = (Math.abs(this.paces - PI) > ETA) ? 0 : PI;
+			double closer = (Math.abs(this.paces - TrigTools.PI_D) > TrigTools.HALF_PI_D) ? 0 : TrigTools.PI_D;
 			this.paces = MathTools.lerpAngle(this.paces, closer, distance * 2);
 			if (MathTools.isZero((float)MathTools.truncate(this.paces - closer)))
 				this.paces = 0;

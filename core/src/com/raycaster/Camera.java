@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
 import com.github.tommyettinger.digital.MathTools;
 import com.github.tommyettinger.digital.TrigTools;
-import static com.raycaster.Raycaster.*;
 
 public class Camera implements Disposable {
 	protected class Projection {
@@ -54,7 +53,7 @@ public class Camera implements Disposable {
 		this.resolution = resolution;
 		this.spacing = (double) this.viewportWidth / this.resolution;
 		this.fov =  TrigTools.degreesToRadiansD * MathTools.clamp(fov, 0, 180);
-		this.focalLength = PI/this.fov-1;
+		this.focalLength = TrigTools.PI_D/this.fov-1;
 		this.range = 32;
 		this.lightRange = 16;
 	}
