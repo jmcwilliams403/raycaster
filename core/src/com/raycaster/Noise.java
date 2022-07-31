@@ -12,7 +12,7 @@ public class Noise {
 	protected static final int max_bits = Short.SIZE;
 
 	private static int length;
-	private static int mask;
+	private static char mask;
 	private static char[] permutation;
 	private static char[] p;
 
@@ -23,10 +23,10 @@ public class Noise {
 	protected static void generatePermutationTable(int bits, Long seed) {
 		final int shift = Math.min(bits, max_bits);
 		length = shift > 0 ? 1 << shift : 1;
-		mask = length - 1;
+		mask = (char)(length - 1);
 
 		permutation = ArrayTools.shuffle(
-			ArrayTools.charSpan((char)0, (char)mask),
+			ArrayTools.charSpan('\0', mask),
 			seed == null ? null : new java.util.Random(seed)
 		);
 
