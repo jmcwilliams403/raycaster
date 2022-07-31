@@ -25,15 +25,10 @@ public class Noise {
 		length = shift > 0 ? 1 << shift : 1;
 		mask = length - 1;
 
-		permutation = ArrayTools.charSpan((char)0, (char)mask);
-
-		java.util.Random rand = (seed == null)? new java.util.Random() : new java.util.Random(seed);
-		for (int i = length - 1; i > 0; i--) {
-			int j = rand.nextInt(i + 1);
-			char temp = permutation[i];
-			permutation[i] = permutation[j];
-			permutation[j] = temp;
-		}
+		permutation = ArrayTools.shuffle(
+			ArrayTools.charSpan((char)0, (char)mask),
+			seed == null ? null : new java.util.Random(seed)
+		);
 
 		p = new char[length*2];
 		for (int i = 0; i < length; i++)
