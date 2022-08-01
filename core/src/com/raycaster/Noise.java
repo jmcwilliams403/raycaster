@@ -24,7 +24,7 @@ public class Noise {
 		mask = (char)(length - 1);
 
 		final char[] permutation = ArrayTools.shuffle(
-			ArrayTools.charSpan('\0', mask),
+			ArrayTools.charSpan(mask),
 			seed == null ? null : new java.util.Random(seed)
 		);
 
