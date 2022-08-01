@@ -194,8 +194,7 @@ public class Camera implements Disposable {
 	}
 
 	private void drawWeapon(Texture weapon, double scale, double paces) {
-		double ratio = (double) weapon.getWidth() / weapon.getHeight();
-		int width = this.alias(this.viewportHeight * scale * ratio);
+		int width = this.alias(this.viewportHeight * scale * weapon.getWidth() / weapon.getHeight());
 		int height = this.alias(this.viewportHeight * scale);
 		int x = this.alias((this.viewportWidth - width / 2) - TrigTools.sin(paces) * width / 4);
 		int y = this.alias((this.viewportHeight - height / 2) - TrigTools.cos(paces * 2) * height / 4);
