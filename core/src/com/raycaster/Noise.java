@@ -164,10 +164,10 @@ public class Noise {
 		float y0f = y - y0;        // Fractional part of y
 		float z0f = z - z0;        // Fractional part of z
 		float w0f = w - w0;        // Fractional part of w
-		float x1f = x0f - 1f;
-		float y1f = y0f - 1f;
-		float z1f = z0f - 1f;
-		float w1f = w0f - 1f;
+		float x1f = x - x1;
+		float y1f = y - y1;
+		float z1f = z - z1;
+		float w1f = w - w1;
 
 		x0 &= mask; // Wrap to 0..255
 		y0 &= mask;
