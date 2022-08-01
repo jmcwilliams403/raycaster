@@ -15,13 +15,13 @@ import com.github.tommyettinger.digital.TrigTools;
 
 public class Camera implements Disposable {
 	protected class Projection {
-		protected double top;
+		protected double y;
 		protected double height;
 
-		public Projection(double angle, Ray.Step step) {
-			double z = step.distance * TrigTools.cos(angle);
-			this.height = viewportHeight * step.height / z;
-			this.top = viewportHeight / 2 * (1 + 1 / z) - this.height;
+		public Projection(double angle, double distance, double height) {
+			double z = distance * TrigTools.cos(angle);
+			this.height = viewportHeight * height / z;
+			this.y = viewportHeight / 2 * (1 + 1 / z) - this.height;
 		}
 	}
 
@@ -158,27 +158,32 @@ public class Camera implements Disposable {
 			double angle = TrigTools.atan2(2d * column / this.resolution - 1, this.focalLength);
 			Ray ray = new Ray(map, player.x, player.y, player.direction + angle, this.range);
 			Texture texture = map.wallTexture;
-			int left = MathTools.floor(column * this.spacing);
+			
+			int x = MathTools.floor(column * this.spacing);
 			int width = MathTools.ceil(this.spacing);
 
 			for (int hit = 0; hit < ray.steps.size(); hit++) {
 				if (ray.steps.get(hit).height > 0) {
 					Ray.Step step = ray.steps.get(hit);
-					int textureX = MathTools.floor(texture.getWidth() * step.offset);
-					Projection wall = new Projection(angle, step);
-
-					int top = this.alias(wall.top);
+					
+					int srcX = MathTools.floor(texture.getWidth() * step.offset);
+					int srcY = 0;
+					int srcWidth = 1;
+					int srcHeight = texture.getHeight();
+					
+					Projection wall = new Projection(angle, step.distance, step.height);
+					int y = this.alias(wall.y);
 					int height = this.alias(wall.height);
 
 					batch.begin();
-					batch.draw(texture, left, top, width, height, textureX, 0, 1, texture.getHeight(), false, true);
+					batch.draw(texture, x, y, width, height, srcX, srcY, srcWidth, srcHeight, false, true);
 					batch.end();
 
 					Gdx.gl.glEnable(GL20.GL_BLEND);
 					Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 					shapeRenderer.setColor(0, 0, 0, (float) MathTools.clamp((step.distance + step.shading) / this.lightRange - ambient, 0d, 1d));
 					shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-					shapeRenderer.rect(left, top, width, height);
+					shapeRenderer.rect(x, y, width, height);
 					shapeRenderer.end();
 					Gdx.gl.glDisable(GL20.GL_BLEND);
 
@@ -192,10 +197,10 @@ public class Camera implements Disposable {
 		double ratio = (double) weapon.getWidth() / weapon.getHeight();
 		int width = this.alias(this.viewportHeight * scale * ratio);
 		int height = this.alias(this.viewportHeight * scale);
-		int left = this.alias((this.viewportWidth - width / 2) - TrigTools.sin(paces) * width / 4);
-		int top = this.alias((this.viewportHeight - height / 2) - TrigTools.cos(paces * 2) * height / 4);
+		int x = this.alias((this.viewportWidth - width / 2) - TrigTools.sin(paces) * width / 4);
+		int y = this.alias((this.viewportHeight - height / 2) - TrigTools.cos(paces * 2) * height / 4);
 		batch.begin();
-		batch.draw(weapon, left, top, width, height, 0, 0, weapon.getWidth(), weapon.getHeight(), false, true);
+		batch.draw(weapon, x, y, width, height, 0, 0, weapon.getWidth(), weapon.getHeight(), false, true);
 		batch.end();
 	}
 
