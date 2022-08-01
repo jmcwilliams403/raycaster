@@ -254,10 +254,10 @@ public class Noise {
 
 	private static float grad(int hash, float x, float y, float z, float w) {
 		// CONVERT LO 4 BITS OF HASH CODE INTO 12 GRADIENT DIRECTIONS
-		int h = hash & 0b11111;
-		float t = h < 0b11000 ? x : y;
-		float u = h < 0b10000 ? y : z;
-		float v = h < 0b01000 ? z : w;
-		return ((h & 0b1) == 0 ? t : -t) + ((h & 0b10) == 0 ? u : -u) + ((h & 0b100) == 0 ? v : -v);
+		int h = hash & 0b1_1111;
+		float t = h < 0b1_1000 ? x : y;
+		float u = h < 0b1_0000 ? y : z;
+		float v = h < 0b0_1000 ? z : w;
+		return ((h & 0b0_0001) == 0 ? t : -t) + ((h & 0b0_0010) == 0 ? u : -u) + ((h & 0b0_0100) == 0 ? v : -v);
 	}
 }
