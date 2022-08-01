@@ -41,21 +41,22 @@ public class Camera implements Disposable {
 	public Camera(int width, int height, int resolution, int fov) {
 		this.viewportWidth = width;
 		this.viewportHeight = height;
-		// Setup 2d camera with top left coordinates
-		// http://stackoverflow.com/questions/7708379/changing-the-coordinate-system-in-libgdx-java/7751183#7751183
-		// This forces us to flip textures on the y axis, eg. in Camera#drawSky
-		this.camera = new OrthographicCamera(width, height);
-		this.camera.setToOrtho(true, width, height);
-		this.batch = new SpriteBatch();
-		this.batch.setProjectionMatrix(camera.combined);
-		this.shapeRenderer = new ShapeRenderer();
-		this.shapeRenderer.setProjectionMatrix(camera.combined);
 		this.resolution = resolution;
 		this.spacing = (double) this.viewportWidth / this.resolution;
 		this.fov =  TrigTools.degreesToRadiansD * MathTools.clamp(fov, 0, 180);
 		this.focalLength = TrigTools.PI_D/this.fov-1;
 		this.range = 32;
 		this.lightRange = 16;
+		
+		// Setup 2d camera with top left coordinates
+		// http://stackoverflow.com/questions/7708379/changing-the-coordinate-system-in-libgdx-java/7751183#7751183
+		// This forces us to flip textures on the y axis, eg. in Camera#drawSky
+		this.camera = new OrthographicCamera(this.viewportWidth, this.viewportHeight);
+		this.camera.setToOrtho(true, this.viewportWidth, this.viewportHeight);
+		this.batch = new SpriteBatch();
+		this.batch.setProjectionMatrix(camera.combined);
+		this.shapeRenderer = new ShapeRenderer();
+		this.shapeRenderer.setProjectionMatrix(camera.combined);
 	}
 
 	public void update() {
